@@ -6,6 +6,17 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../Firebase";
+import {
+  Search,
+  Download,
+  Calendar,
+  ArrowUpDown,
+  Phone,
+  Mail,
+  Package,
+  MessageSquare,
+  X,
+} from "lucide-react";
 
 const PAGE_SIZE = 20;
 
@@ -15,9 +26,11 @@ export default function Enquiries() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState("new"); // new | old
+  const [sort, setSort] = useState("new");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+
+  const [selected, setSelected] = useState(null); // 👈 modal state
 
   useEffect(() => {
     const fetchEnquiries = async () => {
@@ -26,34 +39,27 @@ export default function Enquiries() {
         orderBy("createdAt", "desc")
       );
       const snap = await getDocs(q);
-
       setEnquiries(
-        snap.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-        }))
+        snap.docs.map((d) => ({ id: d.id, ...d.data() }))
       );
       setLoading(false);
     };
-
     fetchEnquiries();
   }, []);
 
-  /* 🔍 FILTER + SORT */
   const filtered = useMemo(() => {
     let data = [...enquiries];
 
-    // Search
     if (search) {
       const term = search.toLowerCase();
-      data = data.filter((e) =>
-        e.name?.toLowerCase().includes(term) ||
-        e.phone?.includes(term) ||
-        e.productName?.toLowerCase().includes(term)
+      data = data.filter(
+        (e) =>
+          e.name?.toLowerCase().includes(term) ||
+          e.phone?.includes(term) ||
+          e.productName?.toLowerCase().includes(term)
       );
     }
 
-    // Date range filter
     if (fromDate) {
       const from = new Date(fromDate);
       data = data.filter(
@@ -69,25 +75,21 @@ export default function Enquiries() {
       );
     }
 
-    // Sort
     data.sort((a, b) => {
       const d1 = a.createdAt?.toDate();
       const d2 = b.createdAt?.toDate();
-      if (!d1 || !d2) return 0;
       return sort === "new" ? d2 - d1 : d1 - d2;
     });
 
     return data;
   }, [search, enquiries, sort, fromDate, toDate]);
 
-  /* 📄 PAGINATION */
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE
   );
 
-  /* ⬇️ CSV DOWNLOAD */
   const downloadCSV = () => {
     if (!filtered.length) return;
 
@@ -120,123 +122,123 @@ export default function Enquiries() {
     const link = document.createElement("a");
     link.href = encodeURI(csv);
     link.download = "enquiries.csv";
-    document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
   };
 
-  if (loading) return <p>Loading enquiries…</p>;
+  if (loading)
+    return <p className="text-gray-500">Loading enquiries…</p>;
 
   return (
-    <div className="space-y-6">
-      {/* HEADER */}
-      <div className="flex flex-wrap gap-4 items-center justify-between">
-        <h1 className="text-2xl font-semibold">Enquiries</h1>
-
-        <button
-          onClick={downloadCSV}
-          className="border px-4 py-2 rounded-lg hover:bg-gray-50"
-        >
-          Download CSV
-        </button>
-      </div>
-
-      {/* FILTER BAR */}
-      <div className="flex flex-wrap gap-3">
-        <input
-          placeholder="Search name / phone / product"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          className="border p-2 rounded-lg w-full sm:w-64"
-        />
-
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="border p-2 rounded-lg"
-        >
-          <option value="new">Newest first</option>
-          <option value="old">Oldest first</option>
-        </select>
-
-        <input
-          type="date"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
-          className="border p-2 rounded-lg"
-        />
-
-        <input
-          type="date"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
-          className="border p-2 rounded-lg"
-        />
-      </div>
-
-      {/* EMPTY STATE */}
-      {filtered.length === 0 ? (
-        <div className="bg-white border rounded-xl p-10 text-center text-gray-500">
-          No enquiries found
+    <>
+      <div className="space-y-6 bg-gradient-to-br from-gray-50 to-white p-6 rounded-3xl">
+        {/* HEADER */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Enquiries</h1>
+          <button
+            onClick={downloadCSV}
+            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-black text-white"
+          >
+            <Download size={16} />
+            Download CSV
+          </button>
         </div>
-      ) : (
-        <>
-          {/* TABLE */}
-          <div className="bg-white border rounded-xl overflow-x-auto">
-            <table className="w-full text-sm min-w-225">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-4 py-3 text-left">Name</th>
-                  <th className="px-4 py-3 text-left">Phone</th>
-                  <th className="px-4 py-3 text-left">Email</th>
-                  <th className="px-4 py-3 text-left">Product</th>
-                  <th className="px-4 py-3 text-left">Message</th>
-                  <th className="px-4 py-3 text-left">Date</th>
-                </tr>
-              </thead>
 
-              <tbody>
-                {paginated.map((e) => (
-                  <tr key={e.id} className="border-b last:border-none">
-                    <td className="px-4 py-3">{e.name}</td>
-                    <td className="px-4 py-3">{e.phone}</td>
-                    <td className="px-4 py-3">{e.email || "-"}</td>
-                    <td className="px-4 py-3">{e.productName}</td>
-                    <td className="px-4 py-3 max-w-xs truncate">
-                      {e.message}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">
-                      {e.createdAt?.toDate().toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* FILTER BAR */}
+        <div className="bg-white/80 backdrop-blur rounded-2xl p-4 ring-1 ring-black/5 flex gap-4 flex-wrap">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+            <input
+              placeholder="Search enquiries"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="pl-9 pr-3 py-2 rounded-xl ring-1 ring-black/10 focus:ring-2 focus:ring-black/30 outline-none w-64"
+            />
           </div>
 
-          {/* PAGINATION */}
-          {totalPages > 1 && (
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setPage(i + 1)}
-                  className={`px-3 py-1 rounded ${
-                    page === i + 1
-                      ? "bg-black text-white"
-                      : "border"
-                  }`}
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="px-3 py-2 rounded-xl ring-1 ring-black/10"
+          >
+            <option value="new">Newest first</option>
+            <option value="old">Oldest first</option>
+          </select>
+        </div>
+
+        {/* TABLE */}
+        <div className="bg-white/80 backdrop-blur rounded-2xl ring-1 ring-black/5 overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-black/5 text-gray-600">
+              <tr>
+                <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3">Phone</th>
+                <th className="px-4 py-3">Product</th>
+                <th className="px-4 py-3">Message</th>
+                <th className="px-4 py-3">Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {paginated.map((e) => (
+                <tr
+                  key={e.id}
+                  onClick={() => setSelected(e)}
+                  className="cursor-pointer hover:bg-black/5 transition"
                 >
-                  {i + 1}
-                </button>
+                  <td className="px-4 py-3 font-medium">{e.name}</td>
+                  <td className="px-4 py-3">{e.phone}</td>
+                  <td className="px-4 py-3">{e.productName}</td>
+                  <td className="px-4 py-3 max-w-xs truncate text-gray-600">
+                    {e.message}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-gray-500">
+                    {e.createdAt?.toDate().toLocaleDateString()}
+                  </td>
+                </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 🔥 ENQUIRY MODAL */}
+      {selected && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-lg max-w-lg w-full p-6 relative">
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-black"
+            >
+              <X size={20} />
+            </button>
+
+            <h2 className="text-xl font-semibold mb-4">
+              Enquiry Details
+            </h2>
+
+            <div className="space-y-3 text-sm">
+              <p><strong>Name:</strong> {selected.name}</p>
+              <p><strong>Phone:</strong> {selected.phone}</p>
+              <p><strong>Email:</strong> {selected.email || "-"}</p>
+              <p><strong>Product:</strong> {selected.productName}</p>
+
+              <div>
+                <p className="font-medium mb-1">Message</p>
+                <div className="bg-gray-50 p-3 rounded-xl max-h-60 overflow-y-auto text-gray-700">
+                  {selected.message}
+                </div>
+              </div>
+
+              <p className="text-xs text-gray-500">
+                {selected.createdAt?.toDate().toLocaleString()}
+              </p>
             </div>
-          )}
-        </>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
