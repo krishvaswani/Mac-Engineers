@@ -56,7 +56,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 bg-gradient-to-br from-gray-50 to-white p-6 rounded-3xl">
+    <div className="space-y-8 bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
       {/* HEADER */}
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">

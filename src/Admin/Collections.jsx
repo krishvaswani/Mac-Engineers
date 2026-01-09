@@ -41,7 +41,7 @@ export default function Collections() {
   }, []);
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-gray-50 to-white p-6 rounded-3xl">
+    <div className="space-y-6 bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
@@ -71,19 +71,19 @@ export default function Collections() {
   <table className="w-full min-w-225 text-sm table-fixed">
     <thead className="bg-black/5 text-gray-600">
       <tr>
-        <th className="px-4 py-3 text-left w-[260px]">
+        <th className="px-4 py-3 text-left w-65">
           ID
         </th>
-        <th className="px-4 py-3 text-left w-[200px]">
+        <th className="px-4 py-3 text-left w-50">
           Name
         </th>
-        <th className="px-4 py-3 text-left w-[180px]">
+        <th className="px-4 py-3 text-left w-45">
           Slug
         </th>
         <th className="px-4 py-3 text-left">
           Description
         </th>
-        <th className="px-4 py-3 text-right w-[120px]">
+        <th className="px-4 py-3 text-right w-30">
           Actions
         </th>
       </tr>
@@ -111,7 +111,7 @@ export default function Collections() {
           </td>
 
           {/* DESCRIPTION */}
-          <td className="px-4 py-3 text-gray-500 break-words">
+          <td className="px-4 py-3 text-gray-500 wrap-break-word">
             {c.description || "-"}
           </td>
 

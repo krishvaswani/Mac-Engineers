@@ -41,7 +41,7 @@ export default function Products() {
   }, []);
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-gray-50 to-white p-6 rounded-3xl">
+    <div className="space-y-6 bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
