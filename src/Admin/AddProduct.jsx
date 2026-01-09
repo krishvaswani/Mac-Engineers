@@ -88,7 +88,7 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-gradient-to-br from-gray-50 to-white p-6 rounded-3xl">
+    <div className="max-w-4xl mx-auto bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
       <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 p-6 space-y-8">
         {/* HEADER */}
         <div>
