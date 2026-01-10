@@ -66,6 +66,7 @@ export default function Header() {
               <NavLink label="Home" to="/" active={isActive("/")} />
 
               <NavLink label="Products" to="/product" active={isActive("/product")} />
+              <NavLink label="Projects" to="/projects"  />
 
               {/* COLLECTIONS DROPDOWN */}
               <div
