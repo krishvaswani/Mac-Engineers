@@ -48,7 +48,7 @@ export default function IndustriesSection() {
         className="max-w-7xl mx-auto px-6"
       >
         {/* Header */}
-        <div className="mb-20">
+        <div>
           <h2 className="text-4xl md:text-5xl font-semibold text-slate-900">
             Industries We Serve
           </h2>

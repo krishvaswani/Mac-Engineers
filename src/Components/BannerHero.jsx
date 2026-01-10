@@ -1,6 +1,13 @@
 export default function ContactHero() {
   return (
-    <section className="relative h-[50vh] w-full overflow-hidden">
+    <section className="
+      relative
+      h-[40vh]
+      md:h-105
+      lg:h-90
+      w-full
+      overflow-hidden
+    ">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -15,13 +22,11 @@ export default function ContactHero() {
 
       {/* CONTENT */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col">
-     
-
         {/* HERO TEXT */}
         <div className="flex-1 flex items-center">
           <div className="max-w-xl text-white">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-              Product 
+              Product
             </h1>
             <p className="mt-6 text-lg text-white/80">
               Have questions about your HVAC system? Need a quick repair,
