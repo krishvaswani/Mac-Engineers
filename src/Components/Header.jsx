@@ -66,7 +66,7 @@ export default function Header() {
               <NavLink label="Home" to="/" active={isActive("/")} />
 
               <NavLink label="Products" to="/product" active={isActive("/product")} />
-              <NavLink label="Projects" to="/projects"  />
+              
 
               {/* COLLECTIONS DROPDOWN */}
               <div
@@ -115,7 +115,7 @@ export default function Header() {
                   )}
                 </AnimatePresence>
               </div>
-
+              <NavLink label="Projects" to="/projects"  />
               <NavLink label="About Us" to="/about" active={isActive("/about")} />
 
               {/* CONTACT BUTTON */}
