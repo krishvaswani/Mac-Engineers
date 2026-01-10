@@ -1,13 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   collection,
   addDoc,
   getDocs,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../Firebase";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { db, storage } from "../Firebase";
 import { useNavigate } from "react-router-dom";
-import { X, Plus } from "lucide-react";
+import {
+  X,
+  Plus,
+  ImagePlus,
+  FileText,
+  GripVertical,
+} from "lucide-react";
+import toast from "react-hot-toast";
+
+/* ================= CONSTANTS ================= */
 
 const USAGE_OPTIONS = [
   "Residential",
@@ -24,10 +38,18 @@ const ADDITIONAL_OPTIONS = [
   "Safety Instructions",
 ];
 
+/* ================= COMPONENT ================= */
+
 export default function AddProduct() {
   const navigate = useNavigate();
+
   const [collections, setCollections] = useState([]);
   const [specs, setSpecs] = useState([{ key: "", value: "" }]);
+  const [images, setImages] = useState([]);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const dragIndex = useRef(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -44,6 +66,8 @@ export default function AddProduct() {
     additionalInfo: "",
   });
 
+  /* ================= FETCH COLLECTIONS ================= */
+
   useEffect(() => {
     const fetchCollections = async () => {
       const snap = await getDocs(collection(db, "collections"));
@@ -51,6 +75,8 @@ export default function AddProduct() {
     };
     fetchCollections();
   }, []);
+
+  /* ================= SPECS ================= */
 
   const updateSpec = (i, field, value) => {
     const copy = [...specs];
@@ -64,88 +90,171 @@ export default function AddProduct() {
   const removeSpec = (index) =>
     setSpecs(specs.filter((_, i) => i !== index));
 
+  /* ================= UPLOAD HELPERS ================= */
+
+  const uploadImage = async (file) => {
+    const imageRef = ref(
+      storage,
+      `products/images/${Date.now()}-${file.name}`
+    );
+    await uploadBytes(imageRef, file);
+    return await getDownloadURL(imageRef);
+  };
+
+  const uploadPdf = async (file) => {
+    const pdfRef = ref(
+      storage,
+      `products/pdfs/${Date.now()}-${file.name}`
+    );
+    await uploadBytes(pdfRef, file);
+    return await getDownloadURL(pdfRef);
+  };
+
+  /* ================= SAVE PRODUCT ================= */
+
   const saveProduct = async () => {
-    if (!form.name || !form.collection) {
-      alert("Product name & collection required");
+    if (!form.name || !form.collection || images.length === 0) {
+      toast.error("Name, collection and images are required");
       return;
     }
 
-    const specsObject = {};
-    specs.forEach((s) => {
-      if (s.key && s.value)
-        specsObject[s.key] = s.value;
-    });
+    try {
+      setLoading(true);
+      toast.loading("Saving product...", { id: "save" });
 
-    await addDoc(collection(db, "products"), {
-      ...form,
-      price: Number(form.price),
-      oldPrice: Number(form.oldPrice),
-      specs: specsObject,
-      createdAt: serverTimestamp(),
-    });
+      const imageUrls = await Promise.all(
+        images.map((img) => uploadImage(img))
+      );
 
-    navigate("/admin/products");
+      let pdfUrl = "";
+      if (pdfFile) pdfUrl = await uploadPdf(pdfFile);
+
+      const specsObject = {};
+      specs.forEach((s) => {
+        if (s.key && s.value) specsObject[s.key] = s.value;
+      });
+
+      await addDoc(collection(db, "products"), {
+        ...form,
+        price: Number(form.price),
+        oldPrice: Number(form.oldPrice),
+        specs: specsObject,
+        images: imageUrls,
+        pdfUrl,
+        createdAt: serverTimestamp(),
+      });
+
+      toast.success("Product added successfully", { id: "save" });
+      navigate("/admin/products");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Failed to save product", {
+        id: "save",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
+  /* ================= UI ================= */
+
   return (
-    <div className="max-w-4xl mx-auto bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
-      <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 p-6 space-y-8">
+    <div className="min-h-screen bg-gray-50 px-10 py-8">
+      <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow ring-1 ring-black/5 p-8 space-y-10">
+
         {/* HEADER */}
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Add Product
-          </h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Create a new product for your store
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold">
+              Add Product
+            </h1>
+            <p className="text-gray-500 mt-1">
+              Create and publish a new product
+            </p>
+          </div>
+
+          <button
+            onClick={saveProduct}
+            disabled={loading}
+            className="bg-black text-white px-8 py-3 rounded-xl"
+          >
+            {loading ? "Saving..." : "Save Product"}
+          </button>
         </div>
 
-        {/* BASIC INFO */}
-        <Section title="Basic Information">
-          <Input
-            placeholder="Product Name"
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
-          />
-          <Input
-            placeholder="SKU"
-            onChange={(e) =>
-              setForm({ ...form, sku: e.target.value })
-            }
-          />
-          <Textarea
-            placeholder="Short Description"
-            rows={3}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                description: e.target.value,
-              })
-            }
-          />
-        </Section>
+        <div className="grid grid-cols-12 gap-8">
+          {/* LEFT */}
+          <div className="col-span-8 space-y-8">
+            <Card title="Basic Information">
+              <Input
+                placeholder="Product Name"
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
+              />
+              <Input
+                placeholder="SKU"
+                onChange={(e) =>
+                  setForm({ ...form, sku: e.target.value })
+                }
+              />
+              <Textarea
+                rows={4}
+                placeholder="Description"
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    description: e.target.value,
+                  })
+                }
+              />
+            </Card>
 
-        {/* COLLECTION & PRICE */}
-        <Section title="Pricing & Collection">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Select
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  collection: e.target.value,
-                })
-              }
-            >
-              <option value="">Select Collection</option>
-              {collections.map((c) => (
-                <option key={c.slug} value={c.slug}>
-                  {c.name}
-                </option>
+            <Card title="Images (Drag to reorder)">
+              <GalleryUpload
+                images={images}
+                setImages={setImages}
+                dragIndex={dragIndex}
+              />
+            </Card>
+
+            <Card title="Specifications">
+              {specs.map((s, i) => (
+                <div key={i} className="flex gap-2">
+                  <Input
+                    value={s.key}
+                    placeholder="Key"
+                    onChange={(e) =>
+                      updateSpec(i, "key", e.target.value)
+                    }
+                  />
+                  <Input
+                    value={s.value}
+                    placeholder="Value"
+                    onChange={(e) =>
+                      updateSpec(i, "value", e.target.value)
+                    }
+                  />
+                  <button
+                    onClick={() => removeSpec(i)}
+                    className="text-red-600"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
               ))}
-            </Select>
+              <button
+                onClick={addSpec}
+                className="text-blue-600 text-sm flex items-center gap-1"
+              >
+                <Plus size={14} /> Add Specification
+              </button>
+            </Card>
+          </div>
 
-            <div className="flex gap-3">
+          {/* RIGHT */}
+          <div className="col-span-4 space-y-8">
+            <Card title="Pricing">
               <Input
                 type="number"
                 placeholder="Price"
@@ -166,146 +275,166 @@ export default function AddProduct() {
                   })
                 }
               />
-            </div>
-          </div>
-        </Section>
+            </Card>
 
-        {/* USAGE */}
-        <Section title="Usage Information">
-          <Select
-            onChange={(e) =>
-              setForm({
-                ...form,
-                usageType: e.target.value,
-              })
-            }
-          >
-            <option value="">Usage Type</option>
-            {USAGE_OPTIONS.map((o) => (
-              <option key={o}>{o}</option>
-            ))}
-          </Select>
-
-          <Textarea
-            placeholder="Usage Guidelines"
-            onChange={(e) =>
-              setForm({
-                ...form,
-                usageGuidelines: e.target.value,
-              })
-            }
-          />
-        </Section>
-
-        {/* ADDITIONAL */}
-        <Section title="Additional Information">
-          <Select
-            onChange={(e) =>
-              setForm({
-                ...form,
-                additionalType: e.target.value,
-              })
-            }
-          >
-            <option value="">
-              Additional Info Type
-            </option>
-            {ADDITIONAL_OPTIONS.map((o) => (
-              <option key={o}>{o}</option>
-            ))}
-          </Select>
-
-          <Textarea
-            placeholder="Additional Information"
-            onChange={(e) =>
-              setForm({
-                ...form,
-                additionalInfo: e.target.value,
-              })
-            }
-          />
-        </Section>
-
-        {/* VISIBILITY */}
-        <label className="flex items-center gap-3 text-sm">
-          <input
-            type="checkbox"
-            checked={form.isActive}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                isActive: e.target.checked,
-              })
-            }
-            className="accent-black"
-          />
-          Show product on website
-        </label>
-
-        {/* SPECS */}
-        <Section title="Specifications">
-          {specs.map((s, i) => (
-            <div
-              key={i}
-              className="flex gap-2 items-center mb-2"
-            >
-              <Input
-                placeholder="Key"
-                value={s.key}
+            <Card title="Collection">
+              <Select
                 onChange={(e) =>
-                  updateSpec(i, "key", e.target.value)
+                  setForm({
+                    ...form,
+                    collection: e.target.value,
+                  })
                 }
-              />
-              <Input
-                placeholder="Value"
-                value={s.value}
-                onChange={(e) =>
-                  updateSpec(i, "value", e.target.value)
-                }
-              />
-
-              <button
-                onClick={() => removeSpec(i)}
-                className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition"
               >
-                <X size={16} />
-              </button>
-            </div>
-          ))}
+                <option value="">Select Collection</option>
+                {collections.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.name}
+                  </option>
+                ))}
+              </Select>
+            </Card>
 
-          <button
-            onClick={addSpec}
-            className="flex items-center gap-2 text-sm text-blue-600 hover:underline"
-          >
-            <Plus size={14} />
-            Add Specification
-          </button>
-        </Section>
-
-        {/* SAVE */}
-        <div className="pt-4">
-          <button
-            onClick={saveProduct}
-            className="bg-black text-white px-6 py-2.5 rounded-xl shadow-sm hover:opacity-90 transition"
-          >
-            Save Product
-          </button>
+            <Card title="Product PDF">
+              <PdfUpload
+                pdfFile={pdfFile}
+                setPdfFile={setPdfFile}
+              />
+            </Card>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/* ---------------- UI HELPERS ---------------- */
+/* ================= PDF UPLOAD ================= */
 
-function Section({ title, children }) {
+function PdfUpload({ pdfFile, setPdfFile }) {
   return (
-    <section className="space-y-4">
-      <h3 className="font-semibold text-sm text-gray-700">
-        {title}
-      </h3>
+    <div className="space-y-3">
+      {!pdfFile ? (
+        <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
+          <FileText className="text-gray-400 mb-2" />
+          <p className="text-sm text-gray-500">
+            Select a PDF file
+          </p>
+          <input
+            type="file"
+            hidden
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+
+              if (file.type !== "application/pdf") {
+                toast.error("Only PDF files are allowed");
+                e.target.value = "";
+                return;
+              }
+
+              setPdfFile(file);
+              e.target.value = "";
+            }}
+          />
+        </label>
+      ) : (
+        <div className="flex items-center justify-between border rounded-xl px-4 py-3">
+          <span className="text-sm truncate">
+            {pdfFile.name}
+          </span>
+          <button
+            onClick={() => setPdfFile(null)}
+            className="text-red-600"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================= DRAGGABLE GALLERY ================= */
+
+function GalleryUpload({ images, setImages, dragIndex }) {
+  const onDrop = (index) => {
+    const dragged = images[dragIndex.current];
+    const updated = [...images];
+    updated.splice(dragIndex.current, 1);
+    updated.splice(index, 0, dragged);
+    setImages(updated);
+  };
+
+  return (
+    <div className="space-y-4">
+      <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
+        <ImagePlus className="text-gray-400" />
+        <p className="text-sm text-gray-500">
+          Upload images (drag to reorder)
+        </p>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          hidden
+          onChange={(e) => {
+            setImages([...images, ...e.target.files]);
+            e.target.value = "";
+          }}
+        />
+      </label>
+
+      <div className="grid grid-cols-4 gap-4">
+        {images.map((img, i) => (
+          <div
+            key={i}
+            draggable
+            onDragStart={() => (dragIndex.current = i)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => onDrop(i)}
+            className="relative group cursor-move"
+          >
+            <img
+              src={URL.createObjectURL(img)}
+              className={`h-28 w-full object-cover rounded-xl ${
+                i === 0 ? "ring-2 ring-black" : ""
+              }`}
+            />
+
+            {i === 0 && (
+              <span className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-0.5 rounded">
+                Main
+              </span>
+            )}
+
+            <button
+              onClick={() =>
+                setImages(images.filter((_, idx) => idx !== i))
+              }
+              className="absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+            >
+              <X size={14} />
+            </button>
+
+            <GripVertical
+              size={16}
+              className="absolute bottom-2 right-2 text-white opacity-80"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ================= UI HELPERS ================= */
+
+function Card({ title, children }) {
+  return (
+    <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
+      <h3 className="font-medium">{title}</h3>
       {children}
-    </section>
+    </div>
   );
 }
 
@@ -313,7 +442,7 @@ function Input(props) {
   return (
     <input
       {...props}
-      className="w-full rounded-xl bg-white ring-1 ring-black/10 px-3 py-2 focus:ring-2 focus:ring-black/30 outline-none transition"
+      className="w-full border rounded-lg px-3 py-2"
     />
   );
 }
@@ -322,7 +451,7 @@ function Textarea(props) {
   return (
     <textarea
       {...props}
-      className="w-full rounded-xl bg-white ring-1 ring-black/10 px-3 py-2 focus:ring-2 focus:ring-black/30 outline-none transition"
+      className="w-full border rounded-lg px-3 py-2"
     />
   );
 }
@@ -331,7 +460,7 @@ function Select(props) {
   return (
     <select
       {...props}
-      className="w-full rounded-xl bg-white ring-1 ring-black/10 px-3 py-2 focus:ring-2 focus:ring-black/30 outline-none transition"
+      className="w-full border rounded-lg px-3 py-2"
     />
   );
 }

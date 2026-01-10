@@ -12,6 +12,10 @@ import {
   Share2,
   ChevronDown,
   CheckCircle,
+  Download,
+  ChevronLeft,
+  ChevronRight,
+  FileText,
 } from "lucide-react";
 
 export default function ProductPage() {
@@ -20,26 +24,16 @@ export default function ProductPage() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [activeImage, setActiveImage] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0);
   const [openSection, setOpenSection] = useState("usage");
   const [showEnquiry, setShowEnquiry] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const ref = doc(db, "products", id);
-      const snap = await getDoc(ref);
-
-      if (!snap.exists()) {
-        setLoading(false);
-        return;
-      }
-
-      const data = snap.data();
-      setProduct(data);
-      setActiveImage(data?.images?.primary || "");
+      const snap = await getDoc(doc(db, "products", id));
+      if (snap.exists()) setProduct(snap.data());
       setLoading(false);
     };
-
     fetchProduct();
   }, [id]);
 
@@ -59,137 +53,140 @@ export default function ProductPage() {
     );
   }
 
-  const images = product.images
-    ? [
-        { label: "PRIMARY", src: product.images.primary },
-        { label: "SCHEMATIC", src: product.images.schematic },
-        { label: "PROFILE", src: product.images.profile },
-      ].filter((i) => i.src)
-    : [];
+  const images = product.images || [];
+
+  const nextImage = () =>
+    setActiveIndex((i) => (i + 1) % images.length);
+
+  const prevImage = () =>
+    setActiveIndex((i) => (i - 1 + images.length) % images.length);
 
   return (
     <>
       <BannerHero />
 
-      <div className="bg-linear-to-b from-white to-gray-50">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="bg-linear-to-b from-white to-gray-50"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+
           {/* BREADCRUMB */}
-          <p className="text-sm text-gray-400 mb-10 tracking-wide">
+          <p className="text-sm text-gray-400 mb-10">
             {product.collection}
             <span className="text-black font-medium">
               {" "}› {product.name}
             </span>
           </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* LEFT – IMAGES */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
+
+            {/* ================= IMAGE VIEWER ================= */}
             <div className="space-y-6">
-              <div className="
-                relative
-                bg-white/80 backdrop-blur
-                rounded-3xl p-8
-                border border-black/5
-                shadow-sm
-              ">
+
+              <div className="relative bg-white rounded-3xl border shadow-sm overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.img
-                    key={activeImage}
-                    src={activeImage}
-                    alt={product.name}
+                    key={activeIndex}
+                    src={images[activeIndex]}
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.25 }}
-                    className="w-full max-h-105 object-contain"
+                    className="w-full h-[520px] object-contain"
                   />
                 </AnimatePresence>
+
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow cursor-pointer"
+                    >
+                      <ChevronLeft />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow cursor-pointer"
+                    >
+                      <ChevronRight />
+                    </button>
+                  </>
+                )}
               </div>
 
-              {/* THUMBNAILS */}
-              {images.length > 0 && (
-                <div className="grid grid-cols-3 gap-4">
-                  {images.map((img) => (
-                    <button
-                      key={img.label}
-                      onClick={() => setActiveImage(img.src)}
-                      className={`
-                        bg-white/70 backdrop-blur
-                        rounded-2xl p-3
-                        border border-black/5
-                        transition
-                        hover:shadow-md
-                        ${activeImage === img.src ? "ring-1 ring-black/10" : ""}
-                      `}
-                    >
-                      <img
-                        src={img.src}
-                        alt={img.label}
-                        className="h-24 mx-auto object-contain"
-                      />
-                      <p className="text-xs mt-2 text-center text-gray-500">
-                        {img.label}
-                      </p>
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div className="flex gap-3 overflow-x-auto">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveIndex(i)}
+                    className={`rounded-xl p-2 border cursor-pointer ${
+                      activeIndex === i
+                        ? "ring-1 ring-black"
+                        : "border-black/10"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      className="h-20 w-20 object-contain"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* RIGHT – INFO */}
+            {/* ================= PRODUCT INFO ================= */}
             <div className="space-y-8">
+
               {/* SKU + SHARE */}
               <div className="flex justify-between items-center">
-                <span className="
-                  text-xs px-3 py-1 rounded-full
-                  bg-white/80 backdrop-blur
-                  border border-black/5
-                  text-gray-500
-                ">
+                <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-500">
                   SKU: {product.sku || "-"}
                 </span>
-
-                <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-black">
+                <button className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
                   <Share2 size={16} /> Share
                 </button>
               </div>
 
               {/* TITLE */}
-              <h1 className="text-3xl font-semibold leading-snug">
+              <h1 className="text-3xl font-semibold">
                 {product.name}
               </h1>
 
-              {/* PRICE */}
-              <div className="flex items-center gap-4">
-                <span className="text-3xl font-semibold text-black">
+              {/* PRICE + STOCK (FINAL FIX) */}
+              <div className="flex items-center gap-4 flex-wrap">
+                <span className="text-3xl font-semibold">
                   ₹{product.price}
                 </span>
+
                 {product.oldPrice && (
                   <span className="line-through text-gray-400">
                     ₹{product.oldPrice}
                   </span>
                 )}
-              </div>
 
-              {/* STOCK */}
-              <div className="
-                flex items-center gap-4
-                px-5 py-4
-                rounded-2xl
-                bg-white/80 backdrop-blur
-                border border-black/5
-                shadow-sm
-              ">
-                <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-green-50">
-                  <CheckCircle size={20} className="text-green-600" />
-                </div>
-                <div>
-                  <p className="font-medium">
-                    {product.inStock ? "In Stock" : "Out of Stock"}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {product.inStock ? "Ships Today" : "Unavailable"}
-                  </p>
-                </div>
+                {product.inStock && (
+                  <div className="
+                    flex items-center gap-3
+                    bg-green-50 border border-green-200
+                    rounded-xl px-4 py-2
+                  ">
+                    <CheckCircle
+                      size={18}
+                      className="text-green-600"
+                    />
+                    <div className="leading-tight">
+                      <p className="text-sm font-medium text-green-700">
+                        In Stock
+                      </p>
+                      <p className="text-xs text-green-600">
+                        Ships Today
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* DESCRIPTION */}
@@ -197,109 +194,156 @@ export default function ProductPage() {
                 {product.description}
               </p>
 
+              {/* PDF CARD */}
+              {product.pdfUrl && (
+                <a
+                  href={product.pdfUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between bg-white border rounded-xl px-5 py-4 hover:shadow transition cursor-pointer"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="bg-red-50 p-2 rounded-lg">
+                      <FileText className="text-red-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium">
+                        Technical_Spec_Sheet.pdf
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Datasheet · PDF
+                      </p>
+                    </div>
+                  </div>
+                  <Download className="text-gray-500" />
+                </a>
+              )}
+
               {/* CTA */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex gap-4">
                 <button
                   onClick={() => setShowEnquiry(true)}
-                  className="
-                    flex-1 bg-black text-white
-                    py-3 rounded-full
-                    transition hover:bg-black/90
-                  "
+                  className="flex-1 bg-black text-white py-3 rounded-full cursor-pointer"
                 >
                   Enquire Now
                 </button>
-
-                <button className="
-                  flex-1 flex items-center justify-center gap-2
-                  py-3 rounded-full
-                  bg-white/80 backdrop-blur
-                  border border-black/5
-                  hover:shadow-md
-                ">
+                <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border cursor-pointer">
                   <Phone size={18} /> Call
                 </button>
               </div>
 
-              {/* SPECIFICATIONS */}
+              {/* SPECIFICATIONS (FINAL LOOK) */}
               {product.specs && (
-                <div className="
-                  bg-white/80 backdrop-blur
-                  rounded-3xl
-                  border border-black/5
-                  overflow-hidden
-                ">
-                  <h3 className="px-6 py-4 font-medium">
-                    Specifications
-                  </h3>
+  <motion.div
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4 }}
+    className="
+      bg-white
+      rounded-3xl
+      border border-black/5
+      overflow-hidden
+    "
+  >
+    {/* Header */}
+    <div className="px-6 py-5 border-b border-black/5">
+      <h3 className="text-base font-semibold text-gray-900">
+        Specifications
+      </h3>
+      <p className="text-xs text-gray-500 mt-1">
+        Technical details & key parameters
+      </p>
+    </div>
 
-                  <table className="w-full text-sm">
-                    <tbody>
-                      {Object.entries(product.specs).map(([key, val]) => (
-                        <tr
-                          key={key}
-                          className="border-t border-black/5"
-                        >
-                          <td className="px-6 py-3 text-gray-500">
-                            {key}
-                          </td>
-                          <td className="px-6 py-3 font-medium">
-                            {val}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+    {/* Rows */}
+    <div className="divide-y divide-black/5">
+      {Object.entries(product.specs).map(([key, value]) => (
+        <div
+          key={key}
+          className="
+            px-6 py-4
+            flex items-center justify-between
+            transition
+            hover:bg-gray-50
+          "
+        >
+          {/* Label */}
+          <span className="
+            text-sm
+            text-gray-500
+            max-w-[55%]
+          ">
+            {key}
+          </span>
 
-              {/* ACCORDIONS */}
-              {[{
-                id: "usage",
-                title: "Usage Guidelines",
-                content: product.usageGuidelines,
-              },
-              {
-                id: "info",
-                title: "Additional Information",
-                content: product.additionalInfo,
-              }]
-                .filter(i => i.content)
-                .map(item => (
+          {/* Value */}
+          <span className="
+            text-sm
+            font-medium
+            text-gray-900
+            text-right
+          ">
+            {value}
+          </span>
+        </div>
+      ))}
+    </div>
+  </motion.div>
+)}
+
+              {/* DROPDOWNS */}
+              {[
+                {
+                  id: "usage",
+                  title: "Usage Guidelines",
+                  content: product.usageGuidelines,
+                },
+                {
+                  id: "info",
+                  title: "Additional Information",
+                  content: product.additionalInfo,
+                },
+              ]
+                .filter((i) => i.content)
+                .map((item) => (
                   <div
                     key={item.id}
-                    className="
-                      bg-white/70 backdrop-blur
-                      rounded-3xl
-                      border border-black/5
-                    "
+                    className="bg-white rounded-3xl border overflow-hidden"
                   >
                     <button
                       onClick={() =>
                         setOpenSection(
-                          openSection === item.id ? "" : item.id
+                          openSection === item.id
+                            ? ""
+                            : item.id
                         )
                       }
-                      className="w-full flex justify-between px-6 py-4"
+                      className="w-full flex justify-between px-6 py-5 font-medium cursor-pointer"
                     >
                       {item.title}
                       <ChevronDown
                         className={`transition ${
-                          openSection === item.id ? "rotate-180" : ""
+                          openSection === item.id
+                            ? "rotate-180"
+                            : ""
                         }`}
                       />
                     </button>
 
                     <AnimatePresence>
                       {openSection === item.id && (
-                        <motion.p
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="px-6 pb-4 text-sm text-gray-600"
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{
+                            height: "auto",
+                            opacity: 1,
+                          }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="px-6 pb-5 text-sm text-gray-600"
                         >
                           {item.content}
-                        </motion.p>
+                        </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -307,14 +351,14 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <EnquiryModal
-  open={showEnquiry}
-  onClose={() => setShowEnquiry(false)}
-  productId={id}
-  productName={product.name}
-/>
+        open={showEnquiry}
+        onClose={() => setShowEnquiry(false)}
+        productId={id}
+        productName={product.name}
+      />
     </>
   );
 }
