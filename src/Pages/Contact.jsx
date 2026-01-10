@@ -135,47 +135,59 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ================= FAQ ================= */}
-      <section className="bg-white py-24 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Frequently Asked Questions
-          </h2>
+     {/* ================= MODERN FAQ (FULL WIDTH) ================= */}
+<section className="bg-white py-28 border-t border-neutral-200">
+  <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-16">
 
-          {FAQS.map((f, i) => (
-            <motion.div
-              key={i}
-              layout
-              className="border border-neutral-200 rounded-2xl mb-4 overflow-hidden"
-            >
-              <button
-                onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="w-full flex justify-between items-center p-5 font-medium"
+    {/* LEFT CONTENT */}
+    <div className="lg:col-span-1">
+      <h2 className="text-4xl font-semibold tracking-tight">
+        Frequently Asked Questions
+      </h2>
+      <p className="text-gray-500 mt-4 leading-relaxed">
+        Everything you need to know about contacting us and how we work.
+        Can’t find an answer? Just send us a message.
+      </p>
+    </div>
+
+    {/* RIGHT FAQ LIST */}
+    <div className="lg:col-span-2 divide-y divide-neutral-200">
+      {FAQS.map((f, i) => (
+        <div key={i} className="py-6">
+          <button
+            onClick={() => setOpenFaq(openFaq === i ? null : i)}
+            className="w-full flex justify-between items-center text-left"
+          >
+            <span className="text-lg font-medium text-neutral-900">
+              {f.q}
+            </span>
+
+            <ChevronDown
+              className={`transition-transform duration-300 ${
+                openFaq === i ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          <AnimatePresence initial={false}>
+            {openFaq === i && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="mt-4 text-gray-600 leading-relaxed max-w-2xl"
               >
-                {f.q}
-                <ChevronDown
-                  className={`transition-transform ${openFaq === i ? "rotate-180" : ""
-                    }`}
-                />
-              </button>
-
-              <AnimatePresence initial={false}>
-                {openFaq === i && (
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="px-5 pb-5 text-neutral-600"
-                  >
-                    {f.a}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                {f.a}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* ================= MAP (NO ANIMATION) ================= */}
       <section className="w-full h-[450px] border-t border-neutral-200">
