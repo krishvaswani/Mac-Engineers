@@ -148,7 +148,7 @@ export default function ProductPage() {
             {/* PRODUCT INFO */}
             <div className="space-y-8">
 
-              {/* SKU + SHARE */}
+              {/* SKU + SHARE
               <div className="flex justify-between items-center">
                 <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-500">
                   SKU: {product.sku || "-"}
@@ -156,7 +156,7 @@ export default function ProductPage() {
                 <button className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
                   <Share2 size={16} /> Share
                 </button>
-              </div>
+              </div> */}
 
               {/* TITLE */}
               <h1 className="text-3xl font-semibold text-gray-900">
