@@ -119,7 +119,7 @@ export default function Header() {
 
               {/* CONTACT BUTTON */}
               <Link
-                to="/about"
+                to="/contact"
                 className="group bg-white text-black px-6 py-3 rounded-full flex items-center gap-3 font-medium"
               >
                 CONTACT US

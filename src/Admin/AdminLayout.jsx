@@ -59,6 +59,9 @@ export default function AdminLayout() {
           <Link to="/admin/enquiries" className="block hover:text-gray-300">
             Enquiries
           </Link>
+          <Link to="/admin/contact-data" className="block hover:text-gray-300">
+            Contact Us Data
+          </Link>
         </nav>
 
         {/* LOGOUT */}
