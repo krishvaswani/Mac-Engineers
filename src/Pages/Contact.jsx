@@ -125,16 +125,17 @@ export default function Contact() {
 
         </div>
 
-        <section className="py-20 px-12">
+        <section className="mt-20 px-12">
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <InfoCard icon={<Mail />} title="Primary Email" value="admin@xtract.com" />
           <InfoCard
             icon={<MapPin />}
             title="Location"
-            value="Mumbai, Maharashtra, India"
+            value="
+2nd Floor, Plot No. 62a, Om Vihar,Phase- IV, Uttam Nagar, New Delhi - 110059."
           />
-          <InfoCard icon={<Phone />} title="Sales Phone" value="+1 (969) 819-8061" />
+          <InfoCard icon={<Phone />} title="Sales Phone" value="+91 7942558515" />
           <InfoCard icon={<Phone />} title="Support Phone" value="+1 (888) 234-1122" />
         </div>
       </section>
@@ -204,7 +205,7 @@ export default function Contact() {
           title="Google Map"
           className="w-full h-full rounded-3xl"
           loading="lazy"
-          src="https://www.google.com/maps?q=india&output=embed"
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3502.0704700747565!2d77.0492450755006!3d28.627649975667516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDM3JzM5LjUiTiA3N8KwMDMnMDYuNiJF!5e0!3m2!1sen!2sin!4v1768196000087!5m2!1sen!2sin"
         />
       </section>
     </>
@@ -215,7 +216,7 @@ export default function Contact() {
 
 function InfoCard({ icon, title, value }) {
   return (
-    <div className="flex items-center gap-4 border border-neutral-200 rounded-2xl p-4 bg-white shadow-sm cursor-pointer">
+    <div className="flex items-center gap-4 border border-neutral-200 rounded-2xl p-8 bg-white shadow-sm cursor-pointer">
       <div className="bg-yellow-100 text-yellow-600 p-3 rounded-xl">
         {icon}
       </div>
@@ -246,6 +247,18 @@ function Input({ label, name, value, onChange }) {
 
 const FAQS = [
   {
+    q: "How soon will you contact me?",
+    a: "Our team usually responds within 24 business hours.",
+  },
+  {
+    q: "Do you provide customized solutions?",
+    a: "Yes, all our solutions are tailored based on your requirements.",
+  },
+  {
+    q: "Is my information secure?",
+    a: "Absolutely. Your data is encrypted and never shared.",
+  },
+    {
     q: "How soon will you contact me?",
     a: "Our team usually responds within 24 business hours.",
   },
