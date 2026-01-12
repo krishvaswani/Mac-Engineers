@@ -61,16 +61,19 @@ export default function Header() {
           <div className="flex items-center justify-between px-10">
 
             {/* LOGO */}
-            <Link to="/" className="flex items-center gap-2 text-white font-semibold text-lg">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-white font-semibold text-lg uppercase"
+            >
               <img src={logo} alt="Mac Engineers" className="h-8" />
-              Mac-Engineers
+              MAC-ENGINEERS
             </Link>
 
             {/* DESKTOP NAV */}
-            <nav className="hidden md:flex items-center gap-10 text-white text-sm relative">
-              <NavLink label="Home" to="/" active={isActive("/")} />
-               <NavLink label="About Us" to="/about" active={isActive("/about")} />
-              <NavLink label="Products" to="/product" active={isActive("/product")} />
+            <nav className="hidden md:flex items-center gap-10 text-white text-sm relative uppercase tracking-wide">
+              <NavLink label="HOME" to="/" active={isActive("/")} />
+              <NavLink label="ABOUT US" to="/about" active={isActive("/about")} />
+              <NavLink label="PRODUCTS" to="/product" active={isActive("/product")} />
 
               {/* COLLECTIONS */}
               <div
@@ -78,8 +81,25 @@ export default function Header() {
                 onMouseEnter={() => setShowDropdown(true)}
                 onMouseLeave={() => setShowDropdown(false)}
               >
-                <button className="opacity-80 hover:opacity-100 transition">
-                  Collections
+                <button className="flex items-center gap-2 opacity-80 hover:opacity-100 transition">
+                  COLLECTIONS
+                  <motion.span
+                    animate={{ rotate: showDropdown ? 180 : 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </motion.span>
                 </button>
 
                 <AnimatePresence>
@@ -88,18 +108,27 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full mt-4 left-0 bg-black/90 backdrop-blur-lg rounded-2xl shadow-xl min-w-56 p-3"
+                      className="
+                        absolute top-full mt-4 left-0
+                        bg-white rounded-2xl
+                        shadow-[0_20px_50px_rgba(0,0,0,0.25)]
+                        min-w-60 p-3
+                      "
                     >
                       {collections.length === 0 ? (
-                        <p className="text-gray-400 text-sm px-3 py-2">
-                          No collections
+                        <p className="text-gray-500 text-sm px-3 py-2 uppercase">
+                          NO COLLECTIONS
                         </p>
                       ) : (
                         collections.map((c) => (
                           <Link
                             key={c.id}
                             to={`/collections/${c.slug}`}
-                            className="block px-4 py-2 rounded-xl text-sm text-white/80 hover:bg-white/10 hover:text-white transition"
+                            className="
+                              block px-4 py-2 rounded-xl
+                              text-sm text-black uppercase
+                              hover:bg-black/5 transition
+                            "
                           >
                             {c.name}
                           </Link>
@@ -110,12 +139,12 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              <NavLink label="Projects" to="/projects" active={isActive("/projects")} />
+              <NavLink label="PROJECTS" to="/projects" active={isActive("/projects")} />
 
               {/* CONTACT BUTTON */}
               <Link
                 to="/contact"
-                className="group bg-white text-black px-6 py-3 rounded-full flex items-center gap-3 font-medium"
+                className="group bg-white text-black px-6 py-3 rounded-full flex items-center gap-3 font-medium uppercase"
               >
                 CONTACT US
                 <span className="bg-yellow-500 rounded-full p-2 flex items-center justify-center">
@@ -151,26 +180,26 @@ export default function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[999] bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
           >
             <motion.div
               initial={{ y: -40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -40, opacity: 0 }}
-              className="absolute top-5 left-5 right-5 bg-black rounded-3xl p-6 text-white"
+              className="absolute top-5 left-5 right-5 bg-black rounded-3xl p-6 text-white uppercase"
             >
               <div className="flex items-center justify-between mb-6">
                 <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold">
                   <img src={logo} className="h-7" />
-                  Mac-Engineers
+                  MAC-ENGINEERS
                 </Link>
                 <button onClick={() => setOpen(false)} className="text-2xl">✕</button>
               </div>
 
               <ul className="space-y-4 text-base">
-                <li><Link to="/" onClick={() => setOpen(false)}>Home</Link></li>
-                <li><Link to="/product" onClick={() => setOpen(false)}>Products</Link></li>
-                <li><Link to="/about" onClick={() => setOpen(false)}>About Us</Link></li>
+                <li><Link to="/" onClick={() => setOpen(false)}>HOME</Link></li>
+                <li><Link to="/product" onClick={() => setOpen(false)}>PRODUCTS</Link></li>
+                <li><Link to="/about" onClick={() => setOpen(false)}>ABOUT US</Link></li>
               </ul>
             </motion.div>
           </motion.div>

@@ -46,7 +46,7 @@ export default function AboutSection() {
               About <span className="text-[#f6bd19]">Mac Engineers</span>
             </h2>
 
-            <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+            <p className="text-slate-600 leading-relaxed text-justify text-sm md:text-base">
               Mac Engineers is a leading manufacturer of industrial air
               distribution and air treatment systems, established in 2018
               in Hastsal, Delhi. We specialize in the design and manufacturing
@@ -57,7 +57,7 @@ export default function AboutSection() {
               Our product portfolio also includes cabinet and circular type
               inline duct fans, along with a complete range of air
               distribution components such as diffusers, grilles, dampers,
-              louvers, and jet nozzles — ensuring efficient airflow
+              louvers, and jet nozzles ensuring efficient airflow
               management across industrial and commercial spaces.
             </p>
 

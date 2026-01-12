@@ -1,6 +1,7 @@
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../Firebase";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -23,8 +25,10 @@ export default function AdminLogin() {
     return () => unsub();
   }, [navigate]);
 
+  /* LOGIN */
   const login = async () => {
     setError("");
+    setMessage("");
     setLoading(true);
 
     try {
@@ -35,10 +39,28 @@ export default function AdminLogin() {
     }
   };
 
+  /* FORGOT PASSWORD */
+  const forgotPassword = async () => {
+    setError("");
+    setMessage("");
+
+    if (!email) {
+      setError("Please enter your email address first");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setMessage("Password reset link sent to your email");
+    } catch {
+      setError("Failed to send reset email. Check email address.");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 px-4">
       <div className="w-full max-w-sm bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl ring-1 ring-black/5 p-8">
-        
+
         {/* HEADER */}
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-gray-900">
@@ -53,6 +75,13 @@ export default function AdminLogin() {
         {error && (
           <div className="mb-4 rounded-xl bg-red-50 text-red-600 text-sm px-4 py-2 text-center ring-1 ring-red-200">
             {error}
+          </div>
+        )}
+
+        {/* SUCCESS */}
+        {message && (
+          <div className="mb-4 rounded-xl bg-green-50 text-green-600 text-sm px-4 py-2 text-center ring-1 ring-green-200">
+            {message}
           </div>
         )}
 
@@ -77,7 +106,7 @@ export default function AdminLogin() {
         </div>
 
         {/* PASSWORD */}
-        <div className="mb-6">
+        <div className="mb-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Password
           </label>
@@ -94,6 +123,17 @@ export default function AdminLogin() {
               outline-none transition
             "
           />
+        </div>
+
+        {/* FORGOT PASSWORD */}
+        <div className="text-right mb-6">
+          <button
+            type="button"
+            onClick={forgotPassword}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Forgot password?
+          </button>
         </div>
 
         {/* BUTTON */}

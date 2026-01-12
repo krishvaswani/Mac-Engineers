@@ -131,7 +131,7 @@ export default function AdminLayout() {
         <div className="px-5 py-4 border-t border-white/10">
           <button
             onClick={logout}
-            className="flex items-center gap-2 text-red-300 hover:text-red-200 transition"
+            className="flex items-center gap-2 text-red-300 hover:text-red-200 transition cursor-pointer"
           >
             <LogOut size={16} />
             Logout
