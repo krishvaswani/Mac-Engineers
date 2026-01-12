@@ -22,6 +22,23 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
+/* ================= CONSTANTS ================= */
+
+const USAGE_OPTIONS = [
+  "Residential",
+  "Commercial",
+  "Industrial",
+  "HVAC",
+  "Oil & Gas",
+];
+
+const ADDITIONAL_OPTIONS = [
+  "Warranty Information",
+  "Installation Notes",
+  "Maintenance Details",
+  "Safety Instructions",
+];
+
 /* ================= COMPONENT ================= */
 
 export default function EditProduct() {
@@ -34,9 +51,12 @@ export default function EditProduct() {
 
   const [collections, setCollections] = useState([]);
   const [specs, setSpecs] = useState([]);
-  const [images, setImages] = useState([]); // string | File
+  const [images, setImages] = useState([]);
   const [pdfFile, setPdfFile] = useState(null);
   const [existingPdf, setExistingPdf] = useState("");
+
+  const [openUsage, setOpenUsage] = useState(true);
+  const [openAdditional, setOpenAdditional] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -47,6 +67,10 @@ export default function EditProduct() {
     collection: "",
     inStock: true,
     isActive: true,
+    usageType: "",
+    usageGuidelines: "",
+    additionalType: "",
+    additionalInfo: "",
   });
 
   /* ================= LOAD DATA ================= */
@@ -54,14 +78,13 @@ export default function EditProduct() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const productSnap = await getDoc(doc(db, "products", id));
-
-        if (!productSnap.exists()) {
+        const snap = await getDoc(doc(db, "products", id));
+        if (!snap.exists()) {
           navigate("/admin/products");
           return;
         }
 
-        const data = productSnap.data();
+        const data = snap.data();
 
         setForm({
           name: data.name || "",
@@ -72,6 +95,10 @@ export default function EditProduct() {
           collection: data.collection || "",
           inStock: data.inStock ?? true,
           isActive: data.isActive ?? true,
+          usageType: data.usageType || "",
+          usageGuidelines: data.usageGuidelines || "",
+          additionalType: data.additionalType || "",
+          additionalInfo: data.additionalInfo || "",
         });
 
         setImages(data.images || []);
@@ -86,9 +113,7 @@ export default function EditProduct() {
             : [{ key: "", value: "" }]
         );
 
-        const colSnap = await getDocs(
-          collection(db, "collections")
-        );
+        const colSnap = await getDocs(collection(db, "collections"));
         setCollections(colSnap.docs.map((d) => d.data()));
 
         setLoading(false);
@@ -133,7 +158,7 @@ export default function EditProduct() {
     return await getDownloadURL(pdfRef);
   };
 
-  /* ================= UPDATE PRODUCT ================= */
+  /* ================= UPDATE ================= */
 
   const updateProduct = async () => {
     if (!form.name || !form.collection) {
@@ -175,7 +200,7 @@ export default function EditProduct() {
       navigate("/admin/products");
     } catch (err) {
       console.error(err);
-      toast.error(err.message || "Failed to update product", {
+      toast.error(err.message || "Update failed", {
         id: "update",
       });
     } finally {
@@ -196,12 +221,11 @@ export default function EditProduct() {
   return (
     <div className="min-h-screen bg-gray-50 px-8 py-8">
       <div className="max-w-7xl mx-auto space-y-8">
+
         {/* HEADER */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex items-center justify-between">
+        <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Edit Product
-            </h1>
+            <h1 className="text-2xl font-semibold">Edit Product</h1>
             <p className="text-gray-500 mt-1">
               Update product details
             </p>
@@ -210,13 +234,7 @@ export default function EditProduct() {
           <button
             onClick={updateProduct}
             disabled={saving}
-            className="
-              cursor-pointer
-              bg-linear-to-r from-blue-600 to-blue-700
-              text-white px-8 py-3 rounded-xl
-              shadow-md hover:shadow-lg
-              transition disabled:opacity-60
-            "
+            className="cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl shadow-md hover:shadow-lg transition"
           >
             {saving ? "Updating..." : "Update Product"}
           </button>
@@ -225,6 +243,7 @@ export default function EditProduct() {
         <div className="grid grid-cols-12 gap-8">
           {/* LEFT */}
           <div className="col-span-8 space-y-8">
+
             <Card title="Basic Information">
               <Input
                 value={form.name}
@@ -241,8 +260,8 @@ export default function EditProduct() {
                 }
               />
               <Textarea
-                value={form.description}
                 rows={4}
+                value={form.description}
                 placeholder="Description"
                 onChange={(e) =>
                   setForm({
@@ -292,6 +311,102 @@ export default function EditProduct() {
               >
                 <Plus size={14} /> Add Specification
               </button>
+            </Card>
+
+            {/* USAGE GUIDELINES */}
+            <Card>
+              <button
+                onClick={() => setOpenUsage(!openUsage)}
+                className="cursor-pointer w-full flex justify-between font-medium"
+              >
+                Usage Guidelines
+                <span>{openUsage ? "▲" : "▼"}</span>
+              </button>
+
+              {openUsage && (
+                <div className="pt-4 space-y-4">
+                  <Select
+                    value={form.usageType}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        usageType: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">
+                      Select Usage Type
+                    </option>
+                    {USAGE_OPTIONS.map((u) => (
+                      <option key={u} value={u}>
+                        {u}
+                      </option>
+                    ))}
+                  </Select>
+
+                  <Textarea
+                    rows={4}
+                    value={form.usageGuidelines}
+                    placeholder="Usage guidelines"
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        usageGuidelines: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              )}
+            </Card>
+
+            {/* ADDITIONAL INFO */}
+            <Card>
+              <button
+                onClick={() =>
+                  setOpenAdditional(!openAdditional)
+                }
+                className="cursor-pointer w-full flex justify-between font-medium"
+              >
+                Additional Information
+                <span>
+                  {openAdditional ? "▲" : "▼"}
+                </span>
+              </button>
+
+              {openAdditional && (
+                <div className="pt-4 space-y-4">
+                  <Select
+                    value={form.additionalType}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        additionalType: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">
+                      Select Information Type
+                    </option>
+                    {ADDITIONAL_OPTIONS.map((a) => (
+                      <option key={a} value={a}>
+                        {a}
+                      </option>
+                    ))}
+                  </Select>
+
+                  <Textarea
+                    rows={4}
+                    value={form.additionalInfo}
+                    placeholder="Additional information"
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        additionalInfo: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              )}
             </Card>
           </div>
 
@@ -364,12 +479,12 @@ function PdfUpload({
   return (
     <div className="space-y-3">
       {existingPdf && !pdfFile && (
-        <div className="flex items-center justify-between border rounded-xl px-4 py-3 text-sm">
+        <div className="flex justify-between border rounded-xl px-4 py-3 text-sm">
           <a
             href={existingPdf}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-600 truncate cursor-pointer"
+            className="text-blue-600 cursor-pointer truncate"
           >
             View existing PDF
           </a>
@@ -383,7 +498,7 @@ function PdfUpload({
       )}
 
       {!pdfFile && (
-        <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
+        <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center">
           <FileText className="text-gray-400 mb-2" />
           <p className="text-sm text-gray-500">
             Select a PDF file
@@ -396,18 +511,16 @@ function PdfUpload({
               if (!file) return;
               if (file.type !== "application/pdf") {
                 toast.error("Only PDF files allowed");
-                e.target.value = "";
                 return;
               }
               setPdfFile(file);
-              e.target.value = "";
             }}
           />
         </label>
       )}
 
       {pdfFile && (
-        <div className="flex items-center justify-between border rounded-xl px-4 py-3 text-sm">
+        <div className="flex justify-between border rounded-xl px-4 py-3 text-sm">
           {pdfFile.name}
           <button
             onClick={() => setPdfFile(null)}
@@ -432,7 +545,7 @@ function GalleryUpload({ images, setImages, dragIndex }) {
 
   return (
     <div className="space-y-4">
-      <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
+      <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center">
         <ImagePlus className="text-gray-400" />
         <p className="text-sm text-gray-500">
           Upload images
@@ -442,10 +555,9 @@ function GalleryUpload({ images, setImages, dragIndex }) {
           multiple
           accept="image/*"
           hidden
-          onChange={(e) => {
-            setImages([...images, ...e.target.files]);
-            e.target.value = "";
-          }}
+          onChange={(e) =>
+            setImages([...images, ...e.target.files])
+          }
         />
       </label>
 
@@ -465,22 +577,16 @@ function GalleryUpload({ images, setImages, dragIndex }) {
                   ? img
                   : URL.createObjectURL(img)
               }
-              className={`h-28 w-full object-cover rounded-xl ${
-                i === 0 ? "ring-2 ring-blue-600" : ""
-              }`}
+              className="h-28 w-full object-cover rounded-xl"
             />
-
-            {i === 0 && (
-              <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">
-                Main
-              </span>
-            )}
 
             <button
               onClick={() =>
-                setImages(images.filter((_, idx) => idx !== i))
+                setImages(
+                  images.filter((_, idx) => idx !== i)
+                )
               }
-              className="cursor-pointer absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+              className="cursor-pointer absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100"
             >
               <X size={14} />
             </button>
@@ -501,9 +607,11 @@ function GalleryUpload({ images, setImages, dragIndex }) {
 function Card({ title, children }) {
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 space-y-4">
-      <h3 className="font-medium text-gray-900">
-        {title}
-      </h3>
+      {title && (
+        <h3 className="font-medium text-gray-900">
+          {title}
+        </h3>
+      )}
       {children}
     </div>
   );

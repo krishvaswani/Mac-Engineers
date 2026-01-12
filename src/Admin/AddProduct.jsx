@@ -181,7 +181,7 @@ export default function AddProduct() {
             disabled={loading}
             className="
               cursor-pointer
-              bg-gradient-to-r from-blue-600 to-blue-700
+              bg-linear-to-r from-blue-600 to-blue-700
               text-white px-8 py-3 rounded-xl
               shadow-md hover:shadow-lg
               transition disabled:opacity-60
