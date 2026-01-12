@@ -159,13 +159,12 @@ export default function AddProduct() {
   /* ================= UI ================= */
 
   return (
-    <div className="min-h-screen bg-gray-50 px-10 py-8">
-      <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow ring-1 ring-black/5 p-8 space-y-10">
-
+    <div className="min-h-screen bg-gray-50 px-8 py-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* HEADER */}
-        <div className="flex items-center justify-between">
+        <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-semibold">
+            <h1 className="text-2xl font-semibold text-gray-900">
               Add Product
             </h1>
             <p className="text-gray-500 mt-1">
@@ -176,7 +175,13 @@ export default function AddProduct() {
           <button
             onClick={saveProduct}
             disabled={loading}
-            className="bg-black text-white px-8 py-3 rounded-xl"
+            className="
+              cursor-pointer
+              bg-gradient-to-r from-blue-600 to-blue-700
+              text-white px-8 py-3 rounded-xl
+              shadow-md hover:shadow-lg
+              transition disabled:opacity-60
+            "
           >
             {loading ? "Saving..." : "Save Product"}
           </button>
@@ -220,7 +225,7 @@ export default function AddProduct() {
 
             <Card title="Specifications">
               {specs.map((s, i) => (
-                <div key={i} className="flex gap-2">
+                <div key={i} className="flex gap-3">
                   <Input
                     value={s.key}
                     placeholder="Key"
@@ -237,7 +242,7 @@ export default function AddProduct() {
                   />
                   <button
                     onClick={() => removeSpec(i)}
-                    className="text-red-600"
+                    className="cursor-pointer text-red-600"
                   >
                     <X size={16} />
                   </button>
@@ -245,7 +250,7 @@ export default function AddProduct() {
               ))}
               <button
                 onClick={addSpec}
-                className="text-blue-600 text-sm flex items-center gap-1"
+                className="cursor-pointer text-blue-600 text-sm flex items-center gap-1"
               >
                 <Plus size={14} /> Add Specification
               </button>
@@ -259,10 +264,7 @@ export default function AddProduct() {
                 type="number"
                 placeholder="Price"
                 onChange={(e) =>
-                  setForm({
-                    ...form,
-                    price: e.target.value,
-                  })
+                  setForm({ ...form, price: e.target.value })
                 }
               />
               <Input
@@ -314,7 +316,7 @@ function PdfUpload({ pdfFile, setPdfFile }) {
   return (
     <div className="space-y-3">
       {!pdfFile ? (
-        <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
+        <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
           <FileText className="text-gray-400 mb-2" />
           <p className="text-sm text-gray-500">
             Select a PDF file
@@ -344,7 +346,7 @@ function PdfUpload({ pdfFile, setPdfFile }) {
           </span>
           <button
             onClick={() => setPdfFile(null)}
-            className="text-red-600"
+            className="cursor-pointer text-red-600"
           >
             <X size={16} />
           </button>
@@ -367,7 +369,7 @@ function GalleryUpload({ images, setImages, dragIndex }) {
 
   return (
     <div className="space-y-4">
-      <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
+      <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
         <ImagePlus className="text-gray-400" />
         <p className="text-sm text-gray-500">
           Upload images (drag to reorder)
@@ -397,12 +399,12 @@ function GalleryUpload({ images, setImages, dragIndex }) {
             <img
               src={URL.createObjectURL(img)}
               className={`h-28 w-full object-cover rounded-xl ${
-                i === 0 ? "ring-2 ring-black" : ""
+                i === 0 ? "ring-2 ring-blue-600" : ""
               }`}
             />
 
             {i === 0 && (
-              <span className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-0.5 rounded">
+              <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">
                 Main
               </span>
             )}
@@ -411,7 +413,7 @@ function GalleryUpload({ images, setImages, dragIndex }) {
               onClick={() =>
                 setImages(images.filter((_, idx) => idx !== i))
               }
-              className="absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+              className="cursor-pointer absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
             >
               <X size={14} />
             </button>
@@ -431,8 +433,10 @@ function GalleryUpload({ images, setImages, dragIndex }) {
 
 function Card({ title, children }) {
   return (
-    <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
-      <h3 className="font-medium">{title}</h3>
+    <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 space-y-4">
+      <h3 className="font-medium text-gray-900">
+        {title}
+      </h3>
       {children}
     </div>
   );
@@ -442,7 +446,7 @@ function Input(props) {
   return (
     <input
       {...props}
-      className="w-full border rounded-lg px-3 py-2"
+      className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500/40 outline-none"
     />
   );
 }
@@ -451,7 +455,7 @@ function Textarea(props) {
   return (
     <textarea
       {...props}
-      className="w-full border rounded-lg px-3 py-2"
+      className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500/40 outline-none"
     />
   );
 }
@@ -460,7 +464,7 @@ function Select(props) {
   return (
     <select
       {...props}
-      className="w-full border rounded-lg px-3 py-2"
+      className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500/40 outline-none"
     />
   );
 }

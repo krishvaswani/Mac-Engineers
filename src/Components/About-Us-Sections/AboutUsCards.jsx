@@ -52,7 +52,7 @@ const AboutUsCards = () => {
         whileInView="visible"
         viewport={{ once: true }}
         whileHover={{ scale: 1.02, y: -4 }}
-        className="bg-[#aaff00] text-black rounded-3xl 
+        className="bg-[#fabd15] text-black rounded-3xl 
                    p-6 md:p-8 
                    flex flex-col shadow-xl relative overflow-hidden
                    min-h-[380px] md:min-h-[460px]"
@@ -146,10 +146,10 @@ const AboutUsCards = () => {
         whileInView="visible"
         viewport={{ once: true }}
         whileHover={{ scale: 1.02, y: -4 }}
-        className="bg-[#006400] text-white rounded-3xl 
+        className="bg-[#facd15] text-white rounded-3xl 
                    p-6 md:p-8 
                    flex flex-col justify-between shadow-xl relative overflow-hidden
-                   min-h-[320px] md:min-h-[460px]"
+                   min-h-80 md:min-h-115"
       >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}

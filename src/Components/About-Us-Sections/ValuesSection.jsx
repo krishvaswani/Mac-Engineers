@@ -36,9 +36,8 @@ export default function ValuesSection() {
               Unwavering{" "}
               <span className="text-[#faba19] font-medium">
                 Honesty
-              </span>{" "}
-              & <br />
-              Integrity
+              </span><br/>
+              & Integrity
             </h2>
           </div>
 

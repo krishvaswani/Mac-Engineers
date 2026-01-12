@@ -22,23 +22,6 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-/* ================= CONSTANTS ================= */
-
-const USAGE_OPTIONS = [
-  "Residential",
-  "Commercial",
-  "Industrial",
-  "HVAC",
-  "Oil & Gas",
-];
-
-const ADDITIONAL_OPTIONS = [
-  "Warranty Information",
-  "Installation Notes",
-  "Maintenance Details",
-  "Safety Instructions",
-];
-
 /* ================= COMPONENT ================= */
 
 export default function EditProduct() {
@@ -52,7 +35,7 @@ export default function EditProduct() {
   const [collections, setCollections] = useState([]);
   const [specs, setSpecs] = useState([]);
   const [images, setImages] = useState([]); // string | File
-  const [pdfFile, setPdfFile] = useState(null); // File
+  const [pdfFile, setPdfFile] = useState(null);
   const [existingPdf, setExistingPdf] = useState("");
 
   const [form, setForm] = useState({
@@ -64,10 +47,6 @@ export default function EditProduct() {
     collection: "",
     inStock: true,
     isActive: true,
-    usageType: "",
-    usageGuidelines: "",
-    additionalType: "",
-    additionalInfo: "",
   });
 
   /* ================= LOAD DATA ================= */
@@ -75,9 +54,7 @@ export default function EditProduct() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const productSnap = await getDoc(
-          doc(db, "products", id)
-        );
+        const productSnap = await getDoc(doc(db, "products", id));
 
         if (!productSnap.exists()) {
           navigate("/admin/products");
@@ -95,31 +72,24 @@ export default function EditProduct() {
           collection: data.collection || "",
           inStock: data.inStock ?? true,
           isActive: data.isActive ?? true,
-          usageType: data.usageType || "",
-          usageGuidelines: data.usageGuidelines || "",
-          additionalType: data.additionalType || "",
-          additionalInfo: data.additionalInfo || "",
         });
 
         setImages(data.images || []);
         setExistingPdf(data.pdfUrl || "");
 
-        if (data.specs) {
-          setSpecs(
-            Object.entries(data.specs).map(
-              ([key, value]) => ({ key, value })
-            )
-          );
-        } else {
-          setSpecs([{ key: "", value: "" }]);
-        }
+        setSpecs(
+          data.specs
+            ? Object.entries(data.specs).map(([k, v]) => ({
+                key: k,
+                value: v,
+              }))
+            : [{ key: "", value: "" }]
+        );
 
         const colSnap = await getDocs(
           collection(db, "collections")
         );
-        setCollections(
-          colSnap.docs.map((d) => d.data())
-        );
+        setCollections(colSnap.docs.map((d) => d.data()));
 
         setLoading(false);
       } catch (err) {
@@ -176,24 +146,18 @@ export default function EditProduct() {
       toast.loading("Updating product...", { id: "update" });
 
       const finalImages = [];
-
       for (const img of images) {
-        if (typeof img === "string") {
-          finalImages.push(img);
-        } else {
-          finalImages.push(await uploadImage(img));
-        }
+        finalImages.push(
+          typeof img === "string" ? img : await uploadImage(img)
+        );
       }
 
       let pdfUrl = existingPdf;
-      if (pdfFile) {
-        pdfUrl = await uploadPdf(pdfFile);
-      }
+      if (pdfFile) pdfUrl = await uploadPdf(pdfFile);
 
       const specsObject = {};
       specs.forEach((s) => {
-        if (s.key && s.value)
-          specsObject[s.key] = s.value;
+        if (s.key && s.value) specsObject[s.key] = s.value;
       });
 
       await updateDoc(doc(db, "products", id), {
@@ -208,14 +172,12 @@ export default function EditProduct() {
       toast.success("Product updated successfully", {
         id: "update",
       });
-
       navigate("/admin/products");
     } catch (err) {
       console.error(err);
-      toast.error(
-        err.message || "Failed to update product",
-        { id: "update" }
-      );
+      toast.error(err.message || "Failed to update product", {
+        id: "update",
+      });
     } finally {
       setSaving(false);
     }
@@ -232,16 +194,15 @@ export default function EditProduct() {
   /* ================= UI ================= */
 
   return (
-    <div className="min-h-screen bg-gray-50 px-10 py-8">
-      <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow ring-1 ring-black/5 p-8 space-y-10">
-
+    <div className="min-h-screen bg-gray-50 px-8 py-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* HEADER */}
-        <div className="flex justify-between items-center">
+        <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-semibold">
+            <h1 className="text-2xl font-semibold text-gray-900">
               Edit Product
             </h1>
-            <p className="text-gray-500">
+            <p className="text-gray-500 mt-1">
               Update product details
             </p>
           </div>
@@ -249,7 +210,13 @@ export default function EditProduct() {
           <button
             onClick={updateProduct}
             disabled={saving}
-            className="bg-black text-white px-8 py-3 rounded-xl"
+            className="
+              cursor-pointer
+              bg-gradient-to-r from-blue-600 to-blue-700
+              text-white px-8 py-3 rounded-xl
+              shadow-md hover:shadow-lg
+              transition disabled:opacity-60
+            "
           >
             {saving ? "Updating..." : "Update Product"}
           </button>
@@ -259,9 +226,31 @@ export default function EditProduct() {
           {/* LEFT */}
           <div className="col-span-8 space-y-8">
             <Card title="Basic Information">
-              <Input value={form.name} placeholder="Product Name" onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              <Input value={form.sku} placeholder="SKU" onChange={(e) => setForm({ ...form, sku: e.target.value })} />
-              <Textarea value={form.description} rows={4} placeholder="Description" onChange={(e) => setForm({ ...form, description: e.target.value })} />
+              <Input
+                value={form.name}
+                placeholder="Product Name"
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
+              />
+              <Input
+                value={form.sku}
+                placeholder="SKU"
+                onChange={(e) =>
+                  setForm({ ...form, sku: e.target.value })
+                }
+              />
+              <Textarea
+                value={form.description}
+                rows={4}
+                placeholder="Description"
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    description: e.target.value,
+                  })
+                }
+              />
             </Card>
 
             <Card title="Images (Drag to reorder)">
@@ -274,15 +263,33 @@ export default function EditProduct() {
 
             <Card title="Specifications">
               {specs.map((s, i) => (
-                <div key={i} className="flex gap-2">
-                  <Input value={s.key} placeholder="Key" onChange={(e) => updateSpec(i, "key", e.target.value)} />
-                  <Input value={s.value} placeholder="Value" onChange={(e) => updateSpec(i, "value", e.target.value)} />
-                  <button onClick={() => removeSpec(i)} className="text-red-600">
+                <div key={i} className="flex gap-3">
+                  <Input
+                    value={s.key}
+                    placeholder="Key"
+                    onChange={(e) =>
+                      updateSpec(i, "key", e.target.value)
+                    }
+                  />
+                  <Input
+                    value={s.value}
+                    placeholder="Value"
+                    onChange={(e) =>
+                      updateSpec(i, "value", e.target.value)
+                    }
+                  />
+                  <button
+                    onClick={() => removeSpec(i)}
+                    className="cursor-pointer text-red-600"
+                  >
                     <X size={16} />
                   </button>
                 </div>
               ))}
-              <button onClick={addSpec} className="text-blue-600 text-sm flex items-center gap-1">
+              <button
+                onClick={addSpec}
+                className="cursor-pointer text-blue-600 text-sm flex items-center gap-1"
+              >
                 <Plus size={14} /> Add Specification
               </button>
             </Card>
@@ -291,15 +298,42 @@ export default function EditProduct() {
           {/* RIGHT */}
           <div className="col-span-4 space-y-8">
             <Card title="Pricing">
-              <Input type="number" value={form.price} placeholder="Price" onChange={(e) => setForm({ ...form, price: e.target.value })} />
-              <Input type="number" value={form.oldPrice} placeholder="Old Price" onChange={(e) => setForm({ ...form, oldPrice: e.target.value })} />
+              <Input
+                type="number"
+                value={form.price}
+                placeholder="Price"
+                onChange={(e) =>
+                  setForm({ ...form, price: e.target.value })
+                }
+              />
+              <Input
+                type="number"
+                value={form.oldPrice}
+                placeholder="Old Price"
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    oldPrice: e.target.value,
+                  })
+                }
+              />
             </Card>
 
             <Card title="Collection">
-              <Select value={form.collection} onChange={(e) => setForm({ ...form, collection: e.target.value })}>
+              <Select
+                value={form.collection}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    collection: e.target.value,
+                  })
+                }
+              >
                 <option value="">Select Collection</option>
                 {collections.map((c) => (
-                  <option key={c.slug} value={c.slug}>{c.name}</option>
+                  <option key={c.slug} value={c.slug}>
+                    {c.name}
+                  </option>
                 ))}
               </Select>
             </Card>
@@ -319,7 +353,7 @@ export default function EditProduct() {
   );
 }
 
-/* ================= COMPONENTS ================= */
+/* ================= SUB COMPONENTS ================= */
 
 function PdfUpload({
   pdfFile,
@@ -335,13 +369,13 @@ function PdfUpload({
             href={existingPdf}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-600 truncate"
+            className="text-blue-600 truncate cursor-pointer"
           >
             View existing PDF
           </a>
           <button
             onClick={() => setExistingPdf("")}
-            className="text-red-600"
+            className="cursor-pointer text-red-600"
           >
             Remove
           </button>
@@ -349,7 +383,7 @@ function PdfUpload({
       )}
 
       {!pdfFile && (
-        <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
+        <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
           <FileText className="text-gray-400 mb-2" />
           <p className="text-sm text-gray-500">
             Select a PDF file
@@ -377,7 +411,7 @@ function PdfUpload({
           {pdfFile.name}
           <button
             onClick={() => setPdfFile(null)}
-            className="text-red-600"
+            className="cursor-pointer text-red-600"
           >
             <X size={16} />
           </button>
@@ -398,7 +432,7 @@ function GalleryUpload({ images, setImages, dragIndex }) {
 
   return (
     <div className="space-y-4">
-      <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
+      <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
         <ImagePlus className="text-gray-400" />
         <p className="text-sm text-gray-500">
           Upload images
@@ -423,7 +457,7 @@ function GalleryUpload({ images, setImages, dragIndex }) {
             onDragStart={() => (dragIndex.current = i)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => onDrop(i)}
-            className="relative cursor-move group"
+            className="relative group cursor-move"
           >
             <img
               src={
@@ -432,23 +466,21 @@ function GalleryUpload({ images, setImages, dragIndex }) {
                   : URL.createObjectURL(img)
               }
               className={`h-28 w-full object-cover rounded-xl ${
-                i === 0 ? "ring-2 ring-black" : ""
+                i === 0 ? "ring-2 ring-blue-600" : ""
               }`}
             />
 
             {i === 0 && (
-              <span className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-0.5 rounded">
+              <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">
                 Main
               </span>
             )}
 
             <button
               onClick={() =>
-                setImages(
-                  images.filter((_, idx) => idx !== i)
-                )
+                setImages(images.filter((_, idx) => idx !== i))
               }
-              className="absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+              className="cursor-pointer absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
             >
               <X size={14} />
             </button>
@@ -468,8 +500,10 @@ function GalleryUpload({ images, setImages, dragIndex }) {
 
 function Card({ title, children }) {
   return (
-    <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
-      <h3 className="font-medium">{title}</h3>
+    <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 space-y-4">
+      <h3 className="font-medium text-gray-900">
+        {title}
+      </h3>
       {children}
     </div>
   );
@@ -479,7 +513,7 @@ function Input(props) {
   return (
     <input
       {...props}
-      className="w-full border rounded-lg px-3 py-2"
+      className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500/40 outline-none"
     />
   );
 }
@@ -488,7 +522,7 @@ function Textarea(props) {
   return (
     <textarea
       {...props}
-      className="w-full border rounded-lg px-3 py-2"
+      className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500/40 outline-none"
     />
   );
 }
@@ -497,7 +531,7 @@ function Select(props) {
   return (
     <select
       {...props}
-      className="w-full border rounded-lg px-3 py-2"
+      className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500/40 outline-none"
     />
   );
 }

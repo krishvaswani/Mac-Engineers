@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section
       className="
-        relative m-5 rounded-3xl overflow-hidden
+        relative mx-5 my-2 rounded-3xl overflow-hidden
         h-[85vh]
         min-h-150
         max-h-225

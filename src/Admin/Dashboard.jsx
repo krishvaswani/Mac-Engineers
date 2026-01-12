@@ -54,21 +54,24 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="py-20 text-gray-500 text-center">
-        Loading dashboard…
+      <div className="py-24 text-center">
+        <div className="inline-flex items-center gap-3 text-blue-600 font-medium">
+          <span className="h-4 w-4 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+          Loading dashboard
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
+    <div className="space-y-10">
       {/* HEADER */}
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
+      <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5">
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
           Dashboard
         </h1>
         <p className="text-gray-500 mt-1">
-          Welcome to your admin panel
+          Welcome back, manage everything from here
         </p>
       </div>
 
@@ -78,62 +81,61 @@ export default function Dashboard() {
           title="Total Products"
           value={stats.totalProducts}
           icon={<Package size={22} />}
+          accent="blue"
         />
         <StatCard
           title="Collections"
           value={stats.totalCollections}
           icon={<Layers size={22} />}
+          accent="indigo"
         />
         <StatCard
           title="Enquiries"
           value={stats.totalEnquiries}
           icon={<MessageSquare size={22} />}
+          accent="violet"
         />
         <StatCard
           title="Contact Messages"
           value={stats.totalContacts}
           icon={<Mail size={22} />}
+          accent="cyan"
         />
       </div>
 
       {/* QUICK ACTIONS */}
-      <div className="bg-white/80 backdrop-blur rounded-2xl p-6 shadow-sm ring-1 ring-black/5">
-        <h2 className="font-semibold mb-4">
+      <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 shadow-sm ring-1 ring-black/5">
+        <h2 className="font-semibold text-gray-900 mb-5">
           Quick Actions
         </h2>
 
         <div className="flex flex-wrap gap-4">
           <Link
             to="/admin/products/add"
-            className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-xl shadow-sm hover:opacity-90 transition"
+            className="group flex items-center gap-2
+              bg-gradient-to-r from-blue-600 to-blue-700
+              text-white px-6 py-3 rounded-xl
+              shadow-md hover:shadow-lg
+              transition"
           >
-            <Plus size={16} />
+            <Plus size={16} className="group-hover:rotate-90 transition" />
             Add Product
           </Link>
 
-          <Link
+          <QuickLink
             to="/admin/collections"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl ring-1 ring-black/10 hover:bg-black/5 transition"
-          >
-            Manage Collections
-            <ArrowRight size={16} />
-          </Link>
+            label="Manage Collections"
+          />
 
-          <Link
+          <QuickLink
             to="/admin/enquiries"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl ring-1 ring-black/10 hover:bg-black/5 transition"
-          >
-            View Enquiries
-            <ArrowRight size={16} />
-          </Link>
+            label="View Enquiries"
+          />
 
-          <Link
+          <QuickLink
             to="/admin/contact-data"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl ring-1 ring-black/10 hover:bg-black/5 transition"
-          >
-            View Contact Messages
-            <ArrowRight size={16} />
-          </Link>
+            label="Contact Messages"
+          />
         </div>
       </div>
     </div>
@@ -141,21 +143,68 @@ export default function Dashboard() {
 }
 
 /* 🔹 PREMIUM STAT CARD */
-function StatCard({ title, value, icon }) {
+function StatCard({ title, value, icon, accent }) {
+  const accents = {
+    blue: "from-blue-500/20 to-blue-600/20 text-blue-600",
+    indigo: "from-indigo-500/20 to-indigo-600/20 text-indigo-600",
+    violet: "from-violet-500/20 to-violet-600/20 text-violet-600",
+    cyan: "from-cyan-500/20 to-cyan-600/20 text-cyan-600",
+  };
+
   return (
-    <div className="bg-white/80 backdrop-blur rounded-2xl p-6 shadow-sm ring-1 ring-black/5 hover:-translate-y-1 transition">
-      <div className="flex items-center justify-between mb-3">
+    <div
+      className="
+        group relative
+        bg-white/70 backdrop-blur-xl
+        rounded-3xl p-6
+        ring-1 ring-black/5
+        hover:-translate-y-1 hover:shadow-xl
+        transition-all
+      "
+    >
+      <div className="flex items-center justify-between mb-4">
         <p className="text-sm text-gray-500">
           {title}
         </p>
-        <div className="text-gray-400">
+
+        <div
+          className={`
+            p-3 rounded-xl bg-gradient-to-br
+            ${accents[accent]}
+          `}
+        >
           {icon}
         </div>
       </div>
 
-      <h3 className="text-3xl font-semibold tracking-tight">
+      <h3 className="text-3xl font-semibold tracking-tight text-gray-900">
         {value}
       </h3>
     </div>
+  );
+}
+
+/* 🔹 QUICK LINK */
+function QuickLink({ to, label }) {
+  return (
+    <Link
+      to={to}
+      className="
+        group flex items-center gap-2
+        px-6 py-3 rounded-xl
+        bg-white/80 backdrop-blur
+        ring-1 ring-black/10
+        hover:bg-blue-50
+        transition
+      "
+    >
+      <span className="text-gray-800 font-medium">
+        {label}
+      </span>
+      <ArrowRight
+        size={16}
+        className="text-gray-400 group-hover:translate-x-1 transition"
+      />
+    </Link>
   );
 }

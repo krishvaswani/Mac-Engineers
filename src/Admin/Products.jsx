@@ -41,11 +41,11 @@ export default function Products() {
   }, []);
 
   return (
-    <div className="space-y-6 bg-linear-to-br from-gray-50 to-white p-6 rounded-3xl">
+    <div className="space-y-8">
       {/* HEADER */}
-      <div className="flex items-center justify-between">
+      <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
             Products
           </h1>
           <p className="text-gray-500 text-sm mt-1">
@@ -55,7 +55,14 @@ export default function Products() {
 
         <Link
           to="/admin/products/add"
-          className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-xl shadow-sm hover:opacity-90 transition"
+          className="
+            cursor-pointer
+            flex items-center gap-2
+            bg-gradient-to-r from-blue-600 to-blue-700
+            text-white px-6 py-3 rounded-xl
+            shadow-md hover:shadow-lg
+            transition
+          "
         >
           <Plus size={16} />
           Add Product
@@ -63,25 +70,25 @@ export default function Products() {
       </div>
 
       {/* TABLE CARD */}
-      <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 overflow-x-auto">
+      <div className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm ring-1 ring-black/5 overflow-x-auto">
         {loading ? (
-          <div className="p-10 text-center text-gray-500">
+          <div className="p-12 text-center text-blue-600 font-medium">
             Loading products…
           </div>
         ) : products.length === 0 ? (
-          <div className="p-10 text-center text-gray-500">
+          <div className="p-12 text-center text-gray-500">
             No products found.
           </div>
         ) : (
-          <table className="w-full min-w-225 text-sm">
+          <table className="w-full min-w-[900px] text-sm">
             <thead className="bg-black/5 text-gray-600">
               <tr>
-                <th className="px-4 py-3 text-left">Product</th>
-                <th className="px-4 py-3 text-left">SKU</th>
-                <th className="px-4 py-3 text-left">Collection</th>
-                <th className="px-4 py-3 text-left">Price</th>
-                <th className="px-4 py-3 text-left">Stock</th>
-                <th className="px-4 py-3 text-right">Actions</th>
+                <th className="px-5 py-4 text-left">Product</th>
+                <th className="px-5 py-4 text-left">SKU</th>
+                <th className="px-5 py-4 text-left">Collection</th>
+                <th className="px-5 py-4 text-left">Price</th>
+                <th className="px-5 py-4 text-left">Stock</th>
+                <th className="px-5 py-4 text-right">Actions</th>
               </tr>
             </thead>
 
@@ -92,16 +99,16 @@ export default function Products() {
                   className="hover:bg-black/5 transition"
                 >
                   {/* PRODUCT */}
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-full bg-black/5 flex items-center justify-center text-gray-600">
-                        <Package size={16} />
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-700">
+                        <Package size={18} />
                       </div>
 
                       <div>
                         <Link
                           to={`/admin/products/edit/${p.id}`}
-                          className="font-medium hover:underline"
+                          className="cursor-pointer font-medium text-gray-900 hover:underline"
                         >
                           {p.name}
                         </Link>
@@ -113,41 +120,42 @@ export default function Products() {
                   </td>
 
                   {/* SKU */}
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-5 py-4 text-gray-500">
                     {p.sku || "-"}
                   </td>
 
                   {/* COLLECTION */}
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     {p.collection || "-"}
                   </td>
 
                   {/* PRICE */}
-                  <td className="px-4 py-3 font-medium">
+                  <td className="px-5 py-4 font-medium text-gray-900">
                     ₹{p.price}
                   </td>
 
                   {/* STOCK */}
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     <span
-                      className={`px-3 py-1 text-xs rounded-full ring-1 ${
-                        p.inStock
-                          ? "bg-green-50 text-green-700 ring-green-200"
-                          : "bg-red-50 text-red-600 ring-red-200"
-                      }`}
+                      className={`
+                        px-3 py-1 text-xs rounded-full ring-1
+                        ${
+                          p.inStock
+                            ? "bg-green-50 text-green-700 ring-green-200"
+                            : "bg-red-50 text-red-600 ring-red-200"
+                        }
+                      `}
                     >
-                      {p.inStock
-                        ? "In Stock"
-                        : "Out of Stock"}
+                      {p.inStock ? "In Stock" : "Out of Stock"}
                     </span>
                   </td>
 
                   {/* ACTIONS */}
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-5 py-4 text-right">
                     <div className="inline-flex gap-3">
                       <Link
                         to={`/admin/products/edit/${p.id}`}
-                        className="p-2 rounded-lg hover:bg-black/10 transition"
+                        className="cursor-pointer p-2.5 rounded-lg hover:bg-black/10 transition"
                         title="Edit"
                       >
                         <Pencil size={16} />
@@ -155,7 +163,7 @@ export default function Products() {
 
                       <button
                         onClick={() => deleteProduct(p.id)}
-                        className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition"
+                        className="cursor-pointer p-2.5 rounded-lg hover:bg-red-50 text-red-600 transition"
                         title="Delete"
                       >
                         <Trash2 size={16} />
