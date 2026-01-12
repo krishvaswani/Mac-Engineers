@@ -149,7 +149,7 @@ export default function ContactMessages() {
             className="
               cursor-pointer
               flex items-center gap-2
-              bg-gradient-to-r from-blue-600 to-blue-700
+              bg-linear-to-r from-blue-600 to-blue-700
               text-white px-6 py-3 rounded-xl
               shadow-md hover:shadow-lg transition
             "

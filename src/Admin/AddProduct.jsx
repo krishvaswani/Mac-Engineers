@@ -18,6 +18,7 @@ import {
   ImagePlus,
   FileText,
   GripVertical,
+  ChevronDown,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -48,6 +49,9 @@ export default function AddProduct() {
   const [images, setImages] = useState([]);
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [openUsage, setOpenUsage] = useState(true);
+  const [openAdditional, setOpenAdditional] = useState(false);
 
   const dragIndex = useRef(null);
 
@@ -255,6 +259,75 @@ export default function AddProduct() {
                 <Plus size={14} /> Add Specification
               </button>
             </Card>
+
+            {/* USAGE GUIDELINES */}
+            <Accordion
+              title="Usage Guidelines"
+              open={openUsage}
+              setOpen={setOpenUsage}
+            >
+              <Select
+                value={form.usageType}
+                onChange={(e) =>
+                  setForm({ ...form, usageType: e.target.value })
+                }
+              >
+                <option value="">Select Usage Type</option>
+                {USAGE_OPTIONS.map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </Select>
+
+              <Textarea
+                rows={4}
+                placeholder="Enter usage guidelines"
+                value={form.usageGuidelines}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    usageGuidelines: e.target.value,
+                  })
+                }
+              />
+            </Accordion>
+
+            {/* ADDITIONAL INFORMATION */}
+            <Accordion
+              title="Additional Information"
+              open={openAdditional}
+              setOpen={setOpenAdditional}
+            >
+              <Select
+                value={form.additionalType}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    additionalType: e.target.value,
+                  })
+                }
+              >
+                <option value="">Select Information Type</option>
+                {ADDITIONAL_OPTIONS.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
+              </Select>
+
+              <Textarea
+                rows={4}
+                placeholder="Enter additional information"
+                value={form.additionalInfo}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    additionalInfo: e.target.value,
+                  })
+                }
+              />
+            </Accordion>
           </div>
 
           {/* RIGHT */}
@@ -310,7 +383,30 @@ export default function AddProduct() {
   );
 }
 
-/* ================= PDF UPLOAD ================= */
+/* ================= ACCORDION ================= */
+
+function Accordion({ title, open, setOpen, children }) {
+  return (
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-4">
+      <button
+        onClick={() => setOpen(!open)}
+        className="cursor-pointer w-full flex items-center justify-between font-medium"
+      >
+        {title}
+        <ChevronDown
+          size={18}
+          className={`transition-transform ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {open && <div className="pt-4 space-y-4">{children}</div>}
+    </div>
+  );
+}
+
+/* ================= OTHER COMPONENTS ================= */
 
 function PdfUpload({ pdfFile, setPdfFile }) {
   return (
@@ -327,13 +423,11 @@ function PdfUpload({ pdfFile, setPdfFile }) {
             onChange={(e) => {
               const file = e.target.files[0];
               if (!file) return;
-
               if (file.type !== "application/pdf") {
                 toast.error("Only PDF files are allowed");
                 e.target.value = "";
                 return;
               }
-
               setPdfFile(file);
               e.target.value = "";
             }}
@@ -341,9 +435,7 @@ function PdfUpload({ pdfFile, setPdfFile }) {
         </label>
       ) : (
         <div className="flex items-center justify-between border rounded-xl px-4 py-3">
-          <span className="text-sm truncate">
-            {pdfFile.name}
-          </span>
+          <span className="text-sm truncate">{pdfFile.name}</span>
           <button
             onClick={() => setPdfFile(null)}
             className="cursor-pointer text-red-600"
@@ -355,8 +447,6 @@ function PdfUpload({ pdfFile, setPdfFile }) {
     </div>
   );
 }
-
-/* ================= DRAGGABLE GALLERY ================= */
 
 function GalleryUpload({ images, setImages, dragIndex }) {
   const onDrop = (index) => {
@@ -402,13 +492,6 @@ function GalleryUpload({ images, setImages, dragIndex }) {
                 i === 0 ? "ring-2 ring-blue-600" : ""
               }`}
             />
-
-            {i === 0 && (
-              <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">
-                Main
-              </span>
-            )}
-
             <button
               onClick={() =>
                 setImages(images.filter((_, idx) => idx !== i))
@@ -417,7 +500,6 @@ function GalleryUpload({ images, setImages, dragIndex }) {
             >
               <X size={14} />
             </button>
-
             <GripVertical
               size={16}
               className="absolute bottom-2 right-2 text-white opacity-80"
@@ -429,14 +511,14 @@ function GalleryUpload({ images, setImages, dragIndex }) {
   );
 }
 
-/* ================= UI HELPERS ================= */
-
 function Card({ title, children }) {
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 space-y-4">
-      <h3 className="font-medium text-gray-900">
-        {title}
-      </h3>
+      {title && (
+        <h3 className="font-medium text-gray-900">
+          {title}
+        </h3>
+      )}
       {children}
     </div>
   );

@@ -36,7 +36,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 px-4">
       <div className="w-full max-w-sm bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl ring-1 ring-black/5 p-8">
         
         {/* HEADER */}

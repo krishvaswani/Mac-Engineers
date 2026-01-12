@@ -140,7 +140,7 @@ export default function CollectionForm({ data, onClose }) {
               className="
                 cursor-pointer
                 px-6 py-2 rounded-xl
-                bg-gradient-to-r from-blue-600 to-blue-700
+                bg-linear-to-r from-blue-600 to-blue-700
                 text-white
                 shadow-md hover:shadow-lg
                 transition disabled:opacity-60

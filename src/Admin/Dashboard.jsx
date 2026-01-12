@@ -113,7 +113,7 @@ export default function Dashboard() {
           <Link
             to="/admin/products/add"
             className="group flex items-center gap-2
-              bg-gradient-to-r from-blue-600 to-blue-700
+              bg-linear-to-r from-blue-600 to-blue-700
               text-white px-6 py-3 rounded-xl
               shadow-md hover:shadow-lg
               transition"
@@ -169,7 +169,7 @@ function StatCard({ title, value, icon, accent }) {
 
         <div
           className={`
-            p-3 rounded-xl bg-gradient-to-br
+            p-3 rounded-xl bg-linear-to-br
             ${accents[accent]}
           `}
         >

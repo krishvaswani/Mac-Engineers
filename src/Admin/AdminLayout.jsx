@@ -82,7 +82,7 @@ export default function AdminLayout() {
           fixed top-0 left-0 z-50
           h-screen ${SIDEBAR_WIDTH}
           backdrop-blur-xl
-          bg-gradient-to-b from-blue-900/80 via-blue-800/80 to-blue-900/80
+          bg-linear-to-b from-blue-900/80 via-blue-800/80 to-blue-900/80
           border-r border-white/10
           text-white
           flex flex-col

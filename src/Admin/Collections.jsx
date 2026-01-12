@@ -61,7 +61,7 @@ export default function Collections() {
           className="
             cursor-pointer
             flex items-center gap-2
-            bg-gradient-to-r from-blue-600 to-blue-700
+            bg-linear-to-r from-blue-600 to-blue-700
             text-white px-6 py-3 rounded-xl
             shadow-md hover:shadow-lg
             transition
@@ -74,28 +74,28 @@ export default function Collections() {
 
       {/* TABLE CARD */}
       <div className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm ring-1 ring-black/5 overflow-x-auto">
-        <table className="w-full min-w-[900px] text-sm table-fixed">
+        <table className="w-full min-w-225 text-sm table-fixed">
           <thead className="bg-black/5 text-gray-600">
             <tr>
-              <th className="px-5 py-4 text-left w-[280px]">
+              <th className="px-5 py-4 text-left w-70">
                 <div className="flex items-center gap-2">
                   <Hash size={14} />
                   ID
                 </div>
               </th>
-              <th className="px-5 py-4 text-left w-[180px]">
+              <th className="px-5 py-4 text-left w-45">
                 <div className="flex items-center gap-2">
                   <Layers size={14} />
                   Name
                 </div>
               </th>
-              <th className="px-5 py-4 text-left w-[160px]">
+              <th className="px-5 py-4 text-left w-40">
                 Slug
               </th>
               <th className="px-5 py-4 text-left">
                 Description
               </th>
-              <th className="px-5 py-4 text-right w-[120px]">
+              <th className="px-5 py-4 text-right w-30">
                 Actions
               </th>
             </tr>
@@ -123,7 +123,7 @@ export default function Collections() {
                 </td>
 
                 {/* DESCRIPTION */}
-                <td className="px-5 py-4 text-gray-500 break-words">
+                <td className="px-5 py-4 text-gray-500 wrap-break-word">
                   {c.description || "-"}
                 </td>
 

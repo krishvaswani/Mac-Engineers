@@ -58,7 +58,7 @@ export default function Products() {
           className="
             cursor-pointer
             flex items-center gap-2
-            bg-gradient-to-r from-blue-600 to-blue-700
+            bg-linear-to-r from-blue-600 to-blue-700
             text-white px-6 py-3 rounded-xl
             shadow-md hover:shadow-lg
             transition
@@ -80,7 +80,7 @@ export default function Products() {
             No products found.
           </div>
         ) : (
-          <table className="w-full min-w-[900px] text-sm">
+          <table className="w-full min-w-225 text-sm">
             <thead className="bg-black/5 text-gray-600">
               <tr>
                 <th className="px-5 py-4 text-left">Product</th>
@@ -101,7 +101,7 @@ export default function Products() {
                   {/* PRODUCT */}
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-700">
+                      <div className="h-10 w-10 rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-700">
                         <Package size={18} />
                       </div>
 
