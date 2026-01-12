@@ -69,7 +69,7 @@ export default function ValuesSection() {
           <ValueCard
             icon={<PieChart size={22} />}
             title="Integrated"
-            text="Comprehensive wealth services, tailored solutions, and exclusive alternative investments."
+            text="Comprehensive wealth services, tailored solutions, and exclusive alternative."
           />
 
           <ValueCard
@@ -81,7 +81,7 @@ export default function ValuesSection() {
           <ValueCard
             icon={<Star size={22} />}
             title="Experienced"
-            text="A highly dedicated team, supported by our extensive network of trusted professionals."
+            text="A highly dedicated team, supported by our extensive network of trusted."
           />
         </motion.div>
 
@@ -98,7 +98,7 @@ function ValueCard({ icon, title, text, highlight = false }) {
       variants={fadeUp}
       whileHover={{ y: -8 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className={`group relative rounded-[28px] border gap-5 px-4 pt-8 pb-2 transition-colors ${
+      className={`group relative rounded-[28px] border gap-5 px-4 pt-8 pb-6 transition-colors ${
         highlight
           ? "bg-[#faba19] border-[#faba19]"
           : "bg-white border-neutral-200 hover:bg-[#faba19]"
@@ -116,7 +116,7 @@ function ValueCard({ icon, title, text, highlight = false }) {
       </div>
 
       {/* CONTENT BOX */}
-      <div className="rounded-2xl px-4 py-8 bg-[#faf9f6]">
+      <div className="rounded-2xl px-4 py-6 bg-[#faf9f6]">
         <h3 className="text-lg font-medium text-[#1f3d34] mb-3">
           {title}
         </h3>
