@@ -121,7 +121,7 @@ const AboutUsCards = () => {
         <motion.button
           whileHover={{ y: -4 }}
           whileTap={{ scale: 0.95 }}
-          className="mt-8 bg-black text-white px-8 py-4 rounded-full font-medium text-lg flex items-center justify-center gap-3 hover:shadow-xl hover:shadow-black/20"
+          className="mt-8 bg-black text-white px-8 py-4 rounded-full cursor-pointer font-medium text-lg flex items-center justify-center gap-3 hover:shadow-xl hover:shadow-black/20"
         >
           Free Consultation
           <motion.span
