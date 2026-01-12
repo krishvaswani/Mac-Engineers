@@ -2,9 +2,9 @@ export default function ContactHero() {
   return (
     <section className="
       relative
-      h-[40vh]
-      md:h-105
-      lg:h-90
+      h-[6vh]
+      md:h-8
+      lg:h-10
       w-full
       overflow-hidden
     ">
@@ -18,12 +18,10 @@ export default function ContactHero() {
       />
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
-
-      {/* CONTENT */}
+      <div className="absolute" />
       <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col">
-        {/* HERO TEXT */}
-        <div className="flex-1 flex items-center">
+      
+        {/* <div className="flex-1 flex items-center">
           <div className="max-w-xl text-white">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight">
               Product
@@ -33,7 +31,7 @@ export default function ContactHero() {
               maintenance service, or a custom consultation?
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

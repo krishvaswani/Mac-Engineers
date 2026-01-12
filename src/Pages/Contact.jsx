@@ -88,7 +88,7 @@ export default function Contact() {
             initial={!shouldReduceMotion ? "hidden" : false}
             animate={!shouldReduceMotion ? "visible" : false}
             variants={fade}
-            className="lg:w-[40%] bg-white border border-neutral-200 shadow-2xl rounded-3xl p-8"
+            className="lg:w-[40%] bg-white border border-neutral-200 shadow-lg rounded-3xl p-8"
           >
 
 
@@ -216,7 +216,7 @@ export default function Contact() {
 
 function InfoCard({ icon, title, value }) {
   return (
-    <div className="flex items-center gap-4 border border-neutral-200 rounded-2xl p-8 bg-white shadow-sm cursor-pointer">
+    <div className="flex items-center gap-4 border border-neutral-50 rounded-xl p-8 bg-white shadow-sm cursor-pointer">
       <div className="bg-yellow-100 text-yellow-600 p-3 rounded-xl">
         {icon}
       </div>

@@ -28,10 +28,10 @@ export default function ValuesSection() {
           {/* LEFT */}
           <div>
             <span className="inline-block mb-6 px-4 py-1.5 text-xs tracking-wide border border-neutral-300 rounded-full text-neutral-600">
-              VALUES
+              OUR CORE VALUES
             </span>
 
-            <h2 className="text-[40px] md:text-[48px] lg:text-[56px] font-normal leading-[1.25] text-[#1f3d34]">
+            <h2 className="text-[40px] md:text-[48px] lg:text-[56px] font-normal leading-tight text-[#1f3d34]">
               We Operate with <br />
               Unwavering{" "}
               <span className="text-[#faba19] font-medium">
