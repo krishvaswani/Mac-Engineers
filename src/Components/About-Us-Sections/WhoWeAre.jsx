@@ -16,8 +16,8 @@ export default function WhoWeAre() {
 
         {/* HEADING */}
         <h2
-          className="text-[40px] md:text-[48px] lg:text-[56px]
-          font-normal  leading-15 text-[#1f3d34] max-w-4xl"
+          className="text-[32px] sm:text-[40px] md:text-[48px] lg:text-[56px]
+          font-normal leading-tight text-[#1f3d34] max-w-4xl"
         >
           A Trusted Partner <br />
           Committed to Your{" "}
@@ -29,22 +29,19 @@ export default function WhoWeAre() {
           <img
             src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
             alt="Team discussion"
-            className="w-full h-65 sm:h-90 md:h-105 lg:h-130
-            object-cover"
+            className="w-full h-[260px] sm:h-[360px] md:h-[420px] lg:h-[520px] object-cover"
           />
         </div>
 
         {/* STATS */}
-        <div
-          className="mt-8 grid grid-cols-2 md:grid-cols-4"
-        >
+        <div className="mt-8 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-0">
           <Stat
             value={28.9}
             decimals={1}
             prefix="$"
             suffix="M"
             label="Assets Under Management"
-            
+            isFirst
           />
           <Stat
             value={6}
@@ -69,7 +66,7 @@ export default function WhoWeAre() {
   );
 }
 
-/* ---------------- STAT WITH REAL COUNT-UP ---------------- */
+/* ---------------- STAT COMPONENT ---------------- */
 
 function Stat({
   value,
@@ -77,7 +74,7 @@ function Stat({
   suffix = "",
   label,
   decimals = 0,
-  noBorder = false,
+  isFirst = false,
 }) {
   const motionValue = useMotionValue(0);
   const rounded = useTransform(motionValue, (latest) =>
@@ -95,29 +92,35 @@ function Stat({
 
   return (
     <div
-      className={`py-4 px-6 ${
-        !noBorder ? "md:border-l border-neutral-200" : ""
-      }`}
+      className={`
+        flex flex-col items-center md:items-start
+        py-4 px-2 md:px-6
+        ${!isFirst ? "md:border-l border-neutral-200" : ""}
+      `}
     >
       {/* NUMBER */}
       <div
-        className="inline-flex items-center gap-1 px-4 py-2
-        rounded-xl bg-white shadow-sm"
+        className="
+          inline-flex items-center gap-1
+          px-4 py-2
+          rounded-xl bg-white shadow-sm
+          md:rounded-xl md:shadow-sm
+        "
       >
         {prefix && (
-          <span className="text-[#fbba19] text-2xl font-semibold">
+          <span className="text-[#fbba19] text-xl md:text-2xl font-semibold">
             {prefix}
           </span>
         )}
 
         <motion.span
-          className="text-3xl font-semibold text-black"
+          className="text-2xl md:text-3xl font-semibold text-black"
         >
           {rounded}
         </motion.span>
 
         {suffix && (
-          <span className="text-[#fbba19] text-3xl font-semibold">
+          <span className="text-[#fbba19] text-xl md:text-3xl font-semibold">
             {suffix}
           </span>
         )}
@@ -125,8 +128,11 @@ function Stat({
 
       {/* LABEL */}
       <p
-        className="mt-3 text-[11px] uppercase 
-        text-neutral-500 "
+        className="
+          mt-3 text-[10px] md:text-[11px]
+          uppercase text-neutral-500
+          text-center md:text-left
+        "
       >
         {label}
       </p>

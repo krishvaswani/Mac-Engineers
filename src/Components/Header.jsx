@@ -69,6 +69,7 @@ export default function Header() {
             {/* DESKTOP NAV */}
             <nav className="hidden md:flex items-center gap-10 text-white text-sm relative">
               <NavLink label="Home" to="/" active={isActive("/")} />
+               <NavLink label="About Us" to="/about" active={isActive("/about")} />
               <NavLink label="Products" to="/product" active={isActive("/product")} />
 
               {/* COLLECTIONS */}
@@ -109,7 +110,7 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              <NavLink label="About Us" to="/about" active={isActive("/about")} />
+              <NavLink label="Projects" to="/projects" active={isActive("/projects")} />
 
               {/* CONTACT BUTTON */}
               <Link

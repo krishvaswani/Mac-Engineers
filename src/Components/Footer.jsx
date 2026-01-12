@@ -54,14 +54,7 @@ export default function Footer() {
               Company
             </h4>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  className="hover:text-white transition"
-                  to="/product"
-                >
-                  Products
-                </Link>
-              </li>
+              
               <li>
                 <Link
                   className="hover:text-white transition"
@@ -76,6 +69,22 @@ export default function Footer() {
                   to="/contact"
                 >
                   Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="hover:text-white transition"
+                  to="/product"
+                >
+                  Products
+                </Link>
+              </li>
+               <li>
+                <Link
+                  className="hover:text-white transition"
+                  to="/projects"
+                >
+                  Projects
                 </Link>
               </li>
             </ul>

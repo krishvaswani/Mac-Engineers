@@ -86,47 +86,54 @@ export default function ContactSection() {
               Have a project in mind?
             </h3>
 
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
-              />
-              <input
-                type="email"
-                placeholder="Business Email"
-                className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
-              />
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <input
+    type="text"
+    placeholder="e.g. Alex Sharma"
+    className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
+  />
+  
+  <input
+    type="email"
+    placeholder="e.g. hello@yourcompany.com"
+    className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
+  />
 
-              <select className="input bg-slate-50 border border-slate-200">
-                <option>$1000 – $5000</option>
-                <option>$5000 – $10000</option>
-                <option>$10000+</option>
-              </select>
+  <select className="input bg-slate-50 border border-slate-200">
+    <option value="" disabled selected>Project budget range</option>
+    <option>$1,000 – $5,000</option>
+    <option>$5,000 – $10,000</option>
+    <option>$10,000 – $25,000</option>
+    <option>$25,000+</option>
+    <option>Just exploring options</option>
+  </select>
 
-              <select className="input bg-slate-50 border border-slate-200">
-                <option>Consultancy</option>
-                <option>Website</option>
-                <option>SEO</option>
-                <option>Marketing</option>
-              </select>
+  <select className="input bg-slate-50 border border-slate-200">
+    <option value="" disabled selected>What are you interested in?</option>
+    <option>Website Design & Development</option>
+    <option>SEO & Content Strategy</option>
+    <option>Digital Marketing / Ads</option>
+    <option>Branding & UI/UX</option>
+    <option>Consultancy / Strategy Session</option>
+    <option>Multiple services</option>
+  </select>
 
-              <textarea
-                placeholder="Message"
-                rows="4"
-                className="input bg-slate-50 border border-slate-200 md:col-span-2 resize-none"
-              />
+  <textarea
+    placeholder="Tell us about your project — goals, timeline, current website (if any), or anything else we should know..."
+    rows="4"
+    className="input bg-slate-50 border border-slate-200 md:col-span-2 resize-none"
+  />
 
-              <button
-                type="submit"
-                className="md:col-span-2 mt-4 inline-flex items-center gap-3 bg-slate-900 text-white px-6 py-3 rounded-full hover:scale-105 transition"
-              >
-                <span className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center">
-                  →
-                </span>
-                Let’s Talk
-              </button>
-            </form>
+  <button
+    type="submit"
+    className="md:col-span-2 mt-4 inline-flex items-center gap-3 bg-slate-900 text-white px-6 py-3 rounded-full hover:scale-105 transition"
+  >
+    <span className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center">
+      →
+    </span>
+    Let’s Talk
+  </button>
+</form>
           </motion.div>
 
         </div>
