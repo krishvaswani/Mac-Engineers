@@ -32,7 +32,7 @@ export default function CategoryIcons() {
   const isCarousel = categories.length > 6;
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* GRID (≤ 6 items) */}

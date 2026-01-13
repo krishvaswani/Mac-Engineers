@@ -1,8 +1,11 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import ScrollToTop from "./Components/ScrollToTop";
 import TopMarquee from "./Components/TopMarquee";
 import Header from "./Components/Header.jsx";
 import Footer from "./Components/Footer.jsx";
+import Preloader from "./components/Preloader";
 
 // FRONTEND PAGES
 import Home from "./Pages/Home.jsx";
@@ -12,8 +15,8 @@ import Services from "./Pages/Services.jsx";
 import Blog from "./Pages/Blog.jsx";
 import ProductPage from "./Pages/ProductPage.jsx";
 import CollectionPage from "./Pages/CollectionPage";
-import Allproduct from "./Pages/Products.jsx"
-import Projects from './Pages/Projects.jsx'
+import Allproduct from "./Pages/Products.jsx";
+import Projects from "./Pages/Projects.jsx";
 
 // ADMIN
 import AdminLogin from "./Admin/AdminLogin";
@@ -61,10 +64,10 @@ function AppRoutes() {
       <Route path="/product/:id" element={<ProductPage />} />
       <Route path="/collections/:slug" element={<CollectionPage />} />
 
-      {/* ADMIN LOGIN (PUBLIC) */}
+      {/* ADMIN LOGIN */}
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* ADMIN PANEL (PROTECTED) */}
+      {/* ADMIN PANEL */}
       <Route
         path="/admin/*"
         element={
@@ -85,13 +88,41 @@ function AppRoutes() {
   );
 }
 
+function AppContent() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // ⏳ preloader duration
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <>
+      {/* ✅ Show preloader only on frontend */}
+      {!isAdmin && loading && <Preloader />}
+
+      {!loading && (
+        <>
+          <ScrollToTop />
+          <LayoutWrapper>
+            <AppRoutes />
+          </LayoutWrapper>
+        </>
+      )}
+    </>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <LayoutWrapper>
-        <AppRoutes />
-      </LayoutWrapper>
+      <AppContent />
     </BrowserRouter>
   );
 }

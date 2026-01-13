@@ -28,7 +28,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section>
+    <section className="py-10">
       <div
         ref={cardRef}
         className="

@@ -125,17 +125,22 @@ export default function Footer() {
             <p className="text-gray-400 mb-2">
               +91 98765 43210
             </p>
-            <p className="text-white text-xl font-semibold mb-6">
+            <p className="text-gray-400 mb-2">
               info@secunet.com
             </p>
-
-            <div className="rounded-xl overflow-hidden bg-linear-to-br from-gray-800 to-gray-900 shadow-lg">
+            <p className="text-white font-medium mb-2">
+              Address
+            </p>
+            <p className="text-gray-400 mb-2">
+              2nd Floor,Plot No. 62a,Om Vihar,Phase- IV,Uttam Nagar,New Delhi-110059
+            </p>
+            {/* <div className="rounded-xl overflow-hidden bg-linear-to-br from-gray-800 to-gray-900 shadow-lg">
               <img
                 src="/src/Assets/footer.jpg"
                 alt="Footer visual"
                 className="w-full h-28 object-cover opacity-90"
               />
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -145,12 +150,12 @@ export default function Footer() {
          <p className="text-sm text-gray-400 text-center leading-relaxed">
   © {new Date().getFullYear()} mac-engineers. Made with love by{" "}
   <a
-    href="https://nexadvent.com"
+    href="https://nexadvent.in"
     target="_blank"
     rel="noopener noreferrer"
     className="hover:text-white transition"
   >
-    nexAdvent
+    NexAdvent
   </a>
 </p>
 
