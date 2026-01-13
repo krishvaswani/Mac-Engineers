@@ -24,15 +24,17 @@ export default function StatsSection() {
         ScrollTrigger.create({
           trigger: sectionRef.current,
           start: "top 75%",
-          once: true, // run only once
+          once: true,
           onEnter: () => {
             gsap.to(counter, {
               val: stats[index].value,
               duration: 1.6,
               ease: "power3.out",
               onUpdate: () => {
-                el.textContent =
-                  Math.floor(counter.val) + stats[index].suffix;
+                if (el) {
+                  el.textContent =
+                    Math.floor(counter.val) + stats[index].suffix;
+                }
               },
             });
           },
@@ -46,7 +48,7 @@ export default function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-16  border-slate-200"
+      className="bg-white py-16 border-slate-200"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 md:gap-16 text-center">
@@ -61,7 +63,7 @@ export default function StatsSection() {
                 delay: index * 0.1,
                 ease: "easeOut",
               }}
-              className="relative"
+              className="relative group"
             >
               {/* Divider */}
               {index !== 0 && (
@@ -71,13 +73,29 @@ export default function StatsSection() {
               {/* Number */}
               <div
                 ref={(el) => (numbersRef.current[index] = el)}
-                className="text-4xl sm:text-5xl md:text-6xl font-semibold text-slate-900"
+                className="
+                  text-4xl sm:text-5xl md:text-6xl
+                  font-semibold
+                  text-slate-900
+                  transition-colors duration-300 ease-out
+                  group-hover:text-[#fabd14]
+                  cursor-pointer
+                "
               >
                 0{stat.suffix}
               </div>
 
               {/* Label */}
-              <p className="mt-3 md:mt-4 text-slate-500 text-xs sm:text-sm tracking-wide">
+              <p
+                className="
+                  mt-3 md:mt-4
+                  text-slate-500
+                  text-xs sm:text-sm
+                  tracking-wide
+                  transition-colors duration-300
+                  group-hover:text-slate-700
+                "
+              >
                 {stat.label}
               </p>
             </motion.div>

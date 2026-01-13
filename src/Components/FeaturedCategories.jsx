@@ -46,7 +46,7 @@ export default function CategoryIcons() {
 
         {/* CAROUSEL (> 6 items) */}
         {isCarousel && (
-          <div className="flex gap-10 overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
+          <div className="flex gap-8 overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
             {categories.map((cat, index) => (
               <div key={index} className="snap-center shrink-0">
                 <CategoryItem cat={cat} />
