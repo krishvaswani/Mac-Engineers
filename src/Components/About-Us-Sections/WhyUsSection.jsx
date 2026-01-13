@@ -21,7 +21,7 @@ export default function WhyUsSection() {
             </span>
 
             {/* HEADING */}
-            <h2 className="text-[36px] md:text-[44px] lg:text-[48px] font-normal leading-[1.25] text-[#1f3d34]">
+            <h2 className="text-[36px] md:text-[44px] lg:text-[48px] font-normal leading-tight text-[#1f3d34]">
               We Always Put{" "}
               <span className="text-[#faba19] font-medium">
                 Your Interests

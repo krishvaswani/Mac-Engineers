@@ -33,7 +33,7 @@ const ITEMS_PER_PAGE = 9;
 /* ---------------- SKELETON ---------------- */
 function SkeletonCard() {
   return (
-    <div className="rounded-2xl bg-white/30 backdrop-blur-xl border border-white/30 animate-pulse min-h-[540px]">
+    <div className="rounded-2xl bg-white/30 backdrop-blur-xl border border-white/30 animate-pulse min-h-135">
       <div className="m-4 h-80 bg-white/30 rounded-xl" />
       <div className="px-6 pt-6 pb-14 space-y-4">
         <div className="h-4 w-3/4 bg-white/30 rounded" />
@@ -112,7 +112,7 @@ function ProjectCard({ project, onImageClick }) {
         border border-white/40
         shadow-xl
         hover:shadow-2xl
-        min-h-[540px]
+        min-h-135
         flex flex-col
         overflow-hidden
       "
@@ -212,7 +212,7 @@ export default function ProjectsPage() {
   }, [loading, page]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#f5f5f5] via-[#ededed] to-[#ffffff]">
+    <main className="min-h-screen bg-linear-to-br from-[#f5f5f5] via-[#ededed] to-[#ffffff]">
       {/* HERO */}
       <section className="text-center py-20 px-4">
         <motion.h1

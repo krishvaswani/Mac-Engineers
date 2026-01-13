@@ -29,7 +29,7 @@ export default function WhoWeAre() {
           <img
             src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
             alt="Team discussion"
-            className="w-full h-[260px] sm:h-[360px] md:h-[420px] lg:h-[520px] object-cover"
+            className="w-full h-65 sm:h-90 md:h-105 lg:h-130 object-cover"
           />
         </div>
 

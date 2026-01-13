@@ -33,7 +33,7 @@ export default function AboutSection() {
         ref={cardRef}
         className="
           relative mx-5
-          rounded-[32px]
+          rounded-4xl
           bg-white
           shadow-[0_40px_90px_rgba(0,0,0,0.12)]
           overflow-hidden

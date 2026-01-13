@@ -36,7 +36,7 @@ export default function Preloader({ onFinish }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+      className="fixed inset-0 z-9999 flex items-center justify-center bg-black"
     >
       <img
         ref={logoRef}

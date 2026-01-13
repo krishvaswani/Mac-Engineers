@@ -128,7 +128,7 @@ function IndustryCard({ item }) {
     <motion.div
       whileHover={{ y: -8 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="
+      className=" py-10
         group relative h-95
         rounded-3xl overflow-hidden
         bg-white
