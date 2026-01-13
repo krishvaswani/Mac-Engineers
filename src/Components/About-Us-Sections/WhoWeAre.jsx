@@ -129,7 +129,7 @@ function Stat({
       {/* LABEL */}
       <p
         className="
-          mt-3 text-[10px] md:text-[11px]
+          mt-3 text-[12px] md:text-[14px]
           uppercase text-neutral-500
           text-center md:text-left
         "

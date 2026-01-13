@@ -142,9 +142,17 @@ export default function Footer() {
         {/* DIVIDER */}
         <div className="border-t border-white/10 mt-20 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
 
-          <p className="text-sm text-gray-400">
-            © {new Date().getFullYear()} SecuNet. All rights reserved.
-          </p>
+         <p className="text-sm text-gray-400 text-center leading-relaxed">
+  © {new Date().getFullYear()} mac-engineers. Made with love by{" "}
+  <a
+    href="https://nexadvent.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hover:text-white transition"
+  >
+    nexAdvent
+  </a>
+</p>
 
           <div className="flex items-center gap-6 text-gray-400">
             <a href="#" className="hover:text-white transition cursor-pointer">

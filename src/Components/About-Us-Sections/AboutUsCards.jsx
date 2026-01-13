@@ -55,9 +55,10 @@ const AboutUsCards = () => {
         className="bg-[#fabd15] text-black rounded-3xl 
                    p-6 md:p-8 
                    flex flex-col shadow-xl relative overflow-hidden
-                   min-h-[380px] md:min-h-[460px]"
+                   min-h-95 md:min-h-115"
       >
-        <div className="flex-1 flex flex-col justify-center">
+          <h1 className="text-2xl mb-12">Testimonials</h1>
+        <div className="flex-1 flex flex-col justify-between">
           <AnimatePresence mode="wait">
             <motion.blockquote
               key={currentIndex}
@@ -129,8 +130,8 @@ const AboutUsCards = () => {
         viewport={{ once: true }}
         whileHover={{ scale: 1.02, y: -4 }}
         className="rounded-3xl overflow-hidden shadow-xl
-                   h-[260px] sm:h-[320px] md:h-auto
-                   md:min-h-[460px]"
+                   h-65 sm:h-80 md:h-auto
+                   md:min-h-115"
       >
         <img
           src="https://media.istockphoto.com/id/1289220781/photo/portrait-of-happy-smiling-woman-at-desk.jpg?s=612x612&w=0&k=20&c=FtC05luuxRpiKRj5F84e2CiPf0h_ZuX6o7o5JwlNaJM="

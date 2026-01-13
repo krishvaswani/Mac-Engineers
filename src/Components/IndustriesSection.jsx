@@ -129,7 +129,7 @@ function IndustryCard({ item }) {
       whileHover={{ y: -8 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="
-        group relative h-[380px]
+        group relative h-95
         rounded-3xl overflow-hidden
         bg-white
         shadow-[0_20px_50px_rgba(0,0,0,0.1)]
@@ -147,7 +147,7 @@ function IndustryCard({ item }) {
         loading="lazy"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
 
       <div className="relative z-10 p-6 flex flex-col justify-end h-full">
         <span className="text-xs uppercase tracking-widest text-[#fabd14] mb-2">

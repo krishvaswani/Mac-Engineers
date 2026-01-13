@@ -97,8 +97,8 @@ function ProductCard({ product, navigate }) {
     images?.[0]?.startsWith("http") ? images[0] : FALLBACK_IMAGE;
 
   return (
-    <div className="h-[520px] bg-white rounded-3xl border border-black/10 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col">
-      <div className="h-[240px] bg-gray-100 flex items-center justify-center p-6">
+    <div className="h-130 bg-white rounded-3xl border border-black/10 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col">
+      <div className="h-60 bg-gray-100 flex items-center justify-center p-6">
         <img
           src={imageSrc}
           alt={name}
@@ -109,11 +109,11 @@ function ProductCard({ product, navigate }) {
       </div>
 
       <div className="flex flex-col flex-1 px-6 pt-4">
-        <h3 className="font-semibold text-lg line-clamp-2 min-h-[48px]">
+        <h3 className="font-semibold text-lg line-clamp-2 min-h-12">
           {name}
         </h3>
 
-        <p className="text-sm text-gray-500 line-clamp-2 min-h-[40px] mt-1">
+        <p className="text-sm text-gray-500 line-clamp-2 min-h-10 mt-1">
           {description}
         </p>
 

@@ -86,7 +86,7 @@ export default function Hero() {
     className="
       absolute inset-0
       bg-[#fabd14]
-      translate-x-[-100%]
+      -translate-x-full
       group-hover:translate-x-0
       transition-transform
       duration-500

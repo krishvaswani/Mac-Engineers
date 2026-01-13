@@ -132,7 +132,7 @@ export default function ProjectsSection() {
                 "
               >
                 {/* IMAGE */}
-                <div className="relative h-[320px] md:h-[420px] overflow-hidden">
+                <div className="relative h-80 md:h-105 overflow-hidden">
                   <motion.img
                     src={project.image}
                     alt={project.title}
