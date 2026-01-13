@@ -1,8 +1,8 @@
 // Image Imports
-import airConditioning from "../Assets/True-wireless-earbuds_small.webp";
-import inductionHeating from "../Assets/Neckbands_bc6343f4-622f-4ebd-bb36-205643c3bf78_small.png";
-import inlineDuct from "../Assets/Smartwatches_88f12bcf-24bd-4e3a-aacb-ecc204f62179_small.webp";
-import airDiffuser from "../Assets/nirvana_52689447-c1bb-4bb8-8fa0-0496e3715fc0_small.webp";
+import airDiffuser from "../Assets/Featured-collection/Air Diffusers.png";
+import inlineDuct from "../Assets/Featured-collection/Air Ventilation Systems.png";
+import inductionHeating from "../Assets/Featured-collection/Induction Heating Machines.png";
+import airConditioning from "../Assets/Featured-collection/Industrial Air Conditioning System.png";
 import ventilation from "../Assets/Wireless-Headphones_small.webp";
 import oxygenSensor from "../Assets/Wireless-Speaker_small.webp";
 import wetScrubber from "../Assets/Wired-Headphones_small.webp";
