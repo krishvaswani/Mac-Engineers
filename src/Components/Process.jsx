@@ -47,15 +47,17 @@ export default function ProcessSection() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=1200", // controls how long the section is held
+          end: "+=1200",
           scrub: true,
           pin: true,
+          pinSpacing: true,            // ✅ IMPORTANT
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      // Animate each step from bottom
-      itemsRef.current.forEach((item, i) => {
+      // Animate steps 2–4 only
+      itemsRef.current.slice(1).forEach((item, i) => {
         tl.fromTo(
           item,
           { y: 80, opacity: 0 },
@@ -64,8 +66,9 @@ export default function ProcessSection() {
             opacity: 1,
             ease: "power3.out",
             duration: 1,
+            clearProps: "transform",  // ✅ RELEASE TRANSFORM
           },
-          i * 0.6 // spacing between steps
+          i * 0.6
         );
       });
     }, sectionRef);
@@ -74,27 +77,22 @@ export default function ProcessSection() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="bg-white py-32"
-    >
+    <section ref={sectionRef} className="bg-white py-32 relative z-0">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24">
-
-        {/* LEFT – PINNED AUTOMATICALLY VIA SECTION PIN */}
+        {/* LEFT */}
         <div className="self-start">
-          <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
+          <h2 className="text-4xl md:text-5xl font-semibold leading-tight">
             Simplified HVAC <br /> project execution
           </h2>
 
-          <p className="mt-6 text-slate-600 max-w-md leading-relaxed">
+          <p className="mt-6 text-slate-600 max-w-md">
             Our streamlined process ensures faster delivery, higher efficiency,
             and long-term reliability — from planning to commissioning.
           </p>
         </div>
 
-        {/* RIGHT – CONTROLLED SCROLL ANIMATION */}
+        {/* RIGHT */}
         <div className="relative">
-          {/* Vertical line */}
           <div className="absolute left-5 top-0 bottom-0 w-px bg-slate-200" />
 
           <div className="space-y-20">
@@ -102,19 +100,17 @@ export default function ProcessSection() {
               <div
                 key={index}
                 ref={(el) => (itemsRef.current[index] = el)}
-                className="flex gap-8 items-start will-change-transform"
+                className={`flex gap-8 items-start ${
+                  index === 0 ? "opacity-100" : "opacity-0"
+                }`}
               >
-                {/* Icon */}
                 <div className="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
                   <step.icon className="w-5 h-5 text-slate-700" />
                 </div>
 
-                {/* Text */}
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900">
-                    {step.title}
-                  </h4>
-                  <p className="mt-2 text-slate-600 leading-relaxed max-w-md">
+                  <h4 className="text-lg font-semibold">{step.title}</h4>
+                  <p className="mt-2 text-slate-600 max-w-md">
                     {step.desc}
                   </p>
                 </div>
@@ -122,7 +118,6 @@ export default function ProcessSection() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

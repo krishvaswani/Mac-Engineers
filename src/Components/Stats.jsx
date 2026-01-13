@@ -46,7 +46,7 @@ export default function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-10 border-t border-slate-200"
+      className="bg-white py-16  border-slate-200"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 md:gap-16 text-center">

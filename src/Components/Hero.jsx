@@ -60,35 +60,80 @@ export default function Hero() {
           </motion.h1>
 
           {/* BUTTON */}
-          <motion.button
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="group mt-6 sm:mt-8 cursor-pointer bg-white text-black px-5 sm:px-6 py-3 sm:py-4 rounded-full flex items-center gap-3 text-sm sm:text-base font-medium"
-          >
-            GET STARTED NOW
+        <motion.button
+  variants={{
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+  }}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="
+    relative group overflow-hidden
+    mt-6 sm:mt-8
+    cursor-pointer
+    rounded-full
+    px-6 sm:px-8
+    py-3.5 sm:py-4
+    text-sm sm:text-base
+    font-semibold
+    text-black
+    bg-white
+    flex items-center gap-3
+    shadow-[0_10px_30px_rgba(0,0,0,0.12)]
+  "
+>
+  {/* Hover background animation */}
+  <span
+    className="
+      absolute inset-0
+      bg-[#fabd14]
+      translate-x-[-100%]
+      group-hover:translate-x-0
+      transition-transform
+      duration-500
+      ease-out
+    "
+  />
 
-            <span className="bg-yellow-500 rounded-full p-2 flex items-center justify-center">
-              <svg
-                className="
-                  w-4 h-4 text-white
-                  transition-transform duration-300 ease-out
-                  -rotate-45 group-hover:rotate-0
-                "
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14" />
-                <path d="M13 6l6 6-6 6" />
-              </svg>
-            </span>
-          </motion.button>
+  {/* Button content */}
+  <span className="relative z-10 flex items-center gap-3">
+    GET STARTED NOW
+
+    <span
+      className="
+        bg-black/90
+        rounded-full
+        p-2
+        flex items-center justify-center
+        transition-all
+        duration-300
+        group-hover:bg-black
+      "
+    >
+      <svg
+        className="
+          w-4 h-4
+          text-white
+          transition-transform
+          duration-300
+          ease-out
+          -rotate-45
+          group-hover:rotate-0
+          group-hover:translate-x-0.5
+        "
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M5 12h14" />
+        <path d="M13 6l6 6-6 6" />
+      </svg>
+    </span>
+  </span>
+</motion.button>
+
 
           {/* DESCRIPTION */}
           <motion.p

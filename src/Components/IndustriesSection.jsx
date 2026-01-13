@@ -1,117 +1,160 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
 
-// ✅ IMPORT IMAGES PROPERLY
+import "swiper/css";
+
+// Images
 import industry1 from "../Assets/industry-1.png";
 import industry2 from "../Assets/about-img.png";
 import industry3 from "../Assets/industry-3.png";
 
 // DATA
 const industries = [
-  {
-    category: "INDUSTRY",
-    date: "Manufacturing",
-    title: "Advanced Industrial Air Cooling Solutions",
-    image: industry1,
-  },
-  {
-    category: "INDUSTRY",
-    date: "Infrastructure",
-    title: "High-Performance Ventilation Systems",
-    image: industry2,
-  },
-  {
-    category: "INDUSTRY",
-    date: "Healthcare",
-    title: "Clean Air & Filtration for Critical Environments",
-    image: industry3,
-  },
+  { title: "Industrial & Manufacturing Facilities", image: industry1 },
+  { title: "Commercial Buildings & Complexes", image: industry2 },
+  { title: "Healthcare & Clean Environments", image: industry3 },
+  { title: "Food Processing & Cold Chain", image: industry1 },
+  { title: "Hospitality & Commercial Kitchens", image: industry2 },
+  { title: "Pharmaceutical & Laboratory Plants", image: industry3 },
+  { title: "Institutional & Public Facilities", image: industry1 },
+  { title: "MEP Engineering & Projects", image: industry2 },
 ];
 
 export default function IndustriesSection() {
-  const sectionRef = useRef(null);
-
-  /* 🔥 Scroll position */
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 90%", "end 60%"],
-  });
-
-  /* 🔥 Scroll-linked transforms */
-  const sectionY = useTransform(scrollYProgress, [0, 1], [120, 0]);
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
-
   return (
-    <section ref={sectionRef} className="pb-20">
-      <motion.div
-        style={{ y: sectionY, opacity: sectionOpacity }}
-        className="max-w-7xl mx-auto px-6"
-      >
+    <section className="py-20 md:py-28 bg-slate-50 relative">
+      <div className="max-w-7xl mx-auto px-6 relative">
+
         {/* Header */}
-        <div>
+        <div className="mb-14 max-w-2xl">
           <h2 className="text-4xl md:text-5xl font-semibold text-slate-900">
             Industries We Serve
           </h2>
-          <p className="mt-4 text-slate-600 max-w-2xl">
-            Tailored air management and cooling solutions engineered for
-            performance, efficiency, and reliability.
+          <p className="mt-4 text-slate-600">
+            Engineered air management solutions tailored for performance,
+            compliance, and operational excellence across industries.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {industries.map((item, index) => (
-            <IndustryCard key={index} item={item} />
-          ))}
+        {/* Desktop Navigation Arrows */}
+        <div className="hidden lg:flex items-center gap-4 absolute right-6 top-16 z-20">
+          <button
+            className="
+              industries-prev
+              w-12 h-12
+              rounded-full
+              bg-white
+              shadow-[0_10px_25px_rgba(0,0,0,0.15)]
+              flex items-center justify-center
+              hover:bg-[#fabd14]
+              transition-colors
+            "
+          >
+            <svg
+              className="w-5 h-5 text-black"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <button
+            className="
+              industries-next
+              w-12 h-12
+              rounded-full
+              bg-white
+              shadow-[0_10px_25px_rgba(0,0,0,0.15)]
+              flex items-center justify-center
+              hover:bg-[#fabd14]
+              transition-colors
+            "
+          >
+            <svg
+              className="w-5 h-5 text-black"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
         </div>
-      </motion.div>
+
+        {/* Slider */}
+        <Swiper
+          modules={[Navigation, Autoplay]}
+          spaceBetween={30}
+          loop
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+          }}
+          navigation={{
+            prevEl: ".industries-prev",
+            nextEl: ".industries-next",
+          }}
+          breakpoints={{
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 1.2 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
+          }}
+        >
+          {industries.map((item, index) => (
+            <SwiperSlide key={index}>
+              <IndustryCard item={item} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </section>
   );
 }
 
-/* 🔥 Individual card */
+/* CARD */
 function IndustryCard({ item }) {
-  const cardRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start 95%", "end 70%"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [80, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
-
   return (
     <motion.div
-      ref={cardRef}
-      style={{ y, opacity }}
-      className="group bg-white rounded-2xl overflow-hidden
-        shadow-[0_20px_40px_rgba(0,0,0,0.08)]
-        hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]
-        transition-shadow"
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="
+        group relative h-[380px]
+        rounded-3xl overflow-hidden
+        bg-white
+        shadow-[0_20px_50px_rgba(0,0,0,0.1)]
+      "
     >
-      {/* Image */}
-      <div className="relative h-90 overflow-hidden">
-        <motion.img
-          src={item.image}
-          alt={item.title}
-          className="w-full h-full object-cover"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          loading="lazy"
-          draggable="false"
-        />
-      </div>
+      <img
+        src={item.image}
+        alt={item.title}
+        className="
+          absolute inset-0 w-full h-full object-cover
+          transition-transform duration-700
+          group-hover:scale-110
+        "
+        draggable="false"
+        loading="lazy"
+      />
 
-      {/* Content */}
-      <div className="p-8">
-        <div className="flex items-center gap-3 text-xs uppercase tracking-wider text-slate-500 mb-4">
-          <span>{item.category}</span>
-          <span className="w-1 h-1 rounded-full bg-slate-400" />
-          <span>{item.date}</span>
-        </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-        <h3 className="text-xl md:text-2xl font-semibold text-slate-900 leading-snug">
+      <div className="relative z-10 p-6 flex flex-col justify-end h-full">
+        <span className="text-xs uppercase tracking-widest text-[#fabd14] mb-2">
+          Industry
+        </span>
+
+        <h3 className="text-lg font-semibold text-white leading-snug">
           {item.title}
         </h3>
       </div>
