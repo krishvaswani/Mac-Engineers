@@ -43,6 +43,12 @@ export default function ProcessSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // 🔒 Set initial state ONLY via GSAP
+      gsap.set(itemsRef.current.slice(1), {
+        y: 80,
+        autoAlpha: 0,
+      });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -50,20 +56,20 @@ export default function ProcessSection() {
           end: "+=1200",
           scrub: true,
           pin: true,
+          pinSpacing: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      // 🔥 Animate ONLY steps 2,3,4 (skip first)
       itemsRef.current.slice(1).forEach((item, i) => {
-        tl.fromTo(
+        tl.to(
           item,
-          { y: 80, opacity: 0 },
           {
             y: 0,
-            opacity: 1,
+            autoAlpha: 1,
             ease: "power3.out",
-            duration: 1,
+            duration: 0.8,
           },
           i * 0.6
         );
@@ -74,7 +80,7 @@ export default function ProcessSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white py-32">
+    <section ref={sectionRef} className="bg-white py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24">
 
         {/* LEFT CONTENT */}
@@ -99,12 +105,10 @@ export default function ProcessSection() {
               <div
                 key={index}
                 ref={(el) => (itemsRef.current[index] = el)}
-                className={`flex gap-8 items-start will-change-transform ${
-                  index === 0 ? "opacity-100 translate-y-0" : "opacity-0"
-                }`}
+                className="process-step flex gap-8 items-start"
               >
                 {/* Icon */}
-                <div className="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
+                <div className="process-icon relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
                   <step.icon className="w-5 h-5 text-slate-700" />
                 </div>
 

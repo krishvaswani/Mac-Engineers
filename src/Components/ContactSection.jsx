@@ -62,7 +62,7 @@ export default function ContactSection() {
                 <p className="uppercase text-xs mb-1 text-slate-500">
                   Talk to us
                 </p>
-                <p>+123 456 789 00</p>
+                <p>+91 98765 43210</p>
               </div>
 
               <div>
@@ -70,9 +70,8 @@ export default function ContactSection() {
                   Post address
                 </p>
                 <p>
-                  541 Melville Ave, Palo Alto, CA
-                  <br />
-                  94301, United States
+                  2nd Floor,Plot No. 62a,Om Vihar
+                  <br/>Phase- IV,Uttam Nagar,New Delhi-110059
                 </p>
               </div>
             </div>

@@ -123,3 +123,12 @@ img {
   right: 0;
   background: linear-gradient(to left, white, transparent);
 }
+
+
+
+
+
+.swiper-button-next,.swiper-button-prev{
+    height: 25px !important;
+    color: white !important;
+}
