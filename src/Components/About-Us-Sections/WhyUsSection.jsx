@@ -30,27 +30,43 @@ export default function WhyUsSection() {
             </h2>
 
             {/* CTA */}
-            <div className="mt-14 flex items-center gap-4 group">
-              {/* BUTTON */}
-              <motion.button
-                whileHover={{ backgroundColor: "#16322a" }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="px-9 py-4 rounded-full bg-[#1f3d34]
-                text-white font-medium"
-              >
-                Free Consultation
-              </motion.button>
+<div className="mt-14 flex items-center group">
+  {/* BUTTON */}
+  <motion.button
+    className="relative overflow-hidden px-9 py-4 rounded-full 
+    bg-[#1f3d34] text-white font-medium"
+  >
+    {/* SLIDE OVERLAY */}
+    <span
+      className="absolute inset-0 bg-[#fabd14] 
+      -translate-x-full group-hover:translate-x-0 
+      transition-transform duration-300 ease-out"
+    />
 
-              {/* ICON */}
-              <motion.div
-                whileHover={{ x: 4, y: -4, rotate: 8 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="w-12 h-12 rounded-full bg-[#faba19]
-                flex items-center justify-center cursor-pointer"
-              >
-                <ArrowUpRight className="text-[#1f3d34]" />
-              </motion.div>
-            </div>
+    {/* TEXT */}
+    <span className="relative z-10">
+      Free Consultation
+    </span>
+  </motion.button>
+
+  {/* ICON */}
+  <motion.div
+    className="relative overflow-hidden w-11 h-11 rounded-full 
+    bg-[#fabd14] flex items-center justify-center cursor-pointer"
+    whileHover={{ x: 4, y: -4, rotate: 8 }}
+    transition={{ duration: 0.25, ease: "easeOut" }}
+  >
+    {/* ICON OVERLAY */}
+    <span
+      className="absolute inset-0 bg-[#1f3d34] 
+      -translate-x-full group-hover:translate-x-0 
+      transition-transform duration-300 ease-out"
+    />
+
+    <ArrowUpRight className="relative z-10 text-white" />
+  </motion.div>
+</div>
+
           </motion.div>
 
           {/* ================= RIGHT ================= */}
@@ -67,11 +83,11 @@ export default function WhyUsSection() {
             </div>
 
             {/* TEXT */}
-            <p className="text-lg text-neutral-600 leading-relaxed">
+            <p className="text-lg text-neutral-600 leading-relaxed text-justify">
               Driven by a relentless focus on “why,” we integrate our services
               to uncover, design, and deliver the most impactful outcomes for
               you. Instead of relying on predefined processes, we take a
-              hands-on approach—collaborating closely with your teams to craft
+              hands-on approach collaborating closely with your teams to craft
               practical, end-to-end solutions tailored to your needs.
             </p>
           </motion.div>

@@ -13,6 +13,7 @@ import Blog from "./Pages/Blog.jsx";
 import ProductPage from "./Pages/ProductPage.jsx";
 import CollectionPage from "./Pages/CollectionPage";
 import Allproduct from "./Pages/Products.jsx"
+import Projects from './Pages/Projects.jsx'
 
 // ADMIN
 import AdminLogin from "./Admin/AdminLogin";
@@ -56,6 +57,7 @@ function AppRoutes() {
       <Route path="/about/*" element={<About />} />
       <Route path="/contact/*" element={<Contact />} />
       <Route path="/product" element={<Allproduct />} />
+      <Route path="/projects" element={<Projects />} />
       <Route path="/product/:id" element={<ProductPage />} />
       <Route path="/collections/:slug" element={<CollectionPage />} />
 

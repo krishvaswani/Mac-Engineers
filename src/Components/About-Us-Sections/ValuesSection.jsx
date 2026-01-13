@@ -42,7 +42,7 @@ export default function ValuesSection() {
           </div>
 
           {/* RIGHT */}
-          <p className="text-lg text-neutral-600 leading-relaxed max-w-xl lg:self-end">
+          <p className="text-lg text-neutral-600 leading-relaxed max-w-xl lg:self-end text-justify">
             We offer a deeply personalized approach, providing objective,
             customized advice, seamless wealth management, and exclusive
             access to private investments, all designed to help clients
