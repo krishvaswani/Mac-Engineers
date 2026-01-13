@@ -50,13 +50,11 @@ export default function ProcessSection() {
           end: "+=1200",
           scrub: true,
           pin: true,
-          pinSpacing: true,            // ✅ IMPORTANT
           anticipatePin: 1,
-          invalidateOnRefresh: true,
         },
       });
 
-      // Animate steps 2–4 only
+      // 🔥 Animate ONLY steps 2,3,4 (skip first)
       itemsRef.current.slice(1).forEach((item, i) => {
         tl.fromTo(
           item,
@@ -66,7 +64,6 @@ export default function ProcessSection() {
             opacity: 1,
             ease: "power3.out",
             duration: 1,
-            clearProps: "transform",  // ✅ RELEASE TRANSFORM
           },
           i * 0.6
         );
@@ -77,22 +74,24 @@ export default function ProcessSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white py-32 relative z-0">
+    <section ref={sectionRef} className="bg-white py-32">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24">
-        {/* LEFT */}
+
+        {/* LEFT CONTENT */}
         <div className="self-start">
-          <h2 className="text-4xl md:text-5xl font-semibold leading-tight">
+          <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
             Simplified HVAC <br /> project execution
           </h2>
 
-          <p className="mt-6 text-slate-600 max-w-md">
+          <p className="mt-6 text-slate-600 max-w-md leading-relaxed">
             Our streamlined process ensures faster delivery, higher efficiency,
             and long-term reliability — from planning to commissioning.
           </p>
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT CONTENT */}
         <div className="relative">
+          {/* Vertical line */}
           <div className="absolute left-5 top-0 bottom-0 w-px bg-slate-200" />
 
           <div className="space-y-20">
@@ -100,17 +99,21 @@ export default function ProcessSection() {
               <div
                 key={index}
                 ref={(el) => (itemsRef.current[index] = el)}
-                className={`flex gap-8 items-start ${
-                  index === 0 ? "opacity-100" : "opacity-0"
+                className={`flex gap-8 items-start will-change-transform ${
+                  index === 0 ? "opacity-100 translate-y-0" : "opacity-0"
                 }`}
               >
+                {/* Icon */}
                 <div className="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
                   <step.icon className="w-5 h-5 text-slate-700" />
                 </div>
 
+                {/* Text */}
                 <div>
-                  <h4 className="text-lg font-semibold">{step.title}</h4>
-                  <p className="mt-2 text-slate-600 max-w-md">
+                  <h4 className="text-lg font-semibold text-slate-900">
+                    {step.title}
+                  </h4>
+                  <p className="mt-2 text-slate-600 leading-relaxed max-w-md">
                     {step.desc}
                   </p>
                 </div>
@@ -118,6 +121,7 @@ export default function ProcessSection() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../Firebase";
@@ -9,12 +8,10 @@ const FALLBACK_IMAGE = "/placeholder.png";
 
 export default function ProductSlider() {
   const sliderRef = useRef(null);
-  const trackRef = useRef(null);
-  const [dragWidth, setDragWidth] = useState(0);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  // 🔥 Fetch products
+  /* ================= FETCH PRODUCTS ================= */
   useEffect(() => {
     const fetchProducts = async () => {
       const q = query(
@@ -34,44 +31,69 @@ export default function ProductSlider() {
     fetchProducts();
   }, []);
 
-  // 🔧 Drag width calculation (GSAP safe)
+  /* ================= DESKTOP DRAG SCROLL ================= */
   useEffect(() => {
-    const calcWidth = () => {
-      if (!sliderRef.current || !trackRef.current) return;
-      setDragWidth(
-        trackRef.current.scrollWidth - sliderRef.current.offsetWidth
-      );
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    const mouseDown = (e) => {
+      isDown = true;
+      slider.classList.add("cursor-grabbing");
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
     };
 
-    calcWidth();
-    window.addEventListener("resize", calcWidth);
-    window.addEventListener("scroll", calcWidth); // ✅ GSAP pin safe
+    const mouseLeave = () => {
+      isDown = false;
+      slider.classList.remove("cursor-grabbing");
+    };
+
+    const mouseUp = () => {
+      isDown = false;
+      slider.classList.remove("cursor-grabbing");
+    };
+
+    const mouseMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      slider.scrollLeft = scrollLeft - walk;
+    };
+
+    slider.addEventListener("mousedown", mouseDown);
+    slider.addEventListener("mouseleave", mouseLeave);
+    slider.addEventListener("mouseup", mouseUp);
+    slider.addEventListener("mousemove", mouseMove);
 
     return () => {
-      window.removeEventListener("resize", calcWidth);
-      window.removeEventListener("scroll", calcWidth);
+      slider.removeEventListener("mousedown", mouseDown);
+      slider.removeEventListener("mouseleave", mouseLeave);
+      slider.removeEventListener("mouseup", mouseUp);
+      slider.removeEventListener("mousemove", mouseMove);
     };
-  }, [products]);
+  }, []);
 
   return (
     <section className="bg-white py-20 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
-        <div ref={sliderRef} className="overflow-hidden">
-          <motion.div
-            ref={trackRef}
-            drag="x"
-            dragConstraints={{ left: -dragWidth, right: 0 }}
-            dragElastic={0.08}
-            whileTap={{ cursor: "grabbing" }}
-            className="flex gap-8 cursor-grab py-6"
-            style={{ touchAction: "pan-y" }}
-          >
-            {products.map((product) => (
-              <div key={product.id} className="min-w-[320px]">
-                <ProductCard product={product} navigate={navigate} />
-              </div>
-            ))}
-          </motion.div>
+        <div
+          ref={sliderRef}
+          className="
+            flex gap-8 overflow-x-auto py-6
+            cursor-grab select-none
+            scrollbar-hide
+          "
+        >
+          {products.map((product) => (
+            <div key={product.id} className="min-w-[320px]">
+              <ProductCard product={product} navigate={navigate} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -98,6 +120,8 @@ function ProductCard({ product, navigate }) {
 
   return (
     <div className="h-130 bg-white rounded-3xl border border-black/10 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col">
+      
+      {/* IMAGE */}
       <div className="h-60 bg-gray-100 flex items-center justify-center p-6">
         <img
           src={imageSrc}
@@ -108,6 +132,7 @@ function ProductCard({ product, navigate }) {
         />
       </div>
 
+      {/* CONTENT */}
       <div className="flex flex-col flex-1 px-6 pt-4">
         <h3 className="font-semibold text-lg line-clamp-2 min-h-12">
           {name}
@@ -117,6 +142,7 @@ function ProductCard({ product, navigate }) {
           {description}
         </p>
 
+        {/* RATING */}
         <div className="flex gap-1 mt-3">
           {[...Array(5)].map((_, i) => (
             <Star
@@ -131,6 +157,7 @@ function ProductCard({ product, navigate }) {
           ))}
         </div>
 
+        {/* PRICE + STOCK */}
         <div className="mt-auto pb-6">
           <div className="flex justify-between items-center pt-4">
             <span className="text-xl font-semibold">₹{price}</span>

@@ -31,12 +31,12 @@ export default function ContactSection() {
       ref={sectionRef}
       className="relative bg-linear-to-br from-slate-50 to-white py-20 overflow-hidden rounded-3xl m-5"
     >
-      {/* subtle grain */}
+      {/* Subtle grain background */}
       <div className="absolute inset-0 bg-[radial-gradient(#00000008_1px,transparent_1px)] bg-size-[4px_4px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-
+          
           {/* LEFT CONTENT */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -51,8 +51,10 @@ export default function ContactSection() {
 
             <h2 className="text-4xl md:text-5xl font-semibold leading-tight">
               Tell us about your project
-              <br />whether it’s a website,
-              <br />SEO, or marketing.
+              <br />
+              whether it’s a website,
+              <br />
+              SEO, or marketing.
             </h2>
 
             <div className="mt-10 space-y-6 text-slate-600 text-sm">
@@ -86,54 +88,57 @@ export default function ContactSection() {
               Have a project in mind?
             </h3>
 
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <input
-    type="text"
-    placeholder="e.g. Alex Sharma"
-    className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
-  />
-  
-  <input
-    type="email"
-    placeholder="e.g. hello@yourcompany.com"
-    className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
-  />
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Name */}
+              <input
+                type="text"
+                placeholder="Your full name"
+                className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
+                required
+              />
 
-  <select className="input bg-slate-50 border border-slate-200">
-    <option value="" disabled selected>Project budget range</option>
-    <option>$1,000 – $5,000</option>
-    <option>$5,000 – $10,000</option>
-    <option>$10,000 – $25,000</option>
-    <option>$25,000+</option>
-    <option>Just exploring options</option>
-  </select>
+              {/* Email */}
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
+                required
+              />
 
-  <select className="input bg-slate-50 border border-slate-200">
-    <option value="" disabled selected>What are you interested in?</option>
-    <option>Website Design & Development</option>
-    <option>SEO & Content Strategy</option>
-    <option>Digital Marketing / Ads</option>
-    <option>Branding & UI/UX</option>
-    <option>Consultancy / Strategy Session</option>
-    <option>Multiple services</option>
-  </select>
+              {/* Phone Number */}
+              <input
+                type="tel"
+                placeholder="Phone number"
+                className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
+                required
+              />
 
-  <textarea
-    placeholder="Tell us about your project — goals, timeline, current website (if any), or anything else we should know..."
-    rows="4"
-    className="input bg-slate-50 border border-slate-200 md:col-span-2 resize-none"
-  />
+              {/* City */}
+              <input
+                type="text"
+                placeholder="City"
+                className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
+              />
 
-  <button
-    type="submit"
-    className="md:col-span-2 mt-4 inline-flex items-center gap-3 bg-slate-900 text-white px-6 py-3 rounded-full hover:scale-105 transition"
-  >
-    <span className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center">
-      →
-    </span>
-    Let’s Talk
-  </button>
-</form>
+              {/* Message */}
+              <textarea
+                placeholder="Tell us about your project, idea, or requirements..."
+                rows="4"
+                className="input bg-slate-50 border border-slate-200 md:col-span-2 resize-none"
+                required
+              />
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="md:col-span-2 mt-4 inline-flex items-center gap-3 bg-slate-900 text-white px-6 py-3 rounded-full hover:scale-105 transition duration-300"
+              >
+                <span className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center">
+                  →
+                </span>
+                Let’s Talk
+              </button>
+            </form>
           </motion.div>
 
         </div>
