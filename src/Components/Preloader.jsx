@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import logo from "../assets/logo.png";
+import logo from "../Assets/logo.png";
 
 export default function Preloader({ onFinish }) {
   const containerRef = useRef(null);
