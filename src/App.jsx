@@ -5,7 +5,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import TopMarquee from "./Components/TopMarquee";
 import Header from "./Components/Header.jsx";
 import Footer from "./Components/Footer.jsx";
-import Preloader from "./components/Preloader";
+import Preloader from "./Components/Preloader";
 
 // FRONTEND PAGES
 import Home from "./Pages/Home.jsx";
