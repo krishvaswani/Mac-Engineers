@@ -1,31 +1,31 @@
 // Image Imports
 import airDiffuser from "../Assets/Featured-collection/Air Diffusers.png";
-import inlineDuct from "../Assets/Featured-collection/Air Ventilation Systems.png";
+import ventilation from "../Assets/Featured-collection/Air Ventilation Systems.png";
 import inductionHeating from "../Assets/Featured-collection/Induction Heating Machines.png";
 import airConditioning from "../Assets/Featured-collection/Industrial Air Conditioning System.png";
-import ventilation from "../Assets/Wireless-Headphones_small.webp";
-import oxygenSensor from "../Assets/Wireless-Speaker_small.webp";
-import wetScrubber from "../Assets/Wired-Headphones_small.webp";
-import airCooling from "../Assets/Wired-Earphones_small.webp";
-import fanCoil from "../Assets/Soundbars_d9a7bdfd-e780-4581-ab85-f2e86f84cd28_small.webp";
-import oxygenConcentrator from "../Assets/Gaming-Headphones_small.png";
-import ductDampers from "../Assets/Gaming-Headphones_small.png";
-import pressureValve from "../Assets/Gaming-Headphones_small.png";
+import inlineDuct from "../Assets/Featured-collection/Inline Duct Fans.png";
+import oxygenSensor from "../Assets/Featured-collection/oxygen.png";
+import wetScrubber from "../Assets/Featured-collection/wet.png";
+import airCooling from "../Assets/Featured-collection/airCooling.png"; 
+import fanCoil from "../Assets/Featured-collection/fanCoil.png";
+import oxygenConcentrator from "../Assets/Featured-collection/oxygensystem.png";
+import ductDampers from "../Assets/Featured-collection/duct.png";
+import pressureValve from "../Assets/Featured-collection/valve.png";
 
 // Categories Data
 const categories = [
-  { title: "Industrial Air Conditioning", image: airConditioning },
-  { title: "Induction Heating Machine", image: inductionHeating },
   { title: "Inline Duct Fans", image: inlineDuct },
   { title: "Air Diffuser", image: airDiffuser },
-  { title: "Air Ventilation System", image: ventilation },
-  { title: "Oxygen Sensor", image: oxygenSensor },
-  { title: "Wet Scrubber", image: wetScrubber },
-  { title: "Air Cooling System", image: airCooling },
   { title: "Fan Coil Unit", image: fanCoil },
-  { title: "Oxygen Concentrator Machine", image: oxygenConcentrator },
+  { title: "Wet Scrubber", image: wetScrubber },
   { title: "Duct Dampers", image: ductDampers },
+  { title: "Oxygen Sensor", image: oxygenSensor },
+  { title: "Industrial Air Conditioning", image: airConditioning },
+  { title: "Induction Heating Machine", image: inductionHeating },
+  { title: "Air Ventilation System", image: ventilation },
+  { title: "Air Cooling System", image: airCooling },
   { title: "Pressure Relief Valve", image: pressureValve },
+  { title: "Oxygen Concentrator Machine", image: oxygenConcentrator },
 ];
 
 export default function CategoryIcons() {
@@ -33,7 +33,7 @@ export default function CategoryIcons() {
 
   return (
     <section className="bg-white pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4">
 
         {/* GRID (≤ 6 items) */}
         {!isCarousel && (
@@ -46,7 +46,8 @@ export default function CategoryIcons() {
 
         {/* CAROUSEL (> 6 items) */}
         {isCarousel && (
-          <div className="flex gap-8 overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
+          <div className="flex gap-14
+           overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
             {categories.map((cat, index) => (
               <div key={index} className="snap-center shrink-0">
                 <CategoryItem cat={cat} />
@@ -76,7 +77,7 @@ function CategoryItem({ cat }) {
       </div>
 
       {/* Title */}
-      <p className="mt-4 text-sm font-medium text-slate-900 leading-tight">
+      <p className="mt-4 text-sm font-medium text-slate-900 text-wrap ">
         {cat.title}
       </p>
     </div>

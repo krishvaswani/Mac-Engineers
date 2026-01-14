@@ -9,6 +9,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import {
+  MapPinIcon,
+  HomeModernIcon,
+} from "@heroicons/react/24/outline";
+
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -89,7 +94,7 @@ function ImageLightbox({ images, startIndex, onClose }) {
 
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-white text-3xl hover:scale-110 transition z-50"
+          className="absolute top-6 right-6 text-white text-3xl hover:scale-110 transition"
         >
           ✕
         </button>
@@ -125,7 +130,7 @@ function ProjectCard({ project, onImageClick }) {
           navigation
           autoplay={{ delay: 3500 }}
           loop
-          className="rounded-xl overflow-hidden project-image-swiper"
+          className="rounded-xl overflow-hidden"
         >
           {project.images.map((img, i) => (
             <SwiperSlide key={i}>
@@ -136,11 +141,7 @@ function ProjectCard({ project, onImageClick }) {
                 <img
                   src={img}
                   alt={project.title}
-                  className="
-                    h-80 w-full object-cover
-                    transition-transform duration-700
-                    group-hover:scale-110
-                  "
+                  className="h-80 w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
@@ -155,14 +156,24 @@ function ProjectCard({ project, onImageClick }) {
       </div>
 
       {/* CONTENT */}
-      <div className="px-6 pt-5 pb-16 mt-auto">
+      <div className="px-6 pt-4 pb-8 mt-auto">
+        {/* DIVIDER */}
+
         <h3 className="text-lg font-semibold text-gray-900">
           {project.title}
         </h3>
+        <div className="h-px w-full  bg-gray-900/40 mt-4" />
 
-        <div className="mt-4 text-sm text-gray-700 space-y-2">
-          <p>📍 {project.location}</p>
-          <p>🏠 Plot Area : {project.area}</p>
+        <div className="mt-4 text-sm text-gray-700 space-y-3">
+          <div className="flex items-center gap-2">
+            <MapPinIcon className="w-4 h-4" />
+            <span>{project.location}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <HomeModernIcon className="w-4 h-4" />
+            <span>Plot Area : {project.area}</span>
+          </div>
         </div>
       </div>
     </motion.div>
