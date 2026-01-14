@@ -16,7 +16,7 @@ import Blog from "./Pages/Blog.jsx";
 import ProductPage from "./Pages/ProductPage.jsx";
 import CollectionPage from "./Pages/CollectionPage";
 import Allproduct from "./Pages/Products.jsx";
-import Projects from "./Pages/Products.jsx";
+import Projects from "./Pages/Projects.jsx";
 
 // ADMIN
 import AdminLogin from "./Admin/AdminLogin";
