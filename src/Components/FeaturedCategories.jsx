@@ -9,7 +9,7 @@ import wetScrubber from "../Assets/Featured-collection/wet.png";
 import airCooling from "../Assets/Featured-collection/aircooling.png"; 
 import fanCoil from "../Assets/Featured-collection/fancoil.png";
 import oxygenConcentrator from "../Assets/Featured-collection/oxygensystem.png";
-import ductDampers from "../Assets/Featured-collection/duct.png";
+import ductDampers from "../Assets/Featured-collection/Duct.png";
 import pressureValve from "../Assets/Featured-collection/valve.png";
 
 // Categories Data
