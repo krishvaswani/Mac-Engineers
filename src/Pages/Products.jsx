@@ -113,9 +113,7 @@ export default function Products() {
             {/* Stock */}
             <select
               value={stockFilter}
-              onChange={(e) =>
-                setStockFilter(e.target.value)
-              }
+              onChange={(e) => setStockFilter(e.target.value)}
               className="border border-black/10 rounded-xl px-4 py-2 cursor-pointer"
             >
               <option value="all">All Stock</option>
@@ -128,9 +126,7 @@ export default function Products() {
               type="number"
               placeholder="Max price"
               value={maxPrice}
-              onChange={(e) =>
-                setMaxPrice(e.target.value)
-              }
+              onChange={(e) => setMaxPrice(e.target.value)}
               className="border border-black/10 rounded-xl px-4 py-2 w-40"
             />
 
@@ -138,21 +134,13 @@ export default function Products() {
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value)
-                }
+                onChange={(e) => setSortBy(e.target.value)}
                 className="border border-black/10 rounded-xl px-4 py-2 pr-10 cursor-pointer"
               >
                 <option value="latest">Latest</option>
-                <option value="price-low">
-                  Price: Low to High
-                </option>
-                <option value="price-high">
-                  Price: High to Low
-                </option>
-                <option value="name">
-                  Name: A–Z
-                </option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name: A–Z</option>
               </select>
               <ChevronDown
                 size={16}
@@ -187,7 +175,7 @@ export default function Products() {
                       block
                     "
                   >
-                    {/* IMAGE (HEIGHT INCREASED HERE) */}
+                    {/* IMAGE */}
                     <div className="bg-gray-50 h-72 flex items-center justify-center overflow-hidden">
                       {p.images?.[0] ? (
                         <img
@@ -212,30 +200,33 @@ export default function Products() {
                         {p.description}
                       </p>
 
+                      {/* PRICE + STOCK */}
                       <div className="flex justify-between items-center pt-2">
-                        <span className="font-semibold text-black">
-                          ₹{p.price}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          {/* OLD PRICE (HIDDEN IF 0 / EMPTY) */}
+                          {p.oldPrice && p.oldPrice > 0 && (
+                            <span className="text-sm text-gray-400 line-through">
+                              ₹{p.oldPrice}
+                            </span>
+                          )}
+
+                          {/* CURRENT PRICE */}
+                          <span className="font-semibold text-black">
+                            ₹{p.price}
+                          </span>
+                        </div>
 
                         {p.inStock ? (
                           <span className="
-                            text-xs
-                            px-3 py-1
-                            rounded-full
-                            bg-green-50
-                            border border-green-200
-                            text-green-700
+                            text-xs px-3 py-1 rounded-full
+                            bg-green-50 border border-green-200 text-green-700
                           ">
                             In Stock
                           </span>
                         ) : (
                           <span className="
-                            text-xs
-                            px-3 py-1
-                            rounded-full
-                            bg-red-50
-                            border border-red-200
-                            text-red-600
+                            text-xs px-3 py-1 rounded-full
+                            bg-red-50 border border-red-200 text-red-600
                           ">
                             Out of Stock
                           </span>
