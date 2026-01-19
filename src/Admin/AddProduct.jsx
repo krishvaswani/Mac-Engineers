@@ -39,13 +39,43 @@ const ADDITIONAL_OPTIONS = [
   "Safety Instructions",
 ];
 
+/* ================= SPEC PARSER ================= */
+
+const parseSpecsFromText = (text) => {
+  return text
+    .split("\n")
+    .map((line) => {
+      line = line.trim();
+      if (!line) return null;
+
+      line = line.replace(/\|/g, "").trim();
+
+      const parts =
+        line.includes("\t")
+          ? line.split("\t")
+          : line.includes(":")
+          ? line.split(":")
+          : line.split(/\s{2,}/);
+
+      if (parts.length < 2) return null;
+
+      return {
+        key: parts[0].trim(),
+        value: parts.slice(1).join(" ").trim(),
+      };
+    })
+    .filter(Boolean);
+};
+
 /* ================= COMPONENT ================= */
 
 export default function AddProduct() {
   const navigate = useNavigate();
+  const dragIndex = useRef(null);
 
   const [collections, setCollections] = useState([]);
   const [specs, setSpecs] = useState([{ key: "", value: "" }]);
+  const [specPaste, setSpecPaste] = useState("");
   const [images, setImages] = useState([]);
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -53,13 +83,10 @@ export default function AddProduct() {
   const [openUsage, setOpenUsage] = useState(true);
   const [openAdditional, setOpenAdditional] = useState(false);
 
-  const dragIndex = useRef(null);
-
   const [form, setForm] = useState({
     name: "",
     sku: "",
     price: "",
-    oldPrice: "",
     description: "",
     collection: "",
     inStock: true,
@@ -80,7 +107,7 @@ export default function AddProduct() {
     fetchCollections();
   }, []);
 
-  /* ================= SPECS ================= */
+  /* ================= SPEC HELPERS ================= */
 
   const updateSpec = (i, field, value) => {
     const copy = [...specs];
@@ -130,8 +157,7 @@ export default function AddProduct() {
         images.map((img) => uploadImage(img))
       );
 
-      let pdfUrl = "";
-      if (pdfFile) pdfUrl = await uploadPdf(pdfFile);
+      const pdfUrl = pdfFile ? await uploadPdf(pdfFile) : "";
 
       const specsObject = {};
       specs.forEach((s) => {
@@ -141,7 +167,6 @@ export default function AddProduct() {
       await addDoc(collection(db, "products"), {
         ...form,
         price: Number(form.price),
-        oldPrice: Number(form.oldPrice),
         specs: specsObject,
         images: imageUrls,
         pdfUrl,
@@ -151,7 +176,6 @@ export default function AddProduct() {
       toast.success("Product added successfully", { id: "save" });
       navigate("/admin/products");
     } catch (error) {
-      console.error(error);
       toast.error(error.message || "Failed to save product", {
         id: "save",
       });
@@ -163,35 +187,28 @@ export default function AddProduct() {
   /* ================= UI ================= */
 
   return (
-    <div className="min-h-screen bg-gray-50 px-8 py-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-8 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
         {/* HEADER */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex items-center justify-between">
+        <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
               Add Product
             </h1>
-            <p className="text-gray-500 mt-1">
-              Create and publish a new product
+            <p className="text-gray-500">
+              Create and publish a premium product
             </p>
           </div>
-
           <button
             onClick={saveProduct}
             disabled={loading}
-            className="
-              cursor-pointer
-              bg-linear-to-r from-blue-600 to-blue-700
-              text-white px-8 py-3 rounded-xl
-              shadow-md hover:shadow-lg
-              transition disabled:opacity-60
-            "
+            className="bg-blue-600 hover:bg-blue-700 transition text-white px-8 py-3 rounded-xl shadow-md disabled:opacity-60"
           >
             {loading ? "Saving..." : "Save Product"}
           </button>
         </div>
 
-        <div className="grid grid-cols-12 gap-8">
+        <div className="grid grid-cols-12 gap-10">
           {/* LEFT */}
           <div className="col-span-8 space-y-8">
             <Card title="Basic Information">
@@ -209,7 +226,7 @@ export default function AddProduct() {
               />
               <Textarea
                 rows={4}
-                placeholder="Description"
+                placeholder="Product description"
                 onChange={(e) =>
                   setForm({
                     ...form,
@@ -228,6 +245,27 @@ export default function AddProduct() {
             </Card>
 
             <Card title="Specifications">
+              <Textarea
+                rows={4}
+                placeholder="Paste specs from Excel / Table / Text"
+                value={specPaste}
+                onChange={(e) => setSpecPaste(e.target.value)}
+              />
+
+              <button
+                onClick={() => {
+                  const parsed = parseSpecsFromText(specPaste);
+                  if (!parsed.length)
+                    return toast.error("Invalid specs format");
+                  setSpecs(parsed);
+                  setSpecPaste("");
+                  toast.success("Specifications added");
+                }}
+                className="bg-blue-600 text-white px-4 py-2 rounded-xl w-fit"
+              >
+                Convert to Specs
+              </button>
+
               {specs.map((s, i) => (
                 <div key={i} className="flex gap-3">
                   <Input
@@ -246,21 +284,22 @@ export default function AddProduct() {
                   />
                   <button
                     onClick={() => removeSpec(i)}
-                    className="cursor-pointer text-red-600"
+                    className="text-red-600"
                   >
                     <X size={16} />
                   </button>
                 </div>
               ))}
+
               <button
                 onClick={addSpec}
-                className="cursor-pointer text-blue-600 text-sm flex items-center gap-1"
+                className="text-blue-600 flex items-center gap-1"
               >
                 <Plus size={14} /> Add Specification
               </button>
             </Card>
 
-            {/* USAGE GUIDELINES */}
+            {/* USAGE */}
             <Accordion
               title="Usage Guidelines"
               open={openUsage}
@@ -272,17 +311,15 @@ export default function AddProduct() {
                   setForm({ ...form, usageType: e.target.value })
                 }
               >
-                <option value="">Select Usage Type</option>
+                <option value="">Select usage type</option>
                 {USAGE_OPTIONS.map((u) => (
-                  <option key={u} value={u}>
-                    {u}
-                  </option>
+                  <option key={u}>{u}</option>
                 ))}
               </Select>
 
               <Textarea
                 rows={4}
-                placeholder="Enter usage guidelines"
+                placeholder="Usage instructions"
                 value={form.usageGuidelines}
                 onChange={(e) =>
                   setForm({
@@ -293,7 +330,7 @@ export default function AddProduct() {
               />
             </Accordion>
 
-            {/* ADDITIONAL INFORMATION */}
+            {/* ADDITIONAL */}
             <Accordion
               title="Additional Information"
               open={openAdditional}
@@ -308,17 +345,15 @@ export default function AddProduct() {
                   })
                 }
               >
-                <option value="">Select Information Type</option>
+                <option value="">Select type</option>
                 {ADDITIONAL_OPTIONS.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
+                  <option key={a}>{a}</option>
                 ))}
               </Select>
 
               <Textarea
                 rows={4}
-                placeholder="Enter additional information"
+                placeholder="Additional details"
                 value={form.additionalInfo}
                 onChange={(e) =>
                   setForm({
@@ -340,16 +375,6 @@ export default function AddProduct() {
                   setForm({ ...form, price: e.target.value })
                 }
               />
-              <Input
-                type="number"
-                placeholder="Old Price"
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    oldPrice: e.target.value,
-                  })
-                }
-              />
             </Card>
 
             <Card title="Collection">
@@ -361,7 +386,7 @@ export default function AddProduct() {
                   })
                 }
               >
-                <option value="">Select Collection</option>
+                <option value="">Select collection</option>
                 {collections.map((c) => (
                   <option key={c.slug} value={c.slug}>
                     {c.name}
@@ -383,62 +408,45 @@ export default function AddProduct() {
   );
 }
 
-/* ================= ACCORDION ================= */
+/* ================= UI COMPONENTS ================= */
 
 function Accordion({ title, open, setOpen, children }) {
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-4">
       <button
         onClick={() => setOpen(!open)}
-        className="cursor-pointer w-full flex items-center justify-between font-medium"
+        className="w-full flex justify-between font-medium"
       >
         {title}
         <ChevronDown
           size={18}
-          className={`transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`transition ${open ? "rotate-180" : ""}`}
         />
       </button>
-
       {open && <div className="pt-4 space-y-4">{children}</div>}
     </div>
   );
 }
 
-/* ================= OTHER COMPONENTS ================= */
-
 function PdfUpload({ pdfFile, setPdfFile }) {
   return (
-    <div className="space-y-3">
+    <div>
       {!pdfFile ? (
-        <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
+        <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center">
           <FileText className="text-gray-400 mb-2" />
-          <p className="text-sm text-gray-500">
-            Select a PDF file
-          </p>
+          <span className="text-sm text-gray-500">Upload PDF</span>
           <input
             type="file"
             hidden
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (!file) return;
-              if (file.type !== "application/pdf") {
-                toast.error("Only PDF files are allowed");
-                e.target.value = "";
-                return;
-              }
-              setPdfFile(file);
-              e.target.value = "";
-            }}
+            onChange={(e) => setPdfFile(e.target.files[0])}
           />
         </label>
       ) : (
-        <div className="flex items-center justify-between border rounded-xl px-4 py-3">
+        <div className="flex justify-between border rounded-xl px-4 py-3">
           <span className="text-sm truncate">{pdfFile.name}</span>
           <button
             onClick={() => setPdfFile(null)}
-            className="cursor-pointer text-red-600"
+            className="text-red-600"
           >
             <X size={16} />
           </button>
@@ -458,21 +466,20 @@ function GalleryUpload({ images, setImages, dragIndex }) {
   };
 
   return (
-    <div className="space-y-4">
-      <label className="cursor-pointer border-2 border-dashed rounded-xl p-6 flex flex-col items-center hover:border-blue-400 transition">
+    <>
+      <label className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center cursor-pointer">
         <ImagePlus className="text-gray-400" />
-        <p className="text-sm text-gray-500">
-          Upload images (drag to reorder)
-        </p>
+        <span className="text-sm text-gray-500">
+          Upload images
+        </span>
         <input
           type="file"
           multiple
-          accept="image/*"
           hidden
-          onChange={(e) => {
-            setImages([...images, ...e.target.files]);
-            e.target.value = "";
-          }}
+          accept="image/*"
+          onChange={(e) =>
+            setImages([...images, ...e.target.files])
+          }
         />
       </label>
 
@@ -484,41 +491,35 @@ function GalleryUpload({ images, setImages, dragIndex }) {
             onDragStart={() => (dragIndex.current = i)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => onDrop(i)}
-            className="relative group cursor-move"
+            className="relative cursor-move"
           >
             <img
               src={URL.createObjectURL(img)}
-              className={`h-28 w-full object-cover rounded-xl ${
-                i === 0 ? "ring-2 ring-blue-600" : ""
-              }`}
+              className="h-28 w-full object-cover rounded-xl"
             />
             <button
               onClick={() =>
                 setImages(images.filter((_, idx) => idx !== i))
               }
-              className="cursor-pointer absolute top-2 right-2 bg-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+              className="absolute top-2 right-2 bg-white p-1 rounded-full"
             >
               <X size={14} />
             </button>
             <GripVertical
               size={16}
-              className="absolute bottom-2 right-2 text-white opacity-80"
+              className="absolute bottom-2 right-2 text-white"
             />
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 
 function Card({ title, children }) {
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 ring-1 ring-black/5 space-y-4">
-      {title && (
-        <h3 className="font-medium text-gray-900">
-          {title}
-        </h3>
-      )}
+      <h3 className="font-medium text-gray-900">{title}</h3>
       {children}
     </div>
   );
