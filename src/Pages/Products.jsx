@@ -204,11 +204,11 @@ export default function Products() {
                       <div className="flex justify-between items-center pt-2">
                         <div className="flex items-center gap-2">
                           {/* OLD PRICE (HIDDEN IF 0 / EMPTY) */}
-                          {p.oldPrice && p.oldPrice > 0 && (
+                          {/* {p.oldPrice && p.oldPrice > 0 && (
                             <span className="text-sm text-gray-400 line-through">
                               ₹{p.oldPrice}
                             </span>
-                          )}
+                          )} */}
 
                           {/* CURRENT PRICE */}
                           <span className="font-semibold text-black">

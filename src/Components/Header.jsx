@@ -11,7 +11,7 @@ export default function Header() {
   const [collections, setCollections] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation();
-
+  const isGrid = collections.length > 8;
   const isHome = location.pathname === "/";
 
   /* SCROLL EFFECT */
@@ -48,12 +48,11 @@ export default function Header() {
         className={`
           z-50 w-full transition-all duration-300
           ${isHome ? "fixed top-0" : "sticky top-0"}
-          ${
-            isHome
-              ? scrolled
-                ? "bg-black/50 backdrop-blur-lg py-4"
-                : "bg-transparent py-16"
-              : "bg-black/60 backdrop-blur-lg py-4"
+          ${isHome
+            ? scrolled
+              ? "bg-black/50 backdrop-blur-lg py-4"
+              : "bg-transparent py-16"
+            : "bg-black/60 backdrop-blur-lg py-4"
           }
         `}
       >
@@ -105,16 +104,25 @@ export default function Header() {
                 <AnimatePresence>
                   {showDropdown && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
                       className="
-                        absolute top-full mt-4 left-0
-                        bg-white rounded-2xl
-                        shadow-[0_20px_50px_rgba(0,0,0,0.25)]
-                        min-w-60 p-3
-                      "
+  absolute top-full mt-6
+  left-1/2 -translate-x-1/2
+  bg-white rounded-3xl
+  shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+  px-8 py-6
+  w-180 max-w-[90vw]
+  grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))]
+  gap-x-10 gap-y-4
+  max-h-105 overflow-y-auto
+  modern-scroll
+"
                     >
+
+
                       {collections.length === 0 ? (
                         <p className="text-gray-500 text-sm px-3 py-2 uppercase">
                           NO COLLECTIONS
@@ -125,10 +133,13 @@ export default function Header() {
                             key={c.id}
                             to={`/collections/${c.slug}`}
                             className="
-                              block px-4 py-2 rounded-xl
-                              text-sm text-black uppercase
-                              hover:bg-black/5 transition
-                            "
+    text-sm font-medium uppercase
+    text-gray-800
+    hover:text-[#fabd14]
+    transition
+    leading-snug
+    break-words
+  "
                           >
                             {c.name}
                           </Link>
@@ -142,9 +153,9 @@ export default function Header() {
               <NavLink label="PROJECTS" to="/projects" active={isActive("/projects")} />
 
               {/* CONTACT BUTTON */}
-             <Link
-  to="/contact"
-  className="
+              <Link
+                to="/contact"
+                className="
     relative group overflow-hidden
     bg-white text-black
     px-6 py-3
@@ -153,10 +164,10 @@ export default function Header() {
     font-semibold uppercase
     shadow-[0_8px_24px_rgba(0,0,0,0.12)]
   "
->
-  {/* Hover background animation */}
-  <span
-    className="
+              >
+                {/* Hover background animation */}
+                <span
+                  className="
       absolute inset-0
       bg-[#fabd14]
       -translate-x-full
@@ -165,14 +176,14 @@ export default function Header() {
       duration-500
       ease-out
     "
-  />
+                />
 
-  {/* Button content */}
-  <span className="relative z-10 flex items-center gap-3">
-    CONTACT US
+                {/* Button content */}
+                <span className="relative z-10 flex items-center gap-3">
+                  CONTACT US
 
-    <span
-      className="
+                  <span
+                    className="
         bg-black/90
         rounded-full
         p-2
@@ -181,9 +192,9 @@ export default function Header() {
         duration-300
         group-hover:bg-black
       "
-    >
-      <svg
-        className="
+                  >
+                    <svg
+                      className="
           w-4 h-4
           text-white
           transition-transform
@@ -193,19 +204,19 @@ export default function Header() {
           group-hover:rotate-0
           group-hover:translate-x-0.5
         "
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M5 12h14" />
-        <path d="M13 6l6 6-6 6" />
-      </svg>
-    </span>
-  </span>
-</Link>
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </span>
+              </Link>
 
             </nav>
 

@@ -83,8 +83,8 @@ export default function ProductPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
 
-            {/* IMAGE VIEWER */}
-            <div className="space-y-6">
+            {/* LEFT – STICKY IMAGE VIEWER */}
+            <div className="space-y-6 lg:sticky lg:top-24 self-start">
 
               <div className="
                 relative
@@ -109,13 +109,13 @@ export default function ProductPage() {
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5 cursor-pointer"
+                      className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
                     >
                       <ChevronLeft />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5 cursor-pointer"
+                      className=" cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
                     >
                       <ChevronRight />
                     </button>
@@ -132,7 +132,6 @@ export default function ProductPage() {
                       rounded-2xl
                       p-2
                       border border-black/5
-                      cursor-pointer
                       ${activeIndex === i ? "ring-1 ring-black/10" : ""}
                     `}
                   >
@@ -145,35 +144,17 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* PRODUCT INFO */}
+            {/* RIGHT – PRODUCT CONTENT */}
             <div className="space-y-8">
 
-              {/* SKU + SHARE
-              <div className="flex justify-between items-center">
-                <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-500">
-                  SKU: {product.sku || "-"}
-                </span>
-                <button className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
-                  <Share2 size={16} /> Share
-                </button>
-              </div> */}
-
-              {/* TITLE */}
               <h1 className="text-3xl font-semibold text-gray-900">
                 {product.name}
               </h1>
 
-              {/* PRICE + STOCK */}
               <div className="flex items-center gap-4 flex-wrap">
                 <span className="text-3xl font-semibold">
                   ₹{product.price}
                 </span>
-
-                {product.oldPrice && (
-                  <span className="line-through text-gray-400">
-                    ₹{product.oldPrice}
-                  </span>
-                )}
 
                 {product.inStock && (
                   <div className="
@@ -183,11 +164,8 @@ export default function ProductPage() {
                     rounded-xl
                     px-4 py-2
                   ">
-                    <CheckCircle
-                      size={18}
-                      className="text-green-600"
-                    />
-                    <div className="leading-tight">
+                    <CheckCircle size={18} className="text-green-600" />
+                    <div>
                       <p className="text-sm font-medium text-green-700">
                         In Stock
                       </p>
@@ -199,19 +177,12 @@ export default function ProductPage() {
                 )}
               </div>
 
-              {/* DESCRIPTION */}
-              <div className="
-                bg-white
-                rounded-3xl
-                border border-black/5
-                px-6 py-5
-              ">
-                <p className="text-gray-600 leading-relaxed">
+              <div className="bg-white rounded-3xl border border-black/5 px-6 py-5">
+                <p className="text-gray-600 leading-relaxed whitespace-pre-line">
                   {product.description}
                 </p>
               </div>
 
-              {/* PDF */}
               {product.pdfUrl && (
                 <a
                   href={product.pdfUrl}
@@ -223,7 +194,6 @@ export default function ProductPage() {
                     border border-black/5
                     rounded-3xl
                     px-6 py-4
-                    cursor-pointer
                     hover:bg-gray-50
                   "
                 >
@@ -244,7 +214,6 @@ export default function ProductPage() {
                 </a>
               )}
 
-              {/* CTA */}
               <div className="flex gap-4">
                 <button
                   onClick={() => setShowEnquiry(true)}
@@ -252,55 +221,42 @@ export default function ProductPage() {
                 >
                   Enquire Now
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border border-black/10 cursor-pointer">
+                <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border cursor-pointer border-black/10">
                   <Phone size={18} /> Call
                 </button>
               </div>
 
-              {/* SPECIFICATIONS */}
               {product.specs && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-3xl border border-black/5 overflow-hidden"
-                >
+                <div className="bg-white rounded-3xl border border-black/5 overflow-hidden">
                   <div className="px-6 py-5 border-b border-black/5">
                     <h3 className="font-semibold">
                       Specifications
                     </h3>
                   </div>
-
                   <div className="divide-y divide-black/5">
                     {Object.entries(product.specs).map(([k, v]) => (
                       <div
                         key={k}
                         className="px-6 py-4 flex justify-between hover:bg-gray-50"
                       >
-                        <span className="text-sm text-gray-500">
-                          {k}
-                        </span>
-                        <span className="text-sm font-medium">
-                          {v}
-                        </span>
+                        <span className="text-sm text-gray-500">{k}</span>
+                        <span className="text-sm font-medium">{v}</span>
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               )}
 
-              {/* DROPDOWNS */}
-              {[
-                {
-                  id: "usage",
-                  title: "Usage Guidelines",
-                  content: product.usageGuidelines,
-                },
-                {
-                  id: "info",
-                  title: "Additional Information",
-                  content: product.additionalInfo,
-                },
-              ]
+              {[{
+                id: "usage",
+                title: "Usage Guidelines",
+                content: product.usageGuidelines,
+              },
+              {
+                id: "info",
+                title: "Additional Information",
+                content: product.additionalInfo,
+              }]
                 .filter(i => i.content)
                 .map(item => (
                   <div
@@ -309,17 +265,14 @@ export default function ProductPage() {
                   >
                     <button
                       onClick={() =>
-                        setOpenSection(
-                          openSection === item.id ? "" : item.id
-                        )
+                        setOpenSection(openSection === item.id ? "" : item.id)
                       }
-                      className="w-full flex justify-between px-6 py-5 font-medium cursor-pointer"
+                      className="w-full flex justify-between px-6 py-5 font-medium"
                     >
                       {item.title}
                       <ChevronDown
-                        className={`transition ${
-                          openSection === item.id ? "rotate-180" : ""
-                        }`}
+                        className={`transition ${openSection === item.id ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -332,7 +285,14 @@ export default function ProductPage() {
                           transition={{ duration: 0.25 }}
                           className="px-6 pb-5 text-sm text-gray-600"
                         >
-                          {item.content}
+                          <ul className="list-disc pl-5 space-y-2">
+                            {item.content
+                              .split("\n")
+                              .filter(line => line.trim() !== "")
+                              .map((line, i) => (
+                                <li key={i}>{line}</li>
+                              ))}
+                          </ul>
                         </motion.div>
                       )}
                     </AnimatePresence>
