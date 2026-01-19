@@ -13,6 +13,9 @@ export default function CollectionForm({ data, onClose }) {
   const [description, setDescription] = useState(
     data?.description || ""
   );
+  const [isActive, setIsActive] = useState(
+    data?.isActive ?? true
+  );
   const [saving, setSaving] = useState(false);
 
   const generateSlug = (value) =>
@@ -27,18 +30,23 @@ export default function CollectionForm({ data, onClose }) {
       return;
     }
 
-    setSaving(true);
-    const finalSlug = slug || generateSlug(name);
+    try {
+      setSaving(true);
+      const finalSlug = slug || generateSlug(name);
 
-    await setDoc(doc(db, "collections", finalSlug), {
-      name,
-      slug: finalSlug,
-      description,
-      createdAt: serverTimestamp(),
-    });
+      await setDoc(doc(db, "collections", finalSlug), {
+        name,
+        slug: finalSlug,
+        description,
+        isActive, // ✅ LIVE / HIDDEN
+        createdAt: data?.createdAt || serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
 
-    setSaving(false);
-    onClose();
+      onClose();
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -118,6 +126,35 @@ export default function CollectionForm({ data, onClose }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
+
+          {/* LIVE / HIDDEN TOGGLE */}
+          <div className="flex items-center justify-between rounded-xl border px-4 py-3">
+            <div>
+              <p className="text-sm font-medium text-gray-800">
+                Collection Status
+              </p>
+              <p className="text-xs text-gray-500">
+                {isActive
+                  ? "Collection is visible and usable"
+                  : "Collection is hidden from store"}
+              </p>
+            </div>
+
+            <button
+              onClick={() => setIsActive(!isActive)}
+              className={`
+                relative w-11 h-6 rounded-full transition
+                ${isActive ? "bg-blue-600" : "bg-gray-300"}
+              `}
+            >
+              <span
+                className={`
+                  absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition
+                  ${isActive ? "translate-x-5" : ""}
+                `}
+              />
+            </button>
           </div>
 
           {/* ACTIONS */}

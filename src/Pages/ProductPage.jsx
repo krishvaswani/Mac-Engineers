@@ -109,7 +109,7 @@ export default function ProductPage() {
                   <>
                     <button
                       onClick={prevImage}
-                      className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
+                      className=" absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
                     >
                       <ChevronLeft />
                     </button>
