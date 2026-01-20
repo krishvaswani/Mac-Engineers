@@ -71,10 +71,10 @@ export default function ProductPage() {
         transition={{ duration: 0.35 }}
         className="bg-linear-to-b from-white to-gray-50"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           {/* BREADCRUMB */}
-          <p className="text-sm text-gray-400 mb-10">
+          <p className="text-sm text-gray-400 mb-10 md:flex hidden">
             {product.collection}
             <span className="text-black font-medium">
               {" "}› {product.name}
@@ -101,7 +101,7 @@ export default function ProductPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.97 }}
                     transition={{ duration: 0.25 }}
-                    className="w-full h-130 object-contain"
+                    className="w-full md:h-130 object-contain"
                   />
                 </AnimatePresence>
 
@@ -137,7 +137,7 @@ export default function ProductPage() {
                   >
                     <img
                       src={img}
-                      className="h-20 w-20 object-contain"
+                      className="h-10 w-10 object-contain"
                     />
                   </button>
                 ))}

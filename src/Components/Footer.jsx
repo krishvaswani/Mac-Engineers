@@ -26,7 +26,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-black text-gray-300 relative rounded-3xl m-5">
+    <footer className="bg-black/60 text-white relative rounded-3xl m-5">
       <div className="max-w-7xl mx-auto px-8 py-16">
 
         {/* TOP GRID */}
@@ -42,7 +42,7 @@ export default function Footer() {
               Mac-Engineers
             </Link>
 
-            <p className="text-gray-400 max-w-md leading-relaxed">
+            <p className="text-white max-w-md leading-relaxed">
               Established in the year 2018 at Hastsal Industrial Area, New Delhi, we “Mac Engineers” are a Partnership based firm, engaged as the foremost Manufacturer and Trader of Duct Dampers, Industrial Water Chillers, SS Kitchen Exhaust Hood, Kitchen Exhaust Wet Scrubber, Etc. 
             </p>
           </div>
@@ -121,16 +121,16 @@ export default function Footer() {
               Contact
             </h4>
 
-            <p className="text-gray-400 mb-2">
+            <p className="text-white mb-2">
               +91 98765 43210
             </p>
-            <p className="text-gray-400 mb-2">
+            <p className="text-white mb-2">
               info@secunet.com
             </p>
             <p className="text-white font-medium mb-2">
               Address
             </p>
-            <p className="text-gray-400 mb-2">
+            <p className="text-white mb-2">
               2nd Floor,Plot No. 62a,Om Vihar,Phase- IV,Uttam Nagar,New Delhi-110059
             </p>
             {/* <div className="rounded-xl overflow-hidden bg-linear-to-br from-gray-800 to-gray-900 shadow-lg">
@@ -146,7 +146,7 @@ export default function Footer() {
         {/* DIVIDER */}
         <div className="border-t border-white/10 mt-20 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
 
-         <p className="text-sm text-gray-400 text-center leading-relaxed">
+         <p className="text-sm text-white text-center leading-relaxed">
   © {new Date().getFullYear()} mac-engineers. Made with love by{" "}
   <a
     href="https://nexadvent.in"
@@ -158,7 +158,7 @@ export default function Footer() {
   </a>
 </p>
 
-          <div className="flex items-center gap-6 text-gray-400">
+          <div className="flex items-center gap-6 text-white">
             <a href="#" className="hover:text-white transition cursor-pointer">
               Fb
             </a>
