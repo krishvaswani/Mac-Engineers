@@ -107,7 +107,7 @@ function ProductCard({ product }) {
       onClick={goToProduct}
       className="h-130 bg-white rounded-3xl border border-black/10 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col cursor-pointer"
     >
-      <div className="h-60 bg-gray-100 flex items-center justify-center p-6">
+      <div className="h-60 bg-white-100 flex items-center justify-center ">
         <img
           src={imageSrc}
           alt={name}

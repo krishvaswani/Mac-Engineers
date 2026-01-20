@@ -176,7 +176,7 @@ export default function Products() {
                     "
                   >
                     {/* IMAGE */}
-                    <div className="bg-gray-50 h-72 flex items-center justify-center overflow-hidden">
+                    <div className="bg-white-50 h-72 flex items-center justify-center overflow-hidden">
                       {p.images?.[0] ? (
                         <img
                           src={p.images[0]}
