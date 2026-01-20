@@ -39,37 +39,34 @@ const steps = [
 
 export default function ProcessSection() {
   const sectionRef = useRef(null);
-  const itemsRef = useRef([]);
+  const stepsRef = useRef([]);
 
   useEffect(() => {
-    // 🧠 global performance tweak
     ScrollTrigger.config({
       ignoreMobileResize: true,
     });
 
     const ctx = gsap.context(() => {
-      // Initial state (GPU friendly)
-      gsap.set(itemsRef.current, {
-        y: 50,
-        autoAlpha: 0,
+      // Initial hidden state
+      gsap.set(stepsRef.current, {
+        opacity: 0,
+        y: 40,
         willChange: "transform, opacity",
       });
 
-      gsap.to(itemsRef.current, {
-        y: 0,
-        autoAlpha: 1,
-        ease: "power3.out",
-        duration: 1,
-        stagger: 0.3,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=850",
-          scrub: 1,            // ✅ smooth interpolation
-          pin: true,
-          anticipatePin: 1,
-          pinSpacing: true,
-        },
+      stepsRef.current.forEach((el, index) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          ease: "power3.out",
+          duration: 0.6,
+          scrollTrigger: {
+            trigger: el,
+            start: "top 75%",
+            end: "top 45%",
+            scrub: true,        // ✅ reverse on scroll up
+          },
+        });
       });
     }, sectionRef);
 
@@ -79,12 +76,12 @@ export default function ProcessSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-16 overflow-hidden"
+      className="bg-white py-8 md:py-16"
     >
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 md:gap-24">
 
-        {/* LEFT CONTENT */}
-        <div className="self-start">
+        {/* LEFT — STICKY */}
+        <div className="md:sticky md:top-32 self-start">
           <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
             Simplified HVAC <br /> project execution
           </h2>
@@ -95,20 +92,19 @@ export default function ProcessSection() {
           </p>
         </div>
 
-        {/* RIGHT CONTENT */}
+        {/* RIGHT — STEPS */}
         <div className="relative">
-          {/* Fixed-height vertical line (NO reflow) */}
-          <div className="absolute left-5 top-0 h-full w-px bg-slate-200 pointer-events-none" />
+          <div className="absolute left-5 top-0 h-full w-px bg-slate-200 hidden md:block" />
 
-          <div className="space-y-20">
+          <div className="space-y-16 md:space-y-20">
             {steps.map((step, index) => (
               <div
                 key={index}
-                ref={(el) => (itemsRef.current[index] = el)}
-                className="flex gap-8 items-start"
+                ref={(el) => (stepsRef.current[index] = el)}
+                className="flex gap-6 md:gap-8 items-start"
               >
                 {/* Icon */}
-                <div className="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
+                <div className="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 shrink-0">
                   <step.icon className="w-5 h-5 text-slate-700" />
                 </div>
 
