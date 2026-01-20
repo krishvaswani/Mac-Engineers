@@ -79,7 +79,7 @@ export default function ProcessSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-32 overflow-hidden"
+      className="bg-white py-16 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24">
 
