@@ -42,37 +42,34 @@ export default function ProcessSection() {
   const itemsRef = useRef([]);
 
   useEffect(() => {
+    // 🧠 global performance tweak
+    ScrollTrigger.config({
+      ignoreMobileResize: true,
+    });
+
     const ctx = gsap.context(() => {
-      // 🔒 Set initial state ONLY via GSAP
-      gsap.set(itemsRef.current.slice(1), {
-        y: 80,
+      // Initial state (GPU friendly)
+      gsap.set(itemsRef.current, {
+        y: 50,
         autoAlpha: 0,
+        willChange: "transform, opacity",
       });
 
-      const tl = gsap.timeline({
+      gsap.to(itemsRef.current, {
+        y: 0,
+        autoAlpha: 1,
+        ease: "power3.out",
+        duration: 1,
+        stagger: 0.3,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=1200",
-          scrub: true,
+          end: "+=850",
+          scrub: 1,            // ✅ smooth interpolation
           pin: true,
-          pinSpacing: true,
           anticipatePin: 1,
-          invalidateOnRefresh: true,
+          pinSpacing: true,
         },
-      });
-
-      itemsRef.current.slice(1).forEach((item, i) => {
-        tl.to(
-          item,
-          {
-            y: 0,
-            autoAlpha: 1,
-            ease: "power3.out",
-            duration: 0.8,
-          },
-          i * 0.6
-        );
       });
     }, sectionRef);
 
@@ -80,7 +77,10 @@ export default function ProcessSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white py-32 overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="bg-white py-32 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24">
 
         {/* LEFT CONTENT */}
@@ -97,18 +97,18 @@ export default function ProcessSection() {
 
         {/* RIGHT CONTENT */}
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-5 top-0 bottom-0 w-px bg-slate-200" />
+          {/* Fixed-height vertical line (NO reflow) */}
+          <div className="absolute left-5 top-0 h-full w-px bg-slate-200 pointer-events-none" />
 
           <div className="space-y-20">
             {steps.map((step, index) => (
               <div
                 key={index}
                 ref={(el) => (itemsRef.current[index] = el)}
-                className="process-step flex gap-8 items-start"
+                className="flex gap-8 items-start"
               >
                 {/* Icon */}
-                <div className="process-icon relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
+                <div className="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100">
                   <step.icon className="w-5 h-5 text-slate-700" />
                 </div>
 
