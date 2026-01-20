@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Herovideo from "../Assets/HvAc.mp4";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -82,6 +83,8 @@ export default function Hero() {
   "
 >
   {/* Hover background animation */}
+
+  <Link to="/product" className="inline-block">
   <span
     className="
       absolute inset-0
@@ -132,6 +135,8 @@ export default function Hero() {
       </svg>
     </span>
   </span>
+
+  </Link>
 </motion.button>
 
 

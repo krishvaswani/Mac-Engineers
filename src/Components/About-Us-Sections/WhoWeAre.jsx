@@ -20,8 +20,8 @@ export default function WhoWeAre() {
           font-normal leading-tight text-[#1f3d34] max-w-4xl"
         >
           A Trusted Partner <br />
-          Committed to Your{" "}
-          <span className="text-[#fbba19]">Financial Success</span>
+          Providing Reliable{" "}
+          <span className="text-[#fbba19]">Engineering Solutions</span>
         </h2>
 
         {/* IMAGE */}
@@ -36,18 +36,18 @@ export default function WhoWeAre() {
         {/* STATS */}
         <div className="mt-8 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-0">
           <Stat
-            value={28.9}
-            decimals={1}
-            prefix="$"
-            suffix="M"
-            label="Assets Under Management"
+            value={8}
+            // decimals={1}
+            prefix=""
+            suffix="+ Years"
+            label="Industry Experience"
             isFirst
           />
           <Stat
-            value={6}
-            prefix="$"
-            suffix="bn"
-            label="Saved for Clients Annually"
+            value={500}
+            prefix=""
+            suffix="+"
+            label="Projects Delivered"
           />
           <Stat
             value={90}
@@ -55,7 +55,7 @@ export default function WhoWeAre() {
             label="Repeat Clients or Referrals"
           />
           <Stat
-            value={120}
+            value={50}
             suffix="+"
             label="Professionals"
           />

@@ -66,7 +66,7 @@ export default function Contact() {
       <section className="bg-linear-to-br from-yellow-50 to-white py-20 px-4">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
 
-          {/* IMAGE (40%) */}
+          {/* IMAGE */}
           <motion.div
             initial={!shouldReduceMotion ? "hidden" : false}
             animate={!shouldReduceMotion ? "visible" : false}
@@ -82,86 +82,107 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* FORM (60%) */}
-          <motion.form
-            onSubmit={handleSubmit}
-            initial={!shouldReduceMotion ? "hidden" : false}
-            animate={!shouldReduceMotion ? "visible" : false}
-            variants={fade}
-            className="lg:w-[40%] bg-white border border-neutral-200 shadow-lg rounded-3xl p-8"
-          >
+          {/* FORM */}
+         <motion.form
+  onSubmit={handleSubmit}
+  initial={!shouldReduceMotion ? "hidden" : false}
+  animate={!shouldReduceMotion ? "visible" : false}
+  variants={fade}
+  className="lg:w-[40%] bg-white border border-neutral-200 shadow-lg rounded-3xl p-8"
+>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* Full Name */}
+    <Input
+      name="fullName"
+      value={form.fullName}
+      onChange={handleChange}
+      placeholder="Your full name"
+    />
 
+    {/* Email */}
+    <Input
+      name="email"
+      value={form.email}
+      onChange={handleChange}
+      placeholder="Your email address"
+      type="email"
+    />
 
-            {/* INPUTS (NO MOTION HERE) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input label="First Name" name="firstName" value={form.firstName} onChange={handleChange} />
-              <Input label="Last Name" name="lastName" value={form.lastName} onChange={handleChange} />
-              <Input label="Email" name="email" value={form.email} onChange={handleChange} />
-              <Input label="Phone" name="phone" value={form.phone} onChange={handleChange} />
-            </div>
+    {/* Phone */}
+    <Input
+      name="phone"
+      value={form.phone}
+      onChange={handleChange}
+      placeholder="Phone number"
+    />
 
-            <div className="mt-6">
-              <label className="text-sm font-medium text-neutral-700">
-                Message
-              </label>
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                rows="4"
-                className="w-full mt-2 p-4 rounded-xl border border-neutral-300 focus:ring-2 focus:ring-yellow-400 outline-none"
-              />
-            </div>
+    {/* City */}
+    <Input
+      name="city"
+      value={form.city}
+      onChange={handleChange}
+      placeholder="City"
+    />
+  </div>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              disabled={loading}
-              className="w-full mt-8 bg-yellow-400 hover:bg-yellow-500 py-3 cursor-pointer rounded-xl font-semibold"
-            >
-              {loading ? "Submitting..." : "Submit Form"}
-            </motion.button>
-          </motion.form>
+  {/* Message */}
+  <textarea
+    name="message"
+    value={form.message}
+    onChange={handleChange}
+    rows="7"
+    placeholder="Tell us about your project, idea, or requirements..."
+    required
+    className="
+      w-full
+      mt-6
+      p-4
+      rounded-xl
+      border border-neutral-300
+      focus:ring-2 focus:ring-yellow-400
+      outline-none
+      placeholder:text-neutral-400
+    "
+  />
+
+  {/* Button */}
+  <motion.button
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    disabled={loading}
+    className="w-full mt-8 bg-yellow-400 hover:bg-yellow-500 py-3 cursor-pointer rounded-xl font-semibold"
+  >
+    {loading ? "Submitting..." : "Let’s Talk"}
+  </motion.button>
+</motion.form>
 
         </div>
 
+        {/* CONTACT INFO */}
         <section className="mt-20 px-12">
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <InfoCard icon={<Mail />} title="Primary Email" value="admin@xtract.com" />
-          <InfoCard
-            icon={<MapPin />}
-            title="Location"
-            value="
-2nd Floor, Plot No. 62a, Om Vihar,Phase- IV, Uttam Nagar, New Delhi - 110059."
-          />
-          <InfoCard icon={<Phone />} title="Sales Phone" value="+91 7942558515" />
-          <InfoCard icon={<Phone />} title="Support Phone" value="+1 (888) 234-1122" />
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <InfoCard icon={<Mail />} title="Primary Email" value="admin@xtract.com" />
+            <InfoCard
+              icon={<MapPin />}
+              title="Location"
+              value="2nd Floor, Plot No. 62a, Om Vihar, Phase-IV, Uttam Nagar, New Delhi - 110059"
+            />
+            <InfoCard icon={<Phone />} title="Sales Phone" value="+91 7942558515" />
+            <InfoCard icon={<Phone />} title="Support Phone" value="+91 7942558515" />
+          </div>
+        </section>
       </section>
 
-      </section>
-
-      {/* CONTACT INFO */}
-
-      
-
-      {/* ================= MODERN FAQ (FULL WIDTH) ================= */}
+      {/* FAQ */}
       <section className="bg-white py-28 border-t border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-16">
-
-          {/* LEFT CONTENT */}
-          <div className="lg:col-span-1">
-            <h2 className="text-4xl font-semibold tracking-tight">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-gray-500 mt-4 leading-relaxed">
-              Everything you need to know about contacting us and how we work.
-              Can’t find an answer? Just send us a message.
+          <div>
+            <h2 className="text-4xl font-semibold">Frequently Asked Questions</h2>
+            <p className="text-gray-500 mt-4">
+              Everything you need to know about contacting us.
             </p>
           </div>
 
-          {/* RIGHT FAQ LIST */}
           <div className="lg:col-span-2 divide-y divide-neutral-200">
             {FAQS.map((f, i) => (
               <div key={i} className="py-6">
@@ -169,24 +190,21 @@ export default function Contact() {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex justify-between items-center text-left"
                 >
-                  <span className="text-lg font-medium text-neutral-900">
-                    {f.q}
-                  </span>
-
+                  <span className="text-lg font-medium">{f.q}</span>
                   <ChevronDown
-                    className={`transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""
-                      }`}
+                    className={`transition-transform ${
+                      openFaq === i ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
 
-                <AnimatePresence initial={false}>
+                <AnimatePresence>
                   {openFaq === i && (
                     <motion.div
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="mt-4 text-gray-600 leading-relaxed max-w-2xl"
+                      className="mt-4 text-gray-600 max-w-2xl"
                     >
                       {f.a}
                     </motion.div>
@@ -198,14 +216,13 @@ export default function Contact() {
         </div>
       </section>
 
-
-      {/* ================= MAP (NO ANIMATION) ================= */}
-      <section className="h-112.5  border-neutral-200  m-5">
+      {/* MAP */}
+      <section className="h-112.5 m-5">
         <iframe
           title="Google Map"
           className="w-full h-full rounded-3xl"
           loading="lazy"
-          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3502.0704700747565!2d77.0492450755006!3d28.627649975667516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDM3JzM5LjUiTiA3N8KwMDMnMDYuNiJF!5e0!3m2!1sen!2sin!4v1768196000087!5m2!1sen!2sin"
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3502.0704700747565!2d77.0492450755006!3d28.627649975667516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDM3JzM5LjUiTiA3N8KwMDMnMDYuNiJF!5e0!3m2!1sen!2sin"
         />
       </section>
     </>
@@ -216,7 +233,7 @@ export default function Contact() {
 
 function InfoCard({ icon, title, value }) {
   return (
-    <div className="flex items-center gap-4 border border-neutral-50 rounded-xl p-8 bg-white shadow-sm cursor-pointer">
+    <div className="flex items-center gap-4 border border-neutral-50 rounded-xl p-8 bg-white shadow-sm">
       <div className="bg-yellow-100 text-yellow-600 p-3 rounded-xl">
         {icon}
       </div>
@@ -228,46 +245,36 @@ function InfoCard({ icon, title, value }) {
   );
 }
 
-function Input({ label, name, value, onChange }) {
+function Input({ name, value, onChange, placeholder, type = "text" }) {
   return (
-    <div>
-      <label className="text-sm font-medium text-neutral-700">
-        {label}
-      </label>
-      <input
-        name={name}
-        value={value}
-        onChange={onChange}
-        required
-        className="w-full mt-2 p-3 rounded-xl border border-neutral-300 focus:ring-2 focus:ring-yellow-400 outline-none"
-      />
-    </div>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      required
+      className="
+        w-full
+        p-3
+        rounded-xl
+        border border-neutral-300
+        focus:ring-2 focus:ring-yellow-400
+        outline-none
+        placeholder:text-neutral-400
+      "
+    />
   );
 }
 
 const FAQS = [
-  {
-    q: "How soon will you contact me?",
-    a: "Our team usually responds within 24 business hours.",
-  },
-  {
-    q: "Do you provide customized solutions?",
-    a: "Yes, all our solutions are tailored based on your requirements.",
-  },
-  {
-    q: "Is my information secure?",
-    a: "Absolutely. Your data is encrypted and never shared.",
-  },
-    {
-    q: "How soon will you contact me?",
-    a: "Our team usually responds within 24 business hours.",
-  },
-  {
-    q: "Do you provide customized solutions?",
-    a: "Yes, all our solutions are tailored based on your requirements.",
-  },
-  {
-    q: "Is my information secure?",
-    a: "Absolutely. Your data is encrypted and never shared.",
-  },
+  { q: "How soon will you contact me?", a: "Within 24 business hours." },
+  { q: "Do you provide customized solutions?", a: "Yes, fully tailored." },
+  { q: "Is my information secure?", a: "Absolutely. We never share data." },
+  { q: "How soon will you contact me?", a: "Within 24 business hours." },
+  { q: "Do you provide customized solutions?", a: "Yes, fully tailored." },
+  { q: "Is my information secure?", a: "Absolutely. We never share data." },
+  { q: "How soon will you contact me?", a: "Within 24 business hours." },
+  { q: "Do you provide customized solutions?", a: "Yes, fully tailored." },
+  { q: "Is my information secure?", a: "Absolutely. We never share data." },
 ];

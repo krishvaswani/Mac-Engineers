@@ -43,8 +43,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-gray-400 max-w-md leading-relaxed">
-              We are a technology-focused company delivering secure, scalable
-              and high-performance digital solutions for modern businesses.
+              Established in the year 2018 at Hastsal Industrial Area, New Delhi, we “Mac Engineers” are a Partnership based firm, engaged as the foremost Manufacturer and Trader of Duct Dampers, Industrial Water Chillers, SS Kitchen Exhaust Hood, Kitchen Exhaust Wet Scrubber, Etc. 
             </p>
           </div>
 

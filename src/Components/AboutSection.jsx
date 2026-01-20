@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 
 import aboutMachine from "../Assets/about-img.png";
 
@@ -81,6 +82,7 @@ export default function AboutSection() {
                 shadow-[0_10px_30px_rgba(0,0,0,0.15)]
               "
             >
+               
               {/* Hover bg */}
               <span
                 className="
@@ -93,7 +95,7 @@ export default function AboutSection() {
                   ease-out
                 "
               />
-
+<Link to="/about" className="inline-block">
               <span className="relative z-10 flex items-center gap-3">
                 Discover Our Expertise
 
@@ -125,7 +127,11 @@ export default function AboutSection() {
                     <path d="M13 6l6 6-6 6" />
                   </svg>
                 </span>
+                 
               </span>
+
+                 </Link>
+          
             </button>
           </div>
 

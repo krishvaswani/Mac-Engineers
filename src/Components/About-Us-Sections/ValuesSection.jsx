@@ -43,10 +43,7 @@ export default function ValuesSection() {
 
           {/* RIGHT */}
           <p className="text-lg text-neutral-600 leading-relaxed max-w-xl lg:self-end text-justify">
-            We offer a deeply personalized approach, providing objective,
-            customized advice, seamless wealth management, and exclusive
-            access to private investments, all designed to help clients
-            reach their goals and build lasting wealth.
+            We believe in delivering engineered solutions with complete transparency, technical accuracy, and uncompromised quality. From design to execution, every project is handled with a commitment to site-specific requirements, safety standards, and long-term performance, ensuring reliable outcomes and lasting client relationships.
           </p>
         </div>
 

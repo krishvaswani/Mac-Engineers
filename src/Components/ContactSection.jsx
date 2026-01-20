@@ -50,13 +50,12 @@ export default function ContactSection() {
             </p>
 
             <h2 className="text-4xl md:text-5xl font-semibold leading-tight">
-              Tell us about your project
-              <br />
-              whether it’s a website,
-              <br />
-              SEO, or marketing.
-            </h2>
-
+  Let’s discuss your
+  <br />
+  engineering requirements
+  <br />
+  and project specifications.
+</h2>
             <div className="mt-10 space-y-6 text-slate-600 text-sm">
               <div>
                 <p className="uppercase text-xs mb-1 text-slate-500">

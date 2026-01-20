@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function WhyUsSection() {
   return (
@@ -36,6 +37,8 @@ export default function WhyUsSection() {
     className="relative overflow-hidden px-9 py-4 rounded-full 
     bg-[#1f3d34] text-white font-medium"
   >
+
+    <Link to="/contact" className="inline-block">
     {/* SLIDE OVERLAY */}
     <span
       className="absolute inset-0 bg-[#fabd14] 
@@ -47,6 +50,8 @@ export default function WhyUsSection() {
     <span className="relative z-10">
       Free Consultation
     </span>
+
+    </Link>
   </motion.button>
 
   {/* ICON */}

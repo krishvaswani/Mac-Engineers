@@ -158,7 +158,7 @@ export default function Header() {
                 className="
     relative group overflow-hidden
     bg-white text-black
-    px-6 py-3
+    px-4 py-2
     rounded-full
     flex items-center gap-3
     font-semibold uppercase
