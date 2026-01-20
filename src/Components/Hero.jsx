@@ -54,9 +54,9 @@ export default function Hero() {
               text-[clamp(2rem,4.5vw,3.75rem)]
             "
           >
-            Affordable <br />
-            HVAC Solution <br />
-            in New Texas.
+            Trusted HVAC<br />
+            
+            Engineering Experts Since 2018
           </motion.h1>
 
           {/* BUTTON */}
@@ -96,7 +96,7 @@ export default function Hero() {
 
   {/* Button content */}
   <span className="relative z-10 flex items-center gap-3">
-    GET STARTED NOW
+    View Products 
 
     <span
       className="
@@ -144,7 +144,7 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mt-4 sm:mt-6 text-xs sm:text-sm text-gray-200 max-w-md"
           >
-            Expert HVAC solutions for homes & businesses across New Texas.
+            Founded in 2018 in New Delhi, delivering high-quality HVAC and ventilation products with timely delivery.
           </motion.p>
         </motion.div>
       </div>
