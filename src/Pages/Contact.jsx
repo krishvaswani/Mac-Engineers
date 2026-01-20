@@ -60,7 +60,28 @@ export default function Contact() {
 
   return (
     <>
-      <BannerHero />
+      {/* <BannerHero /> */}
+      {/* ================= HEADING ================= */}
+<section className="py-16 px-4 text-center">
+  <motion.h1
+    initial={!shouldReduceMotion ? { opacity: 0, y: 20 } : false}
+    animate={!shouldReduceMotion ? { opacity: 1, y: 0 } : false}
+    transition={{ duration: 0.4, ease: "easeOut" }}
+    className="text-4xl md:text-5xl font-semibold text-neutral-900"
+  >
+    Contact Us
+  </motion.h1>
+
+  <motion.p
+    initial={!shouldReduceMotion ? { opacity: 0, y: 20 } : false}
+    animate={!shouldReduceMotion ? { opacity: 1, y: 0 } : false}
+    transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}
+    className="mt-4 max-w-2xl mx-auto text-neutral-500"
+  >
+    Let’s discuss your engineering requirements and project specifications.
+  </motion.p>
+</section>
+
 
       {/* ================= MAIN ================= */}
       <section className="bg-linear-to-br from-yellow-50 to-white py-20 px-4">
@@ -88,7 +109,7 @@ export default function Contact() {
   initial={!shouldReduceMotion ? "hidden" : false}
   animate={!shouldReduceMotion ? "visible" : false}
   variants={fade}
-  className="lg:w-[40%] bg-white border border-neutral-200 shadow-lg rounded-3xl p-8"
+  className="lg:w-[40%] bg-white border border-neutral-200 shadow-sm rounded-2xl p-8"
 >
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {/* Full Name */}

@@ -104,7 +104,7 @@ export default function Footer() {
                 {collections.map((c) => (
                   <li key={c.slug || c.id}>
                     <Link
-                      to={`/collection/${c.slug}`}
+                      to={`/collections/${c.slug}`}
                       className="hover:text-white transition"
                     >
                       {c.name}

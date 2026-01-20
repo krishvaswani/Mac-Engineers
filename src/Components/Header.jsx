@@ -232,37 +232,135 @@ export default function Header() {
       </motion.header>
 
       {/* MOBILE MENU */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+    {/* MOBILE MENU */}
+<AnimatePresence>
+  {open && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+    >
+      <motion.div
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -40, opacity: 0 }}
+        className="
+          absolute top-4 left-4 right-4
+          bg-black rounded-3xl
+          p-6 text-white uppercase
+          max-h-[90vh] overflow-y-auto
+          modern-scroll
+        "
+      >
+        {/* HEADER */}
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            to="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-lg font-semibold"
           >
-            <motion.div
-              initial={{ y: -40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -40, opacity: 0 }}
-              className="absolute top-5 left-5 right-5 bg-black rounded-3xl p-6 text-white uppercase"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold">
-                  <img src={logo} className="h-7" />
-                  MAC-ENGINEERS
-                </Link>
-                <button onClick={() => setOpen(false)} className="text-2xl">✕</button>
-              </div>
+            <img src={logo} className="h-7" alt="Mac Engineers" />
+            MAC-ENGINEERS
+          </Link>
 
-              <ul className="space-y-4 text-base">
-                <li><Link to="/" onClick={() => setOpen(false)}>HOME</Link></li>
-                <li><Link to="/product" onClick={() => setOpen(false)}>PRODUCTS</Link></li>
-                <li><Link to="/about" onClick={() => setOpen(false)}>ABOUT US</Link></li>
-              </ul>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <button onClick={() => setOpen(false)} className="text-2xl">
+            ✕
+          </button>
+        </div>
+
+        {/* LINKS */}
+        <ul className="space-y-5 text-sm tracking-wide">
+          <li>
+            <Link to="/" onClick={() => setOpen(false)}>HOME</Link>
+          </li>
+
+          <li>
+            <Link to="/about" onClick={() => setOpen(false)}>ABOUT US</Link>
+          </li>
+
+          <li>
+            <Link to="/product" onClick={() => setOpen(false)}>PRODUCTS</Link>
+          </li>
+
+          <li>
+            <Link to="/projects" onClick={() => setOpen(false)}>PROJECTS</Link>
+          </li>
+
+          {/* COLLECTIONS ACCORDION */}
+          <li>
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="w-full flex items-center justify-between opacity-80 hover:opacity-100 transition"
+            >
+              COLLECTIONS
+              <motion.span
+                animate={{ rotate: showDropdown ? 180 : 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </motion.span>
+            </button>
+
+            <AnimatePresence>
+              {showDropdown && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  className="
+                    mt-3 pl-4
+                    space-y-3
+                    max-h-64 overflow-y-auto
+                    modern-scroll
+                    border-l border-white/10
+                  "
+                >
+                  {collections.map((c) => (
+                    <Link
+                      key={c.id}
+                      to={`/collections/${c.slug}`}
+                      onClick={() => setOpen(false)}
+                      className="block text-xs opacity-80 hover:opacity-100"
+                    >
+                      {c.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </li>
+        </ul>
+
+        {/* CONTACT CTA */}
+        <Link
+          to="/contact"
+          onClick={() => setOpen(false)}
+          className="
+            mt-8 block text-center
+            bg-[#fabd14] text-black
+            py-3 rounded-full
+            font-semibold
+            tracking-wide
+          "
+        >
+          CONTACT US
+        </Link>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
     </>
   );
 }
