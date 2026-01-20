@@ -142,10 +142,10 @@ export default function Products() {
                 <option value="price-high">Price: High to Low</option>
                 <option value="name">Name: A–Z</option>
               </select>
-              <ChevronDown
+              {/* <ChevronDown
                 size={16}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-              />
+              /> */}
             </div>
           </div>
 

@@ -27,7 +27,7 @@ export default function WhoWeAre() {
         {/* IMAGE */}
         <div className="mt-14 rounded-[28px] overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
+            src="https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2FChatGPT%20Image%20Jan%2020%2C%202026%2C%2012_32_11%20PM.png?alt=media&token=0b00512f-d9a9-4d2a-b230-b9f48dbc1231"
             alt="Team discussion"
             className="w-full h-65 sm:h-90 md:h-105 lg:h-130 object-cover"
           />

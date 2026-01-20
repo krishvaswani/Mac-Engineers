@@ -58,26 +58,26 @@ export default function ValuesSection() {
           <ValueCard
             // highlight
             icon={<ShieldCheck size={22} />}
-            title="Fiduciary"
-            text="A commitment to acting in your best interest for long-term financial wellbeing."
+            title="Quality First"
+            text="We adhere to strict quality standards in manufacturing and execution to ensure durable, efficient, and reliable engineering solutions."
           />
 
           <ValueCard
             icon={<PieChart size={22} />}
-            title="Integrated"
-            text="Comprehensive wealth services, tailored solutions, and exclusive alternative."
+            title="Technical Expertise"
+            text="Backed by deep industry knowledge, we deliver technically sound solutions tailored to site-specific requirements and applications."
           />
 
           <ValueCard
             icon={<Layers size={22} />}
-            title="Highly Personalized"
-            text="A customized approach driven by proactive ideas and strategic problem-solving."
+            title="Customized Solutions"
+            text="Every project is approached with careful planning and customization to meet unique site conditions, operational needs, and performance goals."
           />
 
           <ValueCard
             icon={<Star size={22} />}
-            title="Experienced"
-            text="A highly dedicated team, supported by our extensive network of trusted."
+            title="Reliability & Trust"
+            text="We operate with transparency, timely execution, and ethical practices to build long-term partnerships with our clients."
           />
         </motion.div>
 
