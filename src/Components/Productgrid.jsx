@@ -34,7 +34,7 @@ export default function ProductSlider() {
     fetchProducts();
   }, []);
 
-  // 🔧 Drag width calculation (GSAP safe)
+  // 🔧 Drag width calculation
   useEffect(() => {
     const calcWidth = () => {
       if (!sliderRef.current || !trackRef.current) return;
@@ -45,7 +45,7 @@ export default function ProductSlider() {
 
     calcWidth();
     window.addEventListener("resize", calcWidth);
-    window.addEventListener("scroll", calcWidth); // ✅ GSAP pin safe
+    window.addEventListener("scroll", calcWidth);
 
     return () => {
       window.removeEventListener("resize", calcWidth);
@@ -68,7 +68,7 @@ export default function ProductSlider() {
           >
             {products.map((product) => (
               <div key={product.id} className="min-w-[320px]">
-                <ProductCard product={product} navigate={navigate} />
+                <ProductCard product={product} />
               </div>
             ))}
           </motion.div>
@@ -82,7 +82,9 @@ export default function ProductSlider() {
    PRODUCT CARD
 =========================== */
 
-function ProductCard({ product, navigate }) {
+function ProductCard({ product }) {
+  const navigate = useNavigate();
+
   const {
     id,
     name,
@@ -96,13 +98,20 @@ function ProductCard({ product, navigate }) {
   const imageSrc =
     images?.[0]?.startsWith("http") ? images[0] : FALLBACK_IMAGE;
 
+  const goToProduct = () => {
+    navigate(`/product/${id}`);
+  };
+
   return (
-    <div className="h-130 bg-white rounded-3xl border border-black/10 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col">
+    <div
+      onClick={goToProduct}
+      className="h-130 bg-white rounded-3xl border border-black/10 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col cursor-pointer"
+    >
       <div className="h-60 bg-gray-100 flex items-center justify-center p-6">
         <img
           src={imageSrc}
           alt={name}
-          className="max-h-full max-w-full object-contain"
+          className="max-h-full max-w-full object-contain pointer-events-none"
           draggable={false}
           onError={(e) => (e.currentTarget.src = FALLBACK_IMAGE)}
         />
@@ -145,8 +154,12 @@ function ProductCard({ product, navigate }) {
             </span>
           </div>
 
+          {/* Button kept for UX, but prevents double navigation */}
           <button
-            onClick={() => navigate(`/product/${id}`)}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToProduct();
+            }}
             className="mt-4 w-full bg-black text-white py-3 rounded-full text-sm hover:bg-gray-800 transition"
           >
             View Product →

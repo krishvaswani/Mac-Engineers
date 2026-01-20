@@ -1,4 +1,6 @@
-// Image Imports
+import { useNavigate } from "react-router-dom";
+
+/* Image Imports */
 import airDiffuser from "../Assets/Featured-collection/Air Diffusers.png";
 import ventilation from "../Assets/Featured-collection/Air Ventilation Systems.png";
 import inductionHeating from "../Assets/Featured-collection/Induction Heating Machines.png";
@@ -12,27 +14,27 @@ import oxygenConcentrator from "../Assets/Featured-collection/oxygensystem.png";
 import ductDampers from "../Assets/Featured-collection/Duct.png";
 import pressureValve from "../Assets/Featured-collection/valve.png";
 
-// Categories Data
+/* Categories Data (with slugs) */
 const categories = [
-  { title: "Inline Duct Fans", image: inlineDuct },
-  { title: "Air Diffuser", image: airDiffuser },
-  { title: "Fan Coil Unit", image: fanCoil },
-  { title: "Wet Scrubber", image: wetScrubber },
-  { title: "Duct Dampers", image: ductDampers },
-  { title: "Oxygen Sensor", image: oxygenSensor },
-  { title: "Industrial Air Conditioning", image: airConditioning },
-  { title: "Induction Heating Machine", image: inductionHeating },
-  { title: "Air Ventilation System", image: ventilation },
-  { title: "Air Cooling System", image: airCooling },
-  { title: "Pressure Relief Valve", image: pressureValve },
-  { title: "Oxygen Concentrator Machine", image: oxygenConcentrator },
+  { title: "Inline Duct Fans", image: inlineDuct, slug: "inline-duct-fans" },
+  { title: "Air Diffuser", image: airDiffuser, slug: "air-diffusers" },
+  { title: "Fan Coil Unit", image: fanCoil, slug: "fan-coil-units" },
+  { title: "Wet Scrubber", image: wetScrubber, slug: "wet-scrubbers" },
+  { title: "Duct Dampers", image: ductDampers, slug: "duct-dampers" },
+  { title: "Oxygen Sensor", image: oxygenSensor, slug: "oxygen-sensors" },
+  { title: "Industrial Air Conditioning", image: airConditioning, slug: "industrial-air-conditioning" },
+  { title: "Induction Heating Machine", image: inductionHeating, slug: "induction-heating-machines" },
+  { title: "Air Ventilation System", image: ventilation, slug: "air-ventilation-systems" },
+  { title: "Air Cooling System", image: airCooling, slug: "air-cooling-systems" },
+  { title: "Pressure Relief Valve", image: pressureValve, slug: "pressure-relief-valves" },
+  { title: "Oxygen Concentrator Machine", image: oxygenConcentrator, slug: "oxygen-concentrator-machines" },
 ];
 
 export default function CategoryIcons() {
   const isCarousel = categories.length > 6;
 
   return (
-    <section className="bg-white pt-16 pb-8">
+    <section className="bg-white py-8 ">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* GRID (≤ 6 items) */}
@@ -46,8 +48,7 @@ export default function CategoryIcons() {
 
         {/* CAROUSEL (> 6 items) */}
         {isCarousel && (
-          <div className="flex gap-14
-           overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
+          <div className="flex gap-14 overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
             {categories.map((cat, index) => (
               <div key={index} className="snap-center shrink-0">
                 <CategoryItem cat={cat} />
@@ -63,9 +64,13 @@ export default function CategoryIcons() {
 
 /* Reusable Category Item */
 function CategoryItem({ cat }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col items-center text-center cursor-pointer group w-28">
-      
+    <div
+      onClick={() => navigate(`/collections/${cat.slug}`)}
+      className="flex flex-col items-center text-center cursor-pointer group w-28"
+    >
       {/* Icon */}
       <div className="w-20 h-20 flex items-center justify-center rounded-full bg-slate-100 shadow-sm group-hover:shadow-md transition">
         <img
@@ -77,7 +82,7 @@ function CategoryItem({ cat }) {
       </div>
 
       {/* Title */}
-      <p className="mt-4 text-sm font-medium text-slate-900 text-wrap ">
+      <p className="mt-4 text-sm font-medium text-slate-900">
         {cat.title}
       </p>
     </div>
