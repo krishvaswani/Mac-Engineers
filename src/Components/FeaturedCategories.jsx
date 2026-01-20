@@ -17,17 +17,17 @@ import pressureValve from "../Assets/Featured-collection/valve.png";
 /* Categories Data (with slugs) */
 const categories = [
   { title: "Inline Duct Fans", image: inlineDuct, slug: "inline-duct-fans" },
-  { title: "Air Diffuser", image: airDiffuser, slug: "air-diffusers" },
-  { title: "Fan Coil Unit", image: fanCoil, slug: "fan-coil-units" },
-  { title: "Wet Scrubber", image: wetScrubber, slug: "wet-scrubbers" },
+  { title: "Air Diffuser", image: airDiffuser, slug: "air-diffuser" },
+  { title: "Fan Coil Unit", image: fanCoil, slug: "fan-coil-unit" },
+  { title: "Wet Scrubber", image: wetScrubber, slug: "wet-scrubber" },
   { title: "Duct Dampers", image: ductDampers, slug: "duct-dampers" },
-  { title: "Oxygen Sensor", image: oxygenSensor, slug: "oxygen-sensors" },
-  { title: "Industrial Air Conditioning", image: airConditioning, slug: "industrial-air-conditioning" },
-  { title: "Induction Heating Machine", image: inductionHeating, slug: "induction-heating-machines" },
-  { title: "Air Ventilation System", image: ventilation, slug: "air-ventilation-systems" },
-  { title: "Air Cooling System", image: airCooling, slug: "air-cooling-systems" },
-  { title: "Pressure Relief Valve", image: pressureValve, slug: "pressure-relief-valves" },
-  { title: "Oxygen Concentrator Machine", image: oxygenConcentrator, slug: "oxygen-concentrator-machines" },
+  { title: "Oxygen Sensor", image: oxygenSensor, slug: "oxygen-sensor" },
+  { title: "Industrial Air Conditioning", image: airConditioning, slug: "industrial-air-conditioning-system" },
+  { title: "Induction Heating Machine", image: inductionHeating, slug: "induction-heating-machine" },
+  { title: "Air Ventilation System", image: ventilation, slug: "air-ventilation-system" },
+  { title: "Air Cooling System", image: airCooling, slug: "air-cooling-system" },
+  { title: "Pressure Relief Valve", image: pressureValve, slug: "pressure-relief-valve" },
+  { title: "Oxygen Concentrator Machine", image: oxygenConcentrator, slug: "oxygen-concentrator-machine" },
 ];
 
 export default function CategoryIcons() {
