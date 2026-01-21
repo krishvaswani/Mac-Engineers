@@ -289,13 +289,12 @@ function Input({ name, value, onChange, placeholder, type = "text" }) {
 }
 
 const FAQS = [
-  { q: "How soon will you contact me?", a: "Within 24 business hours." },
-  { q: "Do you provide customized solutions?", a: "Yes, fully tailored." },
-  { q: "Is my information secure?", a: "Absolutely. We never share data." },
-  { q: "How soon will you contact me?", a: "Within 24 business hours." },
-  { q: "Do you provide customized solutions?", a: "Yes, fully tailored." },
-  { q: "Is my information secure?", a: "Absolutely. We never share data." },
-  { q: "How soon will you contact me?", a: "Within 24 business hours." },
-  { q: "Do you provide customized solutions?", a: "Yes, fully tailored." },
-  { q: "Is my information secure?", a: "Absolutely. We never share data." },
+  { q: "How soon will you contact me?", a: "We usually respond within 24 business hours." },
+  { q: "Do you provide customized solutions?", a: "Yes, we offer fully customized solutions based on your requirements." },
+  { q: "What products do you specialize in?", a: "We specialize in duct dampers, industrial water chillers, SS kitchen exhaust hoods, and wet scrubbers." },
+  { q: "Where are you located?", a: "We are based in New Delhi and serve clients across India." },
+  { q: "How do you ensure product quality?", a: "All products are manufactured using high-grade materials and undergo strict quality checks." },
+  { q: "What is the typical delivery timeline?", a: "Delivery timelines depend on the product and customization, but we ensure timely dispatch." },
+  { q: "Is my information secure?", a: "Yes, all your information is kept strictly confidential." },
+  { q: "Do you provide after-sales support?", a: "Yes, we offer post-delivery support to ensure smooth operation." }
 ];

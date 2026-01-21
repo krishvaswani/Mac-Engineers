@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 import "swiper/css";
 
@@ -92,13 +92,8 @@ export default function IndustriesSection() {
 
         {/* Slider */}
         <Swiper
-          modules={[Navigation, Autoplay]}
+          modules={[Navigation]}
           spaceBetween={30}
-          loop
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-          }}
           navigation={{
             prevEl: ".industries-prev",
             nextEl: ".industries-next",
@@ -128,7 +123,7 @@ function IndustryCard({ item }) {
     <motion.div
       whileHover={{ y: -8 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className=" py-10
+      className="
         group relative h-95
         rounded-3xl overflow-hidden
         bg-white
