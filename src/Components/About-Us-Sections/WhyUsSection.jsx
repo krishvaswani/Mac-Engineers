@@ -23,11 +23,11 @@ export default function WhyUsSection() {
 
             {/* HEADING */}
             <h2 className="text-[36px] md:text-[44px] lg:text-[48px] font-normal leading-tight text-[#1f3d34]">
-              We Always Put{" "}
+              Built on Quality{"  "}
               <span className="text-[#faba19] font-medium">
-                Your Interests
+                Focused on
               </span>{" "}
-              First
+               You
             </h2>
 
             {/* CTA */}
@@ -89,11 +89,7 @@ export default function WhyUsSection() {
 
             {/* TEXT */}
             <p className="text-lg text-neutral-600 leading-relaxed text-justify">
-              Driven by a relentless focus on “why,” we integrate our services
-              to uncover, design, and deliver the most impactful outcomes for
-              you. Instead of relying on predefined processes, we take a
-              hands-on approach collaborating closely with your teams to craft
-              practical, end-to-end solutions tailored to your needs.
+              Established in 2018, Mac Engineers is a New Delhi–based manufacturer and trader specializing in duct dampers, industrial water chillers, SS kitchen exhaust hoods, and wet scrubbers. We are committed to delivering high-quality, cost-effective solutions that meet real operational needs.
             </p>
           </motion.div>
 
