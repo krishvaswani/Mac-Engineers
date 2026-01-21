@@ -5,9 +5,11 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 
 // Images
-import industry1 from "../Assets/industry-1.png";
-import industry2 from "../Assets/about-img.png";
+// import industry1 from "../Assets/industry-1.png";
+// import industry2 from "../Assets/about-img.png";
 import industry3 from "../Assets/industry-3.png";
+const industry1 = "https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2Findustary%201.webp?alt=media&token=c6f1482d-9fff-44da-9aab-76a54b566e3e";
+const industry2 = "https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2Findustries-2.avif?alt=media&token=dcf4bcca-2796-4a4b-9f93-6510bbb5bf22";
 
 // DATA
 const industries = [
@@ -22,6 +24,7 @@ const industries = [
 ];
 
 export default function IndustriesSection() {
+  
   return (
     <section className="py-20 md:py-28 bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-6 relative">
