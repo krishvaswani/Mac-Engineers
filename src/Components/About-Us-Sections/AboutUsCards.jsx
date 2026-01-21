@@ -134,7 +134,7 @@ const AboutUsCards = () => {
                    md:min-h-115"
       >
         <img
-          src="https://media.istockphoto.com/id/1289220781/photo/portrait-of-happy-smiling-woman-at-desk.jpg?s=612x612&w=0&k=20&c=FtC05luuxRpiKRj5F84e2CiPf0h_ZuX6o7o5JwlNaJM="
+          src="https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2Fhvasc.png?alt=media&token=d001efcc-473e-4670-b58c-fb22e6bfce2c"
           alt="Professional smiling woman"
           className="w-full h-full object-cover"
         />
@@ -163,14 +163,14 @@ const AboutUsCards = () => {
 
         <div className="flex-1 flex items-center">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
-            2024 Diversity, Equity, <br />
-            and Inclusion <br />
-            Report
+            Our Foundation of<br />
+            Quality & <br />
+            Reliability
           </h3>
         </div>
 
         <div className="text-right text-xs md:text-sm opacity-70 mt-4">
-          * 2025
+          * 2026
         </div>
       </motion.div>
     </div>

@@ -11,7 +11,7 @@ export default function About() {
       {/* WHO WE ARE SECTION */}
       <WhoWeAre />
 
-      {/* Values Section */}
+      {/* Values Secztion */}
 
       <ValuesSection/>
 
