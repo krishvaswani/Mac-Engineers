@@ -1,3 +1,4 @@
+// Header.jsx
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,7 +12,6 @@ export default function Header() {
   const [collections, setCollections] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation();
-  const isGrid = collections.length > 8;
   const isHome = location.pathname === "/";
 
   /* SCROLL EFFECT */
@@ -39,6 +39,12 @@ export default function Header() {
     location.pathname === path ||
     location.pathname.startsWith(path + "/");
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setOpen(false);
+    setShowDropdown(false);
+  }, [location.pathname]);
+
   return (
     <>
       <motion.header
@@ -48,39 +54,48 @@ export default function Header() {
         className={`
           z-50 w-full transition-all duration-300
           ${isHome ? "fixed top-0" : "sticky top-0"}
-          ${isHome
-            ? scrolled
-              ? "bg-black/50 backdrop-blur-lg py-4"
-              : "bg-transparent py-16"
-            : "bg-black/60 backdrop-blur-lg py-4"
+          ${
+            isHome
+              ? scrolled
+                ? "bg-black/50 backdrop-blur-lg py-3 sm:py-4"
+                : "bg-transparent py-8 sm:py-10 lg:py-16"
+              : "bg-black/60 backdrop-blur-lg py-3 sm:py-4"
           }
         `}
       >
-        <div className="md:mx-5">
-          <div className="flex items-center justify-between px-10">
-
+        <div className="mx-auto max-w-7xl px-4 sm:px-12 md:mt-4 lg:px-10">
+          <div className="flex items-center justify-between gap-3">
             {/* LOGO */}
             <Link
               to="/"
-              className="flex items-center gap-2 text-white font-semibold text-lg uppercase"
+              className="flex items-center gap-2 text-white font-semibold uppercase whitespace-nowrap"
             >
-              <img src={logo} alt="Mac Engineers" className="h-8" />
-              MAC-ENGINEERS
+              <img src={logo} alt="Mac Engineers" className="h-7 sm:h-8" />
+              <span className="text-base sm:text-lg tracking-wide">
+                MAC-ENGINEERS
+              </span>
             </Link>
 
-            {/* DESKTOP NAV */}
-            <nav className="hidden md:flex items-center gap-10 text-white text-sm relative uppercase tracking-wide">
+            {/* DESKTOP NAV (lg+) */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-10 text-white text-sm relative uppercase tracking-wide">
               <NavLink label="HOME" to="/" active={isActive("/")} />
               <NavLink label="ABOUT US" to="/about" active={isActive("/about")} />
-              <NavLink label="PRODUCTS" to="/product" active={isActive("/product")} />
+              <NavLink
+                label="PRODUCTS"
+                to="/product"
+                active={isActive("/product")}
+              />
 
-              {/* COLLECTIONS */}
+              {/* COLLECTIONS DROPDOWN */}
               <div
                 className="relative"
                 onMouseEnter={() => setShowDropdown(true)}
                 onMouseLeave={() => setShowDropdown(false)}
               >
-                <button className="flex items-center gap-2 opacity-80 hover:opacity-100 transition">
+                <button
+                  type="button"
+                  className="flex items-center gap-2 opacity-80 hover:opacity-100 transition"
+                >
                   COLLECTIONS
                   <motion.span
                     animate={{ rotate: showDropdown ? 180 : 0 }}
@@ -109,20 +124,18 @@ export default function Header() {
                       exit={{ opacity: 0, y: 12, scale: 0.98 }}
                       transition={{ duration: 0.25, ease: "easeOut" }}
                       className="
-  absolute top-full mt-6
-  left-1/2 -translate-x-1/2
-  bg-white rounded-3xl
-  shadow-[0_30px_80px_rgba(0,0,0,0.25)]
-  px-8 py-6
-  w-180 max-w-[90vw]
-  grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))]
-  gap-x-10 gap-y-4
-  max-h-105 overflow-y-auto
-  modern-scroll
-"
+                        absolute top-full mt-4
+                        left-1/2 -translate-x-1/2
+                        bg-white rounded-3xl
+                        shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+                        px-6 py-5
+                        w-[92vw] sm:w-[520px] lg:w-[720px] xl:w-[900px]
+                        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+                        gap-x-10 gap-y-4
+                        max-h-[420px] overflow-y-auto
+                        modern-scroll
+                      "
                     >
-
-
                       {collections.length === 0 ? (
                         <p className="text-gray-500 text-sm px-3 py-2 uppercase">
                           NO COLLECTIONS
@@ -133,13 +146,13 @@ export default function Header() {
                             key={c.id}
                             to={`/collections/${c.slug}`}
                             className="
-    text-sm font-medium uppercase
-    text-gray-800
-    hover:text-[#fabd14]
-    transition
-    leading-snug
-    break-words
-  "
+                              text-sm font-medium uppercase
+                              text-gray-800
+                              hover:text-[#fabd14]
+                              transition
+                              leading-snug
+                              break-words
+                            "
                           >
                             {c.name}
                           </Link>
@@ -150,60 +163,62 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              <NavLink label="PROJECTS" to="/projects" active={isActive("/projects")} />
+              <NavLink
+                label="PROJECTS"
+                to="/projects"
+                active={isActive("/projects")}
+              />
 
               {/* CONTACT BUTTON */}
               <Link
                 to="/contact"
                 className="
-    relative group overflow-hidden
-    bg-white text-black
-    px-4 py-2
-    rounded-full
-    flex items-center gap-3
-    font-semibold uppercase
-    shadow-[0_8px_24px_rgba(0,0,0,0.12)]
-  "
+                  relative group overflow-hidden
+                  bg-white text-black
+                  px-4 py-2
+                  rounded-full
+                  flex items-center gap-3
+                  font-semibold uppercase
+                  shadow-[0_8px_24px_rgba(0,0,0,0.12)]
+                "
               >
-                {/* Hover background animation */}
+                {/* Hover bg */}
                 <span
                   className="
-      absolute inset-0
-      bg-[#fabd14]
-      -translate-x-full
-      group-hover:translate-x-0
-      transition-transform
-      duration-500
-      ease-out
-    "
+                    absolute inset-0
+                    bg-[#fabd14]
+                    -translate-x-full
+                    group-hover:translate-x-0
+                    transition-transform
+                    duration-500
+                    ease-out
+                  "
                 />
-
-                {/* Button content */}
+                {/* Content */}
                 <span className="relative z-10 flex items-center gap-3">
                   CONTACT US
-
                   <span
                     className="
-        bg-black/90
-        rounded-full
-        p-2
-        flex items-center justify-center
-        transition-all
-        duration-300
-        group-hover:bg-black
-      "
+                      bg-black/90
+                      rounded-full
+                      p-2
+                      flex items-center justify-center
+                      transition-all
+                      duration-300
+                      group-hover:bg-black
+                    "
                   >
                     <svg
                       className="
-          w-4 h-4
-          text-white
-          transition-transform
-          duration-300
-          ease-out
-          -rotate-45
-          group-hover:rotate-0
-          group-hover:translate-x-0.5
-        "
+                        w-4 h-4
+                        text-white
+                        transition-transform
+                        duration-300
+                        ease-out
+                        -rotate-45
+                        group-hover:rotate-0
+                        group-hover:translate-x-0.5
+                      "
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -217,13 +232,13 @@ export default function Header() {
                   </span>
                 </span>
               </Link>
-
             </nav>
 
-            {/* MOBILE MENU BUTTON */}
+            {/* MOBILE/TABLET MENU BUTTON (below lg) */}
             <button
               onClick={() => setOpen(true)}
-              className="md:hidden text-white text-2xl"
+              className="lg:hidden text-white text-2xl"
+              aria-label="Open menu"
             >
               ☰
             </button>
@@ -231,136 +246,147 @@ export default function Header() {
         </div>
       </motion.header>
 
-      {/* MOBILE MENU */}
-    {/* MOBILE MENU */}
-<AnimatePresence>
-  {open && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
-    >
-      <motion.div
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -40, opacity: 0 }}
-        className="
-          absolute top-4 left-4 right-4
-          bg-black rounded-3xl
-          p-6 text-white uppercase
-          max-h-[90vh] overflow-y-auto
-          modern-scroll
-        "
-      >
-        {/* HEADER */}
-        <div className="flex items-center justify-between mb-6">
-          <Link
-            to="/"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-2 text-lg font-semibold"
+      {/* MOBILE/TABLET MENU */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
           >
-            <img src={logo} className="h-7" alt="Mac Engineers" />
-            MAC-ENGINEERS
-          </Link>
-
-          <button onClick={() => setOpen(false)} className="text-2xl">
-            ✕
-          </button>
-        </div>
-
-        {/* LINKS */}
-        <ul className="space-y-5 text-sm tracking-wide">
-          <li>
-            <Link to="/" onClick={() => setOpen(false)}>HOME</Link>
-          </li>
-
-          <li>
-            <Link to="/about" onClick={() => setOpen(false)}>ABOUT US</Link>
-          </li>
-
-          <li>
-            <Link to="/product" onClick={() => setOpen(false)}>PRODUCTS</Link>
-          </li>
-
-          <li>
-            <Link to="/projects" onClick={() => setOpen(false)}>PROJECTS</Link>
-          </li>
-
-          {/* COLLECTIONS ACCORDION */}
-          <li>
-            <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="w-full flex items-center justify-between opacity-80 hover:opacity-100 transition"
+            <motion.div
+              initial={{ y: -40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -40, opacity: 0 }}
+              className="
+                absolute top-4 left-4 right-4
+                bg-black rounded-3xl
+                p-6 text-white uppercase
+                max-h-[90vh] overflow-y-auto
+                modern-scroll
+              "
             >
-              COLLECTIONS
-              <motion.span
-                animate={{ rotate: showDropdown ? 180 : 0 }}
-                transition={{ duration: 0.25 }}
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
+              {/* HEADER */}
+              <div className="flex items-center justify-between mb-6">
+                <Link
+                  to="/"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
                 >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </motion.span>
-            </button>
+                  <img src={logo} className="h-7" alt="Mac Engineers" />
+                  MAC-ENGINEERS
+                </Link>
 
-            <AnimatePresence>
-              {showDropdown && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                  className="
-                    mt-3 pl-4
-                    space-y-3
-                    max-h-64 overflow-y-auto
-                    modern-scroll
-                    border-l border-white/10
-                  "
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-2xl"
+                  aria-label="Close menu"
                 >
-                  {collections.map((c) => (
-                    <Link
-                      key={c.id}
-                      to={`/collections/${c.slug}`}
-                      onClick={() => setOpen(false)}
-                      className="block text-xs opacity-80 hover:opacity-100"
+                  ✕
+                </button>
+              </div>
+
+              {/* LINKS */}
+              <ul className="space-y-5 text-sm tracking-wide">
+                <li>
+                  <Link to="/" onClick={() => setOpen(false)}>
+                    HOME
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/about" onClick={() => setOpen(false)}>
+                    ABOUT US
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/product" onClick={() => setOpen(false)}>
+                    PRODUCTS
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/projects" onClick={() => setOpen(false)}>
+                    PROJECTS
+                  </Link>
+                </li>
+
+                {/* COLLECTIONS ACCORDION */}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="w-full flex items-center justify-between opacity-80 hover:opacity-100 transition"
+                  >
+                    COLLECTIONS
+                    <motion.span
+                      animate={{ rotate: showDropdown ? 180 : 0 }}
+                      transition={{ duration: 0.25 }}
                     >
-                      {c.name}
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </li>
-        </ul>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </motion.span>
+                  </button>
 
-        {/* CONTACT CTA */}
-        <Link
-          to="/contact"
-          onClick={() => setOpen(false)}
-          className="
-            mt-8 block text-center
-            bg-[#fabd14] text-black
-            py-3 rounded-full
-            font-semibold
-            tracking-wide
-          "
-        >
-          CONTACT US
-        </Link>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
+                  <AnimatePresence>
+                    {showDropdown && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="
+                          mt-3 pl-4
+                          space-y-3
+                          max-h-64 overflow-y-auto
+                          modern-scroll
+                          border-l border-white/10
+                        "
+                      >
+                        {collections.map((c) => (
+                          <Link
+                            key={c.id}
+                            to={`/collections/${c.slug}`}
+                            onClick={() => setOpen(false)}
+                            className="block text-xs opacity-80 hover:opacity-100 break-words"
+                          >
+                            {c.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+              </ul>
 
+              {/* CONTACT CTA */}
+              <Link
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className="
+                  mt-8 block text-center
+                  bg-[#fabd14] text-black
+                  py-3 rounded-full
+                  font-semibold
+                  tracking-wide
+                "
+              >
+                CONTACT US
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

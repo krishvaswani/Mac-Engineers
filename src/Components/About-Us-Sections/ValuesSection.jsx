@@ -23,7 +23,7 @@ export default function ValuesSection() {
       <div className="max-w-7xl mx-auto px-4">
 
         {/* ================= TOP GRID ================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-20">
 
           {/* LEFT */}
           <div>

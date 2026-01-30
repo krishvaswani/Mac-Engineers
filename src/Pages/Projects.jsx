@@ -250,7 +250,7 @@ export default function ProjectsPage() {
         ref={sectionRef}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24"
       >
-        <div className="grid gap-10 grid-cols-2 md:grid-cols-3">
+        <div className="grid gap-10 grid-cols-1  md:grid-cols-3">
           {loading
             ? Array.from({ length: 9 }).map((_, i) => (
                 <SkeletonCard key={i} />

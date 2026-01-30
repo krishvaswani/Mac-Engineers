@@ -29,11 +29,11 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section className="py-10">
+    <section className="pb-10" >
       <div
         ref={cardRef}
         className="
-          relative mx-5
+          relative mx-3.5
           rounded-4xl
           bg-white
           shadow-[0_40px_90px_rgba(0,0,0,0.12)]

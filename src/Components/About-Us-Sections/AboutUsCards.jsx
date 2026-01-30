@@ -5,21 +5,39 @@ import { motion, AnimatePresence } from "framer-motion";
 const testimonials = [
   {
     quote:
-      "Our purpose is to help people and organizations dream bigger, move faster, and build better tomorrows for all.",
-    author: "John Smith",
-    role: "CEO / Founder",
+      "Quick turnaround and super clear communication throughout. They compared multiple options and helped me choose the right plan without pushing anything unnecessary.",
+    author: "Saurabh Mishra",
+    role: "Lucknow",
   },
   {
     quote:
-      "Working with this team transformed how we approach inclusion and growth — highly recommended!",
-    author: "Sarah Johnson",
-    role: "HR Director",
+      "Very professional experience. Documentation was handled smoothly and I got regular updates on every step. Everything was explained in simple terms.",
+    author: "Pooja Nair",
+    role: "Kochi",
   },
   {
     quote:
-      "The best consulting experience we've had — real impact, real results.",
-    author: "Michael Chen",
-    role: "CTO",
+      "Transparent advice and responsive support even after the work was completed. The team was patient with my questions and guided me clearly.",
+    author: "Harshita Sharma",
+    role: "Jaipur",
+  },
+  {
+    quote:
+      "Smooth process from start to finish. Timelines were respected and the coordination was excellent. I would definitely recommend them to anyone looking for reliable service.",
+    author: "Mohit Bansal",
+    role: "Gurugram",
+  },
+  {
+    quote:
+      "Great experience overall—fast replies, honest guidance, and no last-minute surprises. Everything was well-structured and easy to track.",
+    author: "Sneha Iyer",
+    role: "Bengaluru",
+  },
+  {
+    quote:
+      "They took the time to understand my requirements and suggested practical options. Really appreciated the clarity, especially around costs and next steps.",
+    author: "Ritesh Kulkarni",
+    role: "Pune",
   },
 ];
 
@@ -57,7 +75,8 @@ const AboutUsCards = () => {
                    flex flex-col shadow-xl relative overflow-hidden
                    min-h-95 md:min-h-115"
       >
-          <h1 className="text-2xl mb-12">Testimonials</h1>
+        <h1 className="text-2xl mb-12">Testimonials</h1>
+
         <div className="flex-1 flex flex-col justify-between">
           <AnimatePresence mode="wait">
             <motion.blockquote
@@ -108,6 +127,7 @@ const AboutUsCards = () => {
               whileTap={{ scale: 0.85 }}
               onClick={prevSlide}
               className="cursor-pointer"
+              aria-label="Previous testimonial"
             >
               ←
             </motion.button>
@@ -115,6 +135,7 @@ const AboutUsCards = () => {
               whileTap={{ scale: 0.85 }}
               onClick={nextSlide}
               className="cursor-pointer"
+              aria-label="Next testimonial"
             >
               →
             </motion.button>
@@ -163,7 +184,8 @@ const AboutUsCards = () => {
 
         <div className="flex-1 flex items-center">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
-            Our Foundation of<br />
+            Our Foundation of
+            <br />
             Quality & <br />
             Reliability
           </h3>

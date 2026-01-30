@@ -7,8 +7,7 @@ export default function WhyUsSection() {
     <section className="bg-white py-10 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 
-          gap-10 md:gap-16 lg:gap-28 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-16 lg:gap-28 items-center">
 
           {/* ================= LEFT ================= */}
           <motion.div
@@ -16,7 +15,7 @@ export default function WhyUsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-center lg:text-left"
+            className="text-left"
           >
             {/* TAG */}
             <span className="inline-block mb-5 px-4 py-1.5 text-xs tracking-wide 
@@ -24,23 +23,17 @@ export default function WhyUsSection() {
               WHY US
             </span>
 
-            {/* HEADING */}
+            {/* HEADING – FORCED 2 LINES */}
             <h2 className="text-[26px] sm:text-[30px] md:text-[40px] lg:text-[48px]
               font-normal leading-snug text-[#1f3d34]">
-              Built on Quality{" "}
+              Built on Quality <br />
               <span className="text-[#faba19] font-medium">
-                Focused on
-              </span>{" "}
-              You
+                Focused on You
+              </span>
             </h2>
 
-            {/* MOBILE DIVIDER */}
-            <div className="block md:hidden w-16 h-[3px] bg-[#faba19] 
-              mx-auto mt-6 mb-6 rounded-full"></div>
-
-            {/* CTA – DESKTOP ONLY */}
-            <div className="mt-12 hidden md:flex items-center 
-              justify-center lg:justify-start gap-4 group">
+            {/* CTA */}
+            <div className="mt-12 flex items-center justify-start gap-4 group">
 
               <Link to="/contact">
                 <motion.button
@@ -60,7 +53,7 @@ export default function WhyUsSection() {
                 </motion.button>
               </Link>
 
-              {/* ICON – DESKTOP ONLY */}
+              {/* ICON */}
               <motion.div
                 className="relative overflow-hidden w-11 h-11 rounded-full 
                 bg-[#fabd14] flex items-center justify-center cursor-pointer"
@@ -84,17 +77,16 @@ export default function WhyUsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-            className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left"
+            className="max-w-xl mx-auto lg:mx-0 text-left"
           >
-            {/* ICON – DESKTOP ONLY */}
+            {/* ICON */}
             <div className="hidden md:flex w-14 h-14 mb-6 rounded-full 
-              bg-[#faba19] items-center justify-center mx-auto lg:mx-0">
+              bg-[#faba19] items-center justify-center">
               <User className="text-[#1f3d34]" />
             </div>
 
             {/* TEXT */}
-            <p className="text-base sm:text-lg text-neutral-600 leading-relaxed
-              text-justify">
+            <p className="text-base sm:text-lg text-neutral-600 leading-relaxed text-justify">
               Established in 2018, Mac Engineers is a New Delhi–based manufacturer 
               and trader specializing in duct dampers, industrial water chillers, 
               SS kitchen exhaust hoods, and wet scrubbers. We are committed to 

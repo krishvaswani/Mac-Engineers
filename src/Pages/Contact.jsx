@@ -84,7 +84,7 @@ export default function Contact() {
 
 
       {/* ================= MAIN ================= */}
-      <section className="bg-linear-to-br from-yellow-50 to-white py-20 px-4">
+      <section className="bg-linear-to-br from-gray-200 to-white py-20 px-4">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
 
           {/* IMAGE */}
@@ -117,7 +117,7 @@ export default function Contact() {
       name="fullName"
       value={form.fullName}
       onChange={handleChange}
-      placeholder="Your full name"
+      placeholder="Full Name"
     />
 
     {/* Email */}
@@ -125,7 +125,7 @@ export default function Contact() {
       name="email"
       value={form.email}
       onChange={handleChange}
-      placeholder="Your email address"
+      placeholder="Email"
       type="email"
     />
 
@@ -134,7 +134,7 @@ export default function Contact() {
       name="phone"
       value={form.phone}
       onChange={handleChange}
-      placeholder="Phone number"
+      placeholder="Phone Number"
     />
 
     {/* City */}
@@ -152,7 +152,7 @@ export default function Contact() {
     value={form.message}
     onChange={handleChange}
     rows="7"
-    placeholder="Tell us about your project, idea, or requirements..."
+    placeholder="Tell us about your requirements"
     required
     className="
       w-full

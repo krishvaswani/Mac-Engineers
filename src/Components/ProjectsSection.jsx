@@ -67,7 +67,7 @@ export default function ProjectsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          className=" flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           <div>
             <h2 className="text-4xl md:text-5xl font-semibold text-slate-900">

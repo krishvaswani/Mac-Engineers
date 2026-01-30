@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { useParams, Link } from "react-router-dom";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  limit,
+} from "firebase/firestore";
 import { db } from "../Firebase";
 
 import { motion, AnimatePresence } from "framer-motion";
 import BannerHero from "../Components/BannerHero";
 import EnquiryModal from "../Components/EnquiryModal";
+import ProductCard from "../Components/ProductCard";
 
 import {
   Phone,
-  Share2,
   ChevronDown,
   CheckCircle,
   Download,
@@ -28,38 +35,81 @@ export default function ProductPage() {
   const [openSection, setOpenSection] = useState("usage");
   const [showEnquiry, setShowEnquiry] = useState(false);
 
+  const [recommended, setRecommended] = useState([]);
+  const [recoLoading, setRecoLoading] = useState(true);
+
+  const shuffleArray = (arr) => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
   useEffect(() => {
     const fetchProduct = async () => {
-      const snap = await getDoc(doc(db, "products", id));
-      if (snap.exists()) setProduct(snap.data());
-      setLoading(false);
+      setLoading(true);
+      setProduct(null);
+
+      try {
+        const snap = await getDoc(doc(db, "products", id));
+        if (snap.exists()) setProduct(snap.data());
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [id]);
+
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      setRecoLoading(true);
+      setRecommended([]);
+
+      try {
+        const qy = query(collection(db, "products"), limit(40));
+        const snap = await getDocs(qy);
+
+        const pool = snap.docs
+          .filter((d) => d.id !== id)
+          .map((d) => ({ id: d.id, ...d.data() }));
+
+        const picks = shuffleArray(pool).slice(0, 6); // row looks better with 6
+        setRecommended(picks);
+      } finally {
+        setRecoLoading(false);
+      }
+    };
+
+    fetchRecommended();
+  }, [id]);
+
   if (loading) {
-    return (
-      <div className="py-40 text-center text-gray-500">
-        Loading product…
-      </div>
-    );
+    return <div className="py-40 text-center text-gray-500">Loading product…</div>;
   }
 
   if (!product) {
-    return (
-      <div className="py-40 text-center text-gray-500">
-        Product not found
-      </div>
-    );
+    return <div className="py-40 text-center text-gray-500">Product not found</div>;
   }
 
   const images = product.images || [];
+  const hasImages = images.length > 0;
 
-  const nextImage = () =>
+  const nextImage = () => {
+    if (images.length <= 1) return;
     setActiveIndex((i) => (i + 1) % images.length);
+  };
 
-  const prevImage = () =>
+  const prevImage = () => {
+    if (images.length <= 1) return;
     setActiveIndex((i) => (i - 1 + images.length) % images.length);
+  };
 
   return (
     <>
@@ -72,50 +122,62 @@ export default function ProductPage() {
         className="bg-linear-to-b from-white to-gray-50"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
           {/* BREADCRUMB */}
           <p className="text-sm text-gray-400 mb-10 md:flex hidden">
             {product.collection}
-            <span className="text-black font-medium">
-              {" "}› {product.name}
-            </span>
+            <span className="text-black font-medium"> {" "}› {product.name}</span>
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
-
             {/* LEFT – STICKY IMAGE VIEWER */}
             <div className="space-y-6 lg:sticky lg:top-24 self-start">
-
-              <div className="
-                relative
-                bg-white
-                rounded-3xl
-                border border-black/5
-                overflow-hidden
-              ">
+              <div
+                className="
+                  relative
+                  bg-white
+                  rounded-3xl
+                  border border-black/5
+                  overflow-hidden
+                "
+              >
                 <AnimatePresence mode="wait">
-                  <motion.img
-                    key={activeIndex}
-                    src={images[activeIndex]}
-                    initial={{ opacity: 0, scale: 0.97 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.97 }}
-                    transition={{ duration: 0.25 }}
-                    className="w-full md:h-130 object-contain"
-                  />
+                  {hasImages ? (
+                    <motion.img
+                      key={activeIndex}
+                      src={images[activeIndex]}
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.97 }}
+                      transition={{ duration: 0.25 }}
+                      className="w-full md:h-130 object-contain"
+                      alt={product.name}
+                    />
+                  ) : (
+                    <motion.div
+                      key="no-image"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="w-full md:h-130 flex items-center justify-center text-gray-400"
+                    >
+                      No image available
+                    </motion.div>
+                  )}
                 </AnimatePresence>
 
                 {images.length > 1 && (
                   <>
                     <button
                       onClick={prevImage}
-                      className=" absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
+                      aria-label="Previous image"
                     >
                       <ChevronLeft />
                     </button>
                     <button
                       onClick={nextImage}
-                      className=" cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
+                      className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 border border-black/5"
+                      aria-label="Next image"
                     >
                       <ChevronRight />
                     </button>
@@ -123,55 +185,50 @@ export default function ProductPage() {
                 )}
               </div>
 
-              <div className="flex gap-3 overflow-x-auto">
-                {images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveIndex(i)}
-                    className={`
-                      rounded-2xl
-                      p-2
-                      border border-black/5
-                      ${activeIndex === i ? "ring-1 ring-black/10" : ""}
-                    `}
-                  >
-                    <img
-                      src={img}
-                      className="h-10 w-10 object-contain"
-                    />
-                  </button>
-                ))}
-              </div>
+              {images.length > 0 && (
+                <div className="flex gap-3 overflow-x-auto">
+                  {images.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveIndex(i)}
+                      className={`
+                        rounded-2xl
+                        p-2
+                        border border-black/5
+                        ${activeIndex === i ? "ring-1 ring-black/10" : ""}
+                      `}
+                      aria-label={`View image ${i + 1}`}
+                    >
+                      <img src={img} className="h-10 w-10 object-contain" alt="" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* RIGHT – PRODUCT CONTENT */}
             <div className="space-y-8">
-
               <h1 className="text-3xl font-semibold text-gray-900">
                 {product.name}
               </h1>
 
               <div className="flex items-center gap-4 flex-wrap">
-                <span className="text-3xl font-semibold">
-                  ₹{product.price}
-                </span>
+                <span className="text-3xl font-semibold">₹{product.price}</span>
 
                 {product.inStock && (
-                  <div className="
-                    flex items-center gap-3
-                    bg-green-50
-                    border border-green-200
-                    rounded-xl
-                    px-4 py-2
-                  ">
+                  <div
+                    className="
+                      flex items-center gap-3
+                      bg-green-50
+                      border border-green-200
+                      rounded-xl
+                      px-4 py-2
+                    "
+                  >
                     <CheckCircle size={18} className="text-green-600" />
                     <div>
-                      <p className="text-sm font-medium text-green-700">
-                        In Stock
-                      </p>
-                      <p className="text-xs text-green-600">
-                        Ships Today
-                      </p>
+                      <p className="text-sm font-medium text-green-700">In Stock</p>
+                      <p className="text-xs text-green-600">Ships Today</p>
                     </div>
                   </div>
                 )}
@@ -202,12 +259,8 @@ export default function ProductPage() {
                       <FileText className="text-red-600" />
                     </div>
                     <div>
-                      <p className="font-medium">
-                        Technical_Spec_Sheet.pdf
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Datasheet · PDF
-                      </p>
+                      <p className="font-medium">Technical_Spec_Sheet.pdf</p>
+                      <p className="text-xs text-gray-500">Datasheet · PDF</p>
                     </div>
                   </div>
                   <Download className="text-gray-500" />
@@ -229,9 +282,7 @@ export default function ProductPage() {
               {product.specs && (
                 <div className="bg-white rounded-3xl border border-black/5 overflow-hidden">
                   <div className="px-6 py-5 border-b border-black/5">
-                    <h3 className="font-semibold">
-                      Specifications
-                    </h3>
+                    <h3 className="font-semibold">Specifications</h3>
                   </div>
                   <div className="divide-y divide-black/5">
                     {Object.entries(product.specs).map(([k, v]) => (
@@ -247,18 +298,20 @@ export default function ProductPage() {
                 </div>
               )}
 
-              {[{
-                id: "usage",
-                title: "Usage Guidelines",
-                content: product.usageGuidelines,
-              },
-              {
-                id: "info",
-                title: "Additional Information",
-                content: product.additionalInfo,
-              }]
-                .filter(i => i.content)
-                .map(item => (
+              {[
+                {
+                  id: "usage",
+                  title: "Usage Guidelines",
+                  content: product.usageGuidelines,
+                },
+                {
+                  id: "info",
+                  title: "Additional Information",
+                  content: product.additionalInfo,
+                },
+              ]
+                .filter((i) => i.content)
+                .map((item) => (
                   <div
                     key={item.id}
                     className="bg-white rounded-3xl border border-black/5 overflow-hidden"
@@ -271,8 +324,9 @@ export default function ProductPage() {
                     >
                       {item.title}
                       <ChevronDown
-                        className={`transition ${openSection === item.id ? "rotate-180" : ""
-                          }`}
+                        className={`transition ${
+                          openSection === item.id ? "rotate-180" : ""
+                        }`}
                       />
                     </button>
 
@@ -288,7 +342,7 @@ export default function ProductPage() {
                           <ul className="list-disc pl-5 space-y-2">
                             {item.content
                               .split("\n")
-                              .filter(line => line.trim() !== "")
+                              .filter((line) => line.trim() !== "")
                               .map((line, i) => (
                                 <li key={i}>{line}</li>
                               ))}
@@ -299,6 +353,54 @@ export default function ProductPage() {
                   </div>
                 ))}
             </div>
+          </div>
+
+          {/* ✅ RECOMMENDED PRODUCTS – FULL WIDTH ROW AT END */}
+          <div className="mt-16">
+            <div className="flex items-end justify-between mb-5">
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Recommended Products
+              </h2>
+              {recoLoading ? (
+                <span className="text-xs text-gray-400">Loading…</span>
+              ) : (
+                <span className="text-xs hidden md:flex text-gray-500">Picked for you</span>
+              )}
+            </div>
+
+            {recoLoading ? (
+              <div className="flex gap-5 overflow-x-auto pb-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div
+                    key={i}
+                    className="min-w-[240px] sm:min-w-[280px] md:min-w-[320px] h-[360px] bg-white rounded-2xl border border-black/5 animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : recommended.length === 0 ? (
+              <div className="text-sm text-gray-500 bg-white rounded-3xl border border-black/5 p-6">
+                No recommended products found.
+              </div>
+            ) : (
+              <div className="flex gap-5 overflow-x-auto pb-4">
+                {recommended.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/product/${p.id}`}
+                    className="min-w-[240px] sm:min-w-[280px] md:min-w-[320px] block"
+                  >
+                    <ProductCard
+                      image={(p.images && p.images[0]) || ""}
+                      title={p.name}
+                      price={p.price}
+                      // oldPrice={p.oldPrice}
+                      rating={p.rating || 4}
+                      discount={p.discount}
+                    />
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </motion.div>

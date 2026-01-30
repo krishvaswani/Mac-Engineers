@@ -98,7 +98,7 @@ export default function ContactSection() {
               {/* Email */}
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder="Email"
                 className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
                 required
               />
@@ -106,7 +106,7 @@ export default function ContactSection() {
               {/* Phone Number */}
               <input
                 type="tel"
-                placeholder="Phone number"
+                placeholder="Phone Number"
                 className="input bg-slate-50 border border-slate-200 focus:border-slate-400"
                 required
               />
@@ -120,7 +120,7 @@ export default function ContactSection() {
 
               {/* Message */}
               <textarea
-                placeholder="Tell us about your project, idea, or requirements..."
+                placeholder="Tell us about your requirements."
                 rows="4"
                 className="input bg-slate-50 border border-slate-200 md:col-span-2 resize-none"
                 required

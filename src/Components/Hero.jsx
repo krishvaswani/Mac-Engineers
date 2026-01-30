@@ -73,7 +73,7 @@ export default function Hero() {
     cursor-pointer
     rounded-full
     px-6 sm:px-8
-    py-3.5 sm:py-4
+    py-2 sm:py-4
     text-sm sm:text-base
     font-semibold
     text-black

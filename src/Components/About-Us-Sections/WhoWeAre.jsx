@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function WhoWeAre() {
   return (
-    <section className="bg-[#faf9f6] py-24">
+    <section className="bg-[#faf9f6] py-16">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* TAG */}
@@ -37,7 +37,6 @@ export default function WhoWeAre() {
         <div className="mt-8 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-0">
           <Stat
             value={8}
-            // decimals={1}
             prefix=""
             suffix="+ Years"
             label="Industry Experience"
@@ -98,13 +97,12 @@ function Stat({
         ${!isFirst ? "md:border-l border-neutral-200" : ""}
       `}
     >
-      {/* NUMBER */}
+      {/* NUMBER - Fixed width and height */}
       <div
         className="
-          inline-flex items-center gap-1
-          px-4 py-2
+          inline-flex items-center justify-center gap-1
+          w-[140px] h-[56px]
           rounded-xl bg-white shadow-sm
-          md:rounded-xl md:shadow-sm
         "
       >
         {prefix && (
@@ -120,7 +118,7 @@ function Stat({
         </motion.span>
 
         {suffix && (
-          <span className="text-[#fbba19] text-xl md:text-3xl font-semibold">
+          <span className="text-[#fbba19] text-xl md:text-2xl font-semibold">
             {suffix}
           </span>
         )}

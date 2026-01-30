@@ -34,7 +34,7 @@ export default function CategoryIcons() {
   const isCarousel = categories.length > 6;
 
   return (
-    <section className="bg-white py-8 ">
+    <section className="bg-white pt-8 ">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* GRID (≤ 6 items) */}
@@ -48,7 +48,7 @@ export default function CategoryIcons() {
 
         {/* CAROUSEL (> 6 items) */}
         {isCarousel && (
-          <div className="flex gap-14 overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
+          <div className="flex gap-8 md:gap-14 overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2">
             {categories.map((cat, index) => (
               <div key={index} className="snap-center shrink-0">
                 <CategoryItem cat={cat} />
