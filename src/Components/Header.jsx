@@ -63,7 +63,7 @@ export default function Header() {
           }
         `}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-12 md:mt-4 lg:px-10">
+        <div className="mx-auto max-w-7xl  mt-4 px-8 sm:px-12 md:mt-4 lg:px-10">
           <div className="flex items-center justify-between gap-3">
             {/* LOGO */}
             <Link

@@ -80,7 +80,7 @@ export default function ContactSection() {
           <motion.div
             ref={formRef}
             initial={{ opacity: 0 }}
-            className="bg-white rounded-3xl border border-slate-200 shadow-xs p-8 md:p-10"
+            className="bg-white rounded-3xl border border-slate-200 shadow-xs p-4 md:p-10"
           >
             <h3 className="text-xl font-semibold mb-6 text-slate-900">
               Have a project in mind?

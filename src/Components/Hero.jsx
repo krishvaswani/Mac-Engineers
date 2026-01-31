@@ -31,7 +31,7 @@ export default function Hero() {
       {/* CONTENT */}
       <div className="relative z-20 h-full flex items-center">
         <motion.div
-          className="px-6 sm:px-10 lg:px-16 max-w-3xl text-white"
+          className="px-6 sm:px-10  lg:px-16 max-w-3xl text-white"
           initial="hidden"
           animate="visible"
           variants={{
@@ -55,19 +55,19 @@ export default function Hero() {
               text-[clamp(2rem,4.5vw,3.75rem)]
             "
           >
-            Trusted HVAC<br />
-            
+            Trusted HVAC
+            <br />
             Engineering Experts Since 2018
           </motion.h1>
 
           {/* BUTTON */}
-        <motion.button
-  variants={{
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  }}
-  transition={{ duration: 0.7, ease: "easeOut" }}
-  className="
+          <motion.button
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="
     relative group overflow-hidden
     mt-6 sm:mt-8
     cursor-pointer
@@ -81,12 +81,12 @@ export default function Hero() {
     flex items-center gap-3
     shadow-[0_10px_30px_rgba(0,0,0,0.12)]
   "
->
-  {/* Hover background animation */}
+          >
+            {/* Hover background animation */}
 
-  <Link to="/product" className="inline-block">
-  <span
-    className="
+            <Link to="/product" className="inline-block">
+              <span
+                className="
       absolute inset-0
       bg-[#fabd14]
       -translate-x-full
@@ -95,14 +95,13 @@ export default function Hero() {
       duration-500
       ease-out
     "
-  />
+              />
 
-  {/* Button content */}
-  <span className="relative z-10 flex items-center gap-3">
-    View Products 
-
-    <span
-      className="
+              {/* Button content */}
+              <span className="relative z-10 flex items-center gap-3">
+                View Products
+                <span
+                  className="
         bg-black/90
         rounded-full
         p-2
@@ -111,9 +110,9 @@ export default function Hero() {
         duration-300
         group-hover:bg-black
       "
-    >
-      <svg
-        className="
+                >
+                  <svg
+                    className="
           w-4 h-4
           text-white
           transition-transform
@@ -123,22 +122,20 @@ export default function Hero() {
           group-hover:rotate-0
           group-hover:translate-x-0.5
         "
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M5 12h14" />
-        <path d="M13 6l6 6-6 6" />
-      </svg>
-    </span>
-  </span>
-
-  </Link>
-</motion.button>
-
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+              </span>
+            </Link>
+          </motion.button>
 
           {/* DESCRIPTION */}
           <motion.p
@@ -149,7 +146,8 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mt-4 sm:mt-6 text-xs sm:text-sm text-gray-200 max-w-md"
           >
-            Founded in 2018 in New Delhi, delivering high-quality HVAC and ventilation products with timely delivery.
+            Founded in 2018 in New Delhi, delivering high-quality HVAC and
+            ventilation products with timely delivery.
           </motion.p>
         </motion.div>
       </div>
