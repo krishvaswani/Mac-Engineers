@@ -2,6 +2,7 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect } from "react";
 
 export default function WhoWeAre() {
+  
   return (
     <section className="bg-[#faf9f6] py-16">
       <div className="max-w-7xl mx-auto px-4">
@@ -27,7 +28,7 @@ export default function WhoWeAre() {
         {/* IMAGE */}
         <div className="mt-14 rounded-[28px] overflow-hidden">
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2FChatGPT%20Image%20Jan%2020%2C%202026%2C%2012_32_11%20PM.png?alt=media&token=0b00512f-d9a9-4d2a-b230-b9f48dbc1231"
+            src="https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2Faboutus%20banner.webp?alt=media&token=b367e299-29b9-44df-93a5-3be44a6f8a25"
             alt="Team discussion"
             className="w-full h-65 sm:h-90 md:h-105 lg:h-130 object-cover"
           />
