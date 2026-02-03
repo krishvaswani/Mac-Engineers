@@ -28,8 +28,7 @@ export default function WhoWeAre() {
         {/* IMAGE */}
         <div className="mt-14 rounded-[28px] overflow-hidden">
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2Faboutus%20banner.webp?alt=media&token=b367e299-29b9-44df-93a5-3be44a6f8a25"
-            alt="Team discussion"
+            src="https://firebasestorage.googleapis.com/v0/b/mac-engineers.firebasestorage.app/o/Assets%2Faboutus%20banner.webp?alt=media&token=025a8174-3b3d-43f9-b387-92d4b80e40d7"
             className="w-full h-65 sm:h-90 md:h-105 lg:h-130 object-cover"
           />
         </div>
