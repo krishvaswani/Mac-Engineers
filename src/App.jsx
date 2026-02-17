@@ -6,6 +6,11 @@ import TopMarquee from "./Components/TopMarquee";
 import Header from "./Components/Header.jsx";
 import Footer from "./Components/Footer.jsx";
 import Preloader from "./Components/Preloader";
+// ✅ NEW ADMIN PAGES (ADD THESE FILES)
+import AdminProjects from "./Admin/Projects";
+import AddProject from "./Admin/AddProject";
+import EditProject from "./Admin/EditProject";
+
 
 // FRONTEND PAGES
 import Home from "./Pages/Home.jsx";
@@ -83,6 +88,9 @@ function AppRoutes() {
         <Route path="collections" element={<Collections />} />
         <Route path="enquiries" element={<Enquiries />} />
         <Route path="contact-data" element={<ContactMessages />} />
+        <Route path="projects" element={<AdminProjects />} />
+       <Route path="projects/add" element={<AddProject />} />
+        <Route path="projects/edit/:id" element={<EditProject />} />
       </Route>
     </Routes>
   );

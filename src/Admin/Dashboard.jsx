@@ -9,6 +9,8 @@ import {
   Plus,
   ArrowRight,
   Mail,
+  FolderKanban,
+  FileSpreadsheet,
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -17,6 +19,10 @@ export default function Dashboard() {
     totalCollections: 0,
     totalEnquiries: 0,
     totalContacts: 0,
+
+    // ✅ NEW
+    totalProjects: 0,
+    totalProjectLeads: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -29,11 +35,19 @@ export default function Dashboard() {
           collectionsSnap,
           enquiriesSnap,
           contactSnap,
+
+          // ✅ NEW
+          projectsSnap,
+          projectLeadsSnap,
         ] = await Promise.all([
           getDocs(collection(db, "products")),
           getDocs(collection(db, "collections")),
           getDocs(collection(db, "enquiries")),
           getDocs(collection(db, "contactMessages")),
+
+          // ✅ NEW collections
+          getDocs(collection(db, "projects")),
+          getDocs(collection(db, "project_leads")),
         ]);
 
         setStats({
@@ -41,6 +55,10 @@ export default function Dashboard() {
           totalCollections: collectionsSnap.size,
           totalEnquiries: enquiriesSnap.size,
           totalContacts: contactSnap.size,
+
+          // ✅ NEW
+          totalProjects: projectsSnap.size,
+          totalProjectLeads: projectLeadsSnap.size,
         });
       } catch (err) {
         console.error("Dashboard stats error:", err);
@@ -101,6 +119,14 @@ export default function Dashboard() {
           icon={<Mail size={22} />}
           accent="cyan"
         />
+
+        {/* ✅ NEW STATS */}
+        <StatCard
+          title="Total Projects"
+          value={stats.totalProjects}
+          icon={<FolderKanban size={22} />}
+          accent="blue"
+        />
       </div>
 
       {/* QUICK ACTIONS */}
@@ -136,6 +162,13 @@ export default function Dashboard() {
             to="/admin/contact-data"
             label="Contact Messages"
           />
+
+          {/* ✅ NEW QUICK LINKS */}
+          <QuickLink
+            to="/admin/projects"
+            label="Manage Projects"
+          />
+
         </div>
       </div>
     </div>

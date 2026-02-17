@@ -15,6 +15,8 @@ import {
   Layers,
   Mail,
   PhoneCall,
+  FolderKanban,
+  FileSpreadsheet,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -56,6 +58,13 @@ export default function AdminLayout() {
       name: "Contact Us Data",
       path: "/admin/contact-data",
       icon: PhoneCall,
+    },
+
+    // ✅ NEW
+    {
+      name: "Projects",
+      path: "/admin/projects",
+      icon: FolderKanban,
     },
   ];
 

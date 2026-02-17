@@ -1,37 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Pagination as SwiperPagination,
-  Autoplay,
-  Navigation,
-} from "swiper/modules";
+import { Pagination as SwiperPagination, Autoplay, Navigation } from "swiper/modules";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import {
-  MapPinIcon,
-  HomeModernIcon,
-} from "@heroicons/react/24/outline";
+import { MapPinIcon, HomeModernIcon } from "@heroicons/react/24/outline";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-gsap.registerPlugin(ScrollTrigger);
+import { getProjectsCount, getProjectsPage } from "../utils/projects"; // ✅ backend
 
-/* ---------------- DUMMY DATA ---------------- */
-const PROJECTS = Array.from({ length: 18 }).map((_, i) => ({
-  id: i,
-  title: `Luxury Steel Frame Villa ${i + 1}`,
-  location: "Dehradun, Uttarakhand",
-  area: `${1400 + i * 120} SQFT`,
-  images: [
-    "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
-    "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-  ],
-}));
+gsap.registerPlugin(ScrollTrigger);
 
 const ITEMS_PER_PAGE = 9;
 
@@ -105,6 +87,8 @@ function ImageLightbox({ images, startIndex, onClose }) {
 
 /* ---------------- PROJECT CARD ---------------- */
 function ProjectCard({ project, onImageClick }) {
+  const imgs = Array.isArray(project.images) ? project.images : [];
+
   return (
     <motion.div
       whileHover={{ y: -10 }}
@@ -132,10 +116,10 @@ function ProjectCard({ project, onImageClick }) {
           loop
           className="rounded-xl overflow-hidden"
         >
-          {project.images.map((img, i) => (
+          {imgs.map((img, i) => (
             <SwiperSlide key={i}>
               <div
-                onClick={() => onImageClick(project.images, i)}
+                onClick={() => onImageClick(imgs, i)}
                 className="relative group cursor-pointer"
               >
                 <img
@@ -157,12 +141,10 @@ function ProjectCard({ project, onImageClick }) {
 
       {/* CONTENT */}
       <div className="px-6 pt-4 pb-8 mt-auto">
-        {/* DIVIDER */}
-
         <h3 className="text-lg font-semibold text-gray-900">
           {project.title}
         </h3>
-        <div className="h-px w-full  bg-gray-900/40 mt-4" />
+        <div className="h-px w-full bg-gray-900/40 mt-4" />
 
         <div className="mt-4 text-sm text-gray-700 space-y-3">
           <div className="flex items-center gap-2">
@@ -183,25 +165,87 @@ function ProjectCard({ project, onImageClick }) {
 /* ---------------- PAGE ---------------- */
 export default function ProjectsPage() {
   const sectionRef = useRef(null);
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+
+  const [totalCount, setTotalCount] = useState(0);
+
+  // cache pages so numbered pagination works
+  const [pagesCache, setPagesCache] = useState({}); // { 1: {items, lastDoc} }
+
   const [lightbox, setLightbox] = useState({
     open: false,
     images: [],
     index: 0,
   });
 
-  const totalPages = Math.ceil(PROJECTS.length / ITEMS_PER_PAGE);
-  const paginatedProjects = PROJECTS.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
+  const totalPages = Math.max(1, Math.ceil(totalCount / ITEMS_PER_PAGE));
+  const currentItems = pagesCache[page]?.items || [];
 
+  // initial load: count + first page
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(t);
+    let mounted = true;
+
+    async function boot() {
+      setLoading(true);
+      try {
+        const count = await getProjectsCount();
+        if (!mounted) return;
+        setTotalCount(count);
+
+        const first = await getProjectsPage({ pageSize: ITEMS_PER_PAGE });
+        if (!mounted) return;
+        setPagesCache({ 1: first });
+        setPage(1);
+      } catch (e) {
+        console.error("Projects page load error:", e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+
+    boot();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
+  // load missing page when user changes page
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadPageIfNeeded() {
+      if (pagesCache[page]) return;
+
+      // find nearest previous cached page to get cursor
+      let prev = page - 1;
+      while (prev > 0 && !pagesCache[prev]) prev--;
+
+      const cursor = pagesCache[prev]?.lastDoc || null;
+
+      setLoading(true);
+      try {
+        const res = await getProjectsPage({
+          pageSize: ITEMS_PER_PAGE,
+          cursorDoc: cursor,
+        });
+        if (!mounted) return;
+        setPagesCache((p) => ({ ...p, [page]: res }));
+      } catch (e) {
+        console.error("Projects pagination error:", e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+
+    loadPageIfNeeded();
+    return () => {
+      mounted = false;
+    };
+  }, [page, pagesCache]);
+
+  // animation
   useEffect(() => {
     if (!loading) {
       gsap.fromTo(
@@ -250,20 +294,24 @@ export default function ProjectsPage() {
         ref={sectionRef}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24"
       >
-        <div className="grid gap-10 grid-cols-1  md:grid-cols-3">
-          {loading
-            ? Array.from({ length: 9 }).map((_, i) => (
-                <SkeletonCard key={i} />
-              ))
-            : paginatedProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onImageClick={(images, index) =>
-                    setLightbox({ open: true, images, index })
-                  }
-                />
-              ))}
+        <div className="grid gap-10 grid-cols-1 md:grid-cols-3">
+          {loading ? (
+            Array.from({ length: 9 }).map((_, i) => <SkeletonCard key={i} />)
+          ) : currentItems.length ? (
+            currentItems.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onImageClick={(images, index) =>
+                  setLightbox({ open: true, images, index })
+                }
+              />
+            ))
+          ) : (
+            <div className="text-center col-span-full text-gray-600">
+              No projects found.
+            </div>
+          )}
         </div>
 
         {/* PAGINATION */}
@@ -294,9 +342,7 @@ export default function ProjectsPage() {
           <ImageLightbox
             images={lightbox.images}
             startIndex={lightbox.index}
-            onClose={() =>
-              setLightbox({ open: false, images: [], index: 0 })
-            }
+            onClose={() => setLightbox({ open: false, images: [], index: 0 })}
           />
         )}
       </AnimatePresence>
