@@ -57,7 +57,7 @@ export default function Hero() {
           >
             Trusted HVAC
             <br />
-            Engineering Experts Since 2018
+            Engineering Experts Since 2008
           </motion.h1>
 
           {/* BUTTON */}
@@ -146,7 +146,7 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mt-4 sm:mt-6 text-xs sm:text-sm text-gray-200 max-w-md"
           >
-            Founded in 2018 in New Delhi, delivering high-quality HVAC and
+            Founded in 2008 in New Delhi, delivering high-quality HVAC and
             ventilation products with timely delivery.
           </motion.p>
         </motion.div>

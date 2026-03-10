@@ -70,8 +70,8 @@ export default function Header() {
               to="/"
               className="flex items-center gap-2 text-white font-semibold uppercase whitespace-nowrap"
             >
-              <img src={logo} alt="Mac Engineers" className="h-7 sm:h-8" />
-              <span className="text-base sm:text-lg tracking-wide">
+              <img src={logo} alt="Mac Engineers" className="h-10 sm:h-9" />
+              <span className="text-base sm:text-2xl tracking-wide">
                 MAC-ENGINEERS
               </span>
             </Link>

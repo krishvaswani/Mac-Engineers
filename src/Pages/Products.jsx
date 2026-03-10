@@ -4,52 +4,45 @@ import { db } from "../Firebase";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import BannerHero from "../Components/BannerHero";
-import { ChevronDown } from "lucide-react";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filters
   const [stockFilter, setStockFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("latest");
+  const [sortBy, setSortBy] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
+      // ✅ Simple query — no orderBy, avoids composite index requirement
       const q = query(
         collection(db, "products"),
         where("isActive", "==", true)
       );
 
       const snap = await getDocs(q);
-      setProducts(
-        snap.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-        }))
-      );
+      const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 
+      // ✅ Sort by `order` field on the client side
+      items.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
+
+      setProducts(items);
       setLoading(false);
     };
 
     fetchProducts();
   }, []);
 
-  // Filter + Sort
   const filteredProducts = useMemo(() => {
     let list = [...products];
 
     if (stockFilter !== "all") {
-      list = list.filter(
-        (p) => p.inStock === (stockFilter === "in")
-      );
+      list = list.filter((p) => p.inStock === (stockFilter === "in"));
     }
 
     if (maxPrice) {
-      list = list.filter(
-        (p) => p.price <= Number(maxPrice)
-      );
+      list = list.filter((p) => p.price <= Number(maxPrice));
     }
 
     switch (sortBy) {
@@ -60,11 +53,11 @@ export default function Products() {
         list.sort((a, b) => b.price - a.price);
         break;
       case "name":
-        list.sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
+        list.sort((a, b) => a.name.localeCompare(b.name));
         break;
       default:
+        // Keep the `order` sort applied during fetch
+        list.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
         break;
     }
 
@@ -73,9 +66,7 @@ export default function Products() {
 
   if (loading) {
     return (
-      <div className="py-40 text-center text-gray-500">
-        Loading products…
-      </div>
+      <div className="py-40 text-center text-gray-500">Loading products…</div>
     );
   }
 
@@ -93,23 +84,13 @@ export default function Products() {
 
           {/* HEADER */}
           <div className="mb-10">
-            <h1 className="text-3xl font-semibold mb-2">
-              All Products
-            </h1>
-            <p className="text-gray-600">
-              Browse our complete product range
-            </p>
+            <h1 className="text-3xl font-semibold mb-2">All Products</h1>
+            <p className="text-gray-600">Browse our complete product range</p>
           </div>
 
           {/* FILTER BAR */}
-          <div className="
-            bg-white
-            rounded-3xl
-            border border-black/5
-            px-6 py-4
-            mb-10
-            flex flex-wrap gap-4 items-center
-          ">
+          <div className="bg-white rounded-3xl border border-black/5 px-6 py-4 mb-10 flex flex-wrap gap-4 items-center">
+
             {/* Stock */}
             <select
               value={stockFilter}
@@ -131,29 +112,21 @@ export default function Products() {
             />
 
             {/* Sort */}
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="border border-black/10 rounded-xl px-4 py-2 pr-10 cursor-pointer"
-              >
-                <option value="latest">Latest</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="name">Name: A–Z</option>
-              </select>
-              {/* <ChevronDown
-                size={16}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-              /> */}
-            </div>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="border border-black/10 rounded-xl px-4 py-2 cursor-pointer"
+            >
+              <option value="">Default</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name: A–Z</option>
+            </select>
           </div>
 
           {/* GRID */}
           {filteredProducts.length === 0 ? (
-            <p className="text-gray-500">
-              No products found.
-            </p>
+            <p className="text-gray-500">No products found.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProducts.map((p) => (
@@ -164,19 +137,10 @@ export default function Products() {
                 >
                   <Link
                     to={`/product/${p.id}`}
-                    className="
-                      bg-white
-                      border border-black/5
-                      rounded-3xl
-                      overflow-hidden
-                      hover:shadow-md
-                      transition
-                      cursor-pointer
-                      block
-                    "
+                    className="bg-white border border-black/5 rounded-3xl overflow-hidden hover:shadow-md transition cursor-pointer block"
                   >
                     {/* IMAGE */}
-                    <div className="bg-white-50 h-72 flex items-center justify-center overflow-hidden">
+                    <div className="h-72 flex items-center justify-center overflow-hidden">
                       {p.images?.[0] ? (
                         <img
                           src={p.images[0]}
@@ -184,17 +148,13 @@ export default function Products() {
                           className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
                         />
                       ) : (
-                        <span className="text-gray-400 text-sm">
-                          No Image
-                        </span>
+                        <span className="text-gray-400 text-sm">No Image</span>
                       )}
                     </div>
 
                     {/* CONTENT */}
                     <div className="p-5 space-y-3">
-                      <h3 className="font-semibold text-lg">
-                        {p.name}
-                      </h3>
+                      <h3 className="font-semibold text-lg">{p.name}</h3>
 
                       <p className="text-sm text-gray-500 line-clamp-2">
                         {p.description}
@@ -202,32 +162,16 @@ export default function Products() {
 
                       {/* PRICE + STOCK */}
                       <div className="flex justify-between items-center pt-2">
-                        <div className="flex items-center gap-2">
-                          {/* OLD PRICE (HIDDEN IF 0 / EMPTY) */}
-                          {/* {p.oldPrice && p.oldPrice > 0 && (
-                            <span className="text-sm text-gray-400 line-through">
-                              ₹{p.oldPrice}
-                            </span>
-                          )} */}
-
-                          {/* CURRENT PRICE */}
-                          <span className="font-semibold text-black">
-                            ₹{p.price}
-                          </span>
-                        </div>
+                        <span className="font-semibold text-black">
+                          ₹{p.price}
+                        </span>
 
                         {p.inStock ? (
-                          <span className="
-                            text-xs px-3 py-1 rounded-full
-                            bg-green-50 border border-green-200 text-green-700
-                          ">
+                          <span className="text-xs px-3 py-1 rounded-full bg-green-50 border border-green-200 text-green-700">
                             In Stock
                           </span>
                         ) : (
-                          <span className="
-                            text-xs px-3 py-1 rounded-full
-                            bg-red-50 border border-red-200 text-red-600
-                          ">
+                          <span className="text-xs px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-600">
                             Out of Stock
                           </span>
                         )}
